@@ -3,8 +3,15 @@ function doGet(e) {
   var arr = [foobarr].toString().split(".");
   var libName = arr[0];
   var libFunc = arr[1];
-  args = [e.parameter["args"]] || [Utilities.jsonStringify(e)];
-  return foo.renderTemplate(this[libName][libFunc].apply(this, args));
+  args = [e.parameter["args"]] || [
+    "bing.com",
+    null,
+    { muteHttpExceptions: true },
+  ];
+  return foo.renderTemplate(
+    foo.contentApp(this[libName][libFunc].apply(this, args)),
+    { e: e }
+  );
 }
 
 var runAll = function (func, args) {
