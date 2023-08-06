@@ -10,7 +10,7 @@ function doGet(e) {
   ];
   return foo.renderTemplate(
     foo.contentApp(this[libName][libFunc].apply(this, args)),
-    { e: e }
+    { e: e },
   );
 }
 
