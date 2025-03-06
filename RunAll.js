@@ -60,7 +60,7 @@ var doGet = function (e) {
             "Welcome",
           );
         } else if (workLoad && fxIndex > -1) {
-          var payload = this[libName][fx](content);
+          var payload = this[libName][fx].apply(this, [content]);
           if (payload) {
             if (
               payload.length === 99 ||
