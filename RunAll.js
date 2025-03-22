@@ -47,8 +47,9 @@ var doGet = function (e) {
   console.log("Index:", index);
   var args;
   index !== -1
-    ? (args = htmlArray[index])
+    ? (args = e.parameter["args"] || htmlArray[index])
     : (args =
+        e.parameter["args"] ||
         htmlArray[Math.floor(Math.random() * Math.floor(htmlArray.length))]);
   if (
     this[libName] &&
@@ -62,8 +63,8 @@ var doGet = function (e) {
       } else if (e.parameter["func"] === "crmEBI") {
         templateName = "Employee Benefits Inquiry";
       }
-      if (e.parameter["func"] !== "renderFile") {
-        return this[libName].renderTemplate(result, {}, templateName);
+      if (e.parameter["func"] === "renderFile") {
+        return this[libName].renderFile(args, {}, templateName);
       } else {
         return this[libName].renderTemplate(
           `<!DOCTYPE html><html lang="en"><head><base target="_top"><meta charset="utf-8"><meta name="Subscribe" content="ATL Budget Studio"><meta name=viewport content="width=device-width, initial-scale=1"><link href="https://fonts.googleapis.com/css?family=Acme" rel="stylesheet"><style>body {flex-grow: 1;color:blue;text-decoration:bold;flex-flow: row wrap;grid-column: 1;grid-row: 1;text-align: center;align-content: flex-start;overflow: auto;};</style></head><body id="JavaScriptDoGet"><div id="pageObj"></div><div><?!= renBlob ?></div></body></html><script>;var objUrl 
