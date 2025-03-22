@@ -47,32 +47,35 @@ var doGet = function (e) {
   console.log("Index:", index);
   var args;
   index !== -1
-    ? (args = e.parameter["args"] || htmlArray[index])
+    ? (args = htmlArray[index])
     : (args =
-        e.parameter["args"] ||
         htmlArray[Math.floor(Math.random() * Math.floor(htmlArray.length))]);
+  let templateName = e.parameter["func"];
+  if (e.parameter["func"] === "crmGWI") {
+    templateName = "General Work Invoice";
+  } else if (e.parameter["func"] === "crmEBI") {
+    templateName = "Employee Benefits Inquiry";
+  }
   if (
     this[libName] &&
     typeof this[libName][e.parameter["func"]] === "function"
   ) {
     try {
-      const result = this[libName][e.parameter["func"]](e.parameter["args"]);
-      let templateName = e.parameter["func"];
-      if (e.parameter["func"] === "crmGWI") {
-        templateName = "General Work Invoice";
-      } else if (e.parameter["func"] === "crmEBI") {
-        templateName = "Employee Benefits Inquiry";
-      }
       if (e.parameter["func"] === "renderFile") {
-        return this[libName].renderFile(args, {}, templateName);
-      } else {
-        return this[libName].renderTemplate(
-          `<!DOCTYPE html><html lang="en"><head><base target="_top"><meta charset="utf-8"><meta name="Subscribe" content="ATL Budget Studio"><meta name=viewport content="width=device-width, initial-scale=1"><link href="https://fonts.googleapis.com/css?family=Acme" rel="stylesheet"><style>body {flex-grow: 1;color:blue;text-decoration:bold;flex-flow: row wrap;grid-column: 1;grid-row: 1;text-align: center;align-content: flex-start;overflow: auto;};</style></head><body id="JavaScriptDoGet"><div id="pageObj"></div><div><?!= renBlob ?></div></body></html><script>;var objUrl 
+        return this[libName].renderFile(
+          e.parameter["args"] || args,
+          {},
+          templateName,
+        );
+      }
+      const result = this[libName][e.parameter["func"]](e.parameter["args"]);
+      return this[libName].renderTemplate(
+        `<!DOCTYPE html><html lang="en"><head><base target="_top"><meta charset="utf-8"><meta name="Subscribe" content="ATL Budget Studio"><meta name=viewport content="width=device-width, initial-scale=1"><link href="https://fonts.googleapis.com/css?family=Acme" rel="stylesheet"><style>body {flex-grow: 1;color:blue;text-decoration:bold;flex-flow: row wrap;grid-column: 1;grid-row: 1;text-align: center;align-content: flex-start;overflow: auto;};</style></head><body id="JavaScriptDoGet"><div id="pageObj"></div><div><?!= renBlob ?></div></body></html><script>;var objUrl 
   = document.getElementById("pageObj");document.addEventListener("DOMContentLoaded", eRun);function eRun() {objUrl.innerHTML 
   = <?= JSON.stringify(e) ?>};</script>`,
-          {
-            renBlob: this[libName].contentApp(
-              `<!DOCTYPE html><html lang="en"><head><base target="_top"><meta charset="utf-8"><meta name="Subscribe" content="JavaScript webapp"><meta name=viewport content="width=device-width, initial-scale=1"><link href="https://fonts.googleapis.com/css?family=Acme" rel="stylesheet"><style>body {flex-grow: 1;color:blue;text-decoration:bold;flex-flow: row wrap;grid-column: 1;grid-row: 1;text-align: center;align-content: flex-start;overflow: auto;};</style></head><body id="JavaScript"><div class="row"><div id="zeroSize"><?!= HtmlService.createTemplateFromFile(tupL).evaluate().getContent() ?></div></div><div class="row"><div class="col s8 l8 m8 card-panel push-m2 push-s2 push-l2"><div class="video-container"><iframe src="" id="indexBeta" style='width:"100%";height:"100%"' allow="autoplay" allow="encrypted-media" title="Dontime Life Website" frameborder="0" allowfullscreen></iframe></div></div></div></body></html><script>;var chUrl 
+        {
+          renBlob: this[libName].contentApp(
+            `<!DOCTYPE html><html lang="en"><head><base target="_top"><meta charset="utf-8"><meta name="Subscribe" content="JavaScript webapp"><meta name=viewport content="width=device-width, initial-scale=1"><link href="https://fonts.googleapis.com/css?family=Acme" rel="stylesheet"><style>body {flex-grow: 1;color:blue;text-decoration:bold;flex-flow: row wrap;grid-column: 1;grid-row: 1;text-align: center;align-content: flex-start;overflow: auto;};</style></head><body id="JavaScript"><div class="row"><div id="zeroSize"><?!= HtmlService.createTemplateFromFile(tupL).evaluate().getContent() ?></div></div><div class="row"><div class="col s8 l8 m8 card-panel push-m2 push-s2 push-l2"><div class="video-container"><iframe src="" id="indexBeta" style='width:"100%";height:"100%"' allow="autoplay" allow="encrypted-media" title="Dontime Life Website" frameborder="0" allowfullscreen></iframe></div></div></div></body></html><script>;var chUrl 
   = document.getElementById("indexBeta");var pageUrl 
   = document.getElementById("zeroSize");console.log(<?!= appL.length ?>);
   if (<?!= appL.length  === 99 || appL.length === 94 || appL.length === 83 ?>) {pageUrl.innerHTML 
@@ -80,13 +83,12 @@ var doGet = function (e) {
   = "<?= appL ?>"}
   else {chUrl.src 
   = "https://www.clubhouse.com/@fabianlewis?utm_medium=ch_profile&utm_campaign=lhTUtHb2bYqPN3w8EEB7FQ-247242"};</script>`,
-              { appL: this[libName][foobarr].apply(this, [args]), tupL: args },
-            ),
-            e: e,
-          },
-          args,
-        );
-      }
+            { appL: this[libName][foobarr].apply(this, [args]), tupL: args },
+          ),
+          e: e,
+        },
+        args,
+      );
     } catch (error) {
       console.error(
         `Error executing function "${e.parameter["func"]}":`,
