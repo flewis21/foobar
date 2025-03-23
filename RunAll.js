@@ -96,6 +96,13 @@ var doGet = function (e) {
       );
       return "Error executing function.";
     }
+  } else {
+    e = this[libName].objectOfS(
+      ["parameter"],
+      [[["func", this[libName].testlt()]]],
+      Math.floor((this[libName].maxTime - (new Date() % (1000 * 60))) / 1000),
+    );
+    return doGet(e);
   }
   // var titleArray
   // = [];for (var key in globalThis) {if (typeof globalThis[key] == "function") {titleArray.push(key);}};var objMaster
