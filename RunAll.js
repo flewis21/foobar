@@ -14,7 +14,7 @@ var doGet = function (e) {
     ? console.log(JSON.stringify(e))
     : (e = this[libName].objectOfS(
         ["parameter"],
-        [[["func", arguments.callee.name]]],
+        [[["func", arguments.callee.caller.name]]],
         Math.floor((this[libName].maxTime - (new Date() % (1000 * 60))) / 1000),
       ));
   console.log(
@@ -26,13 +26,13 @@ var doGet = function (e) {
       ", = " +
       JSON.stringify(e),
   );
-  var funcUno = e.parameter["func"]
-    ? console.log(e.parameter["func"] + " funcUno  = " + typeof funcUno)
-    : console.error(e.parameter["func"] + " funcUno  = " + typeof funcUno);
+  var funcUno = e.parameter["func"];
+  // ? console.log(e.parameter["func"] + " funcUno  = " + typeof funcUno)
+  // : console.error(e.parameter["func"] + " funcUno  = " + typeof funcUno);
   console.log("e.parameter['args'] before funcDos:", e.parameter["args"]);
-  var funcDos = e.parameter["args"]
-    ? console.log(e.parameter["args"] + " funcDos  = " + typeof funcDos)
-    : console.error(e.parameter["args"] + " funcDos  = " + typeof funcDos);
+  var funcDos = e.parameter["args"];
+  // ? console.log(e.parameter["args"] + " funcDos  = " + typeof funcDos)
+  // : console.error(e.parameter["args"] + " funcDos  = " + typeof funcDos);
   console.log("e.parameter['args'] after funcDos:", e.parameter["args"]);
   console.log("funcDos:", funcDos);
   var foobarr = funcDos || "renderFile";
