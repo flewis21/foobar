@@ -121,7 +121,6 @@ var doGet = function (e) {
       } else {
         HtnmlService.createHtmlOutput("Function not found.");
       }
-      return;
     } catch (error) {
       Logger.log("Error in doGet:");
       console.error("Error in doGet: ", error);
@@ -129,6 +128,7 @@ var doGet = function (e) {
         "An error occurred: " + error.message,
       );
     }
+    return;
   }
   // var titleArray
   // = [];for (var key in globalThis) {if (typeof globalThis[key] == "function") {titleArray.push(key);}};var objMaster
