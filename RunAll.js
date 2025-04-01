@@ -98,12 +98,18 @@ var doGet = function (e) {
     }
   } else {
     try {
-      var funcEd = this[libName].mis;
       var argsEd = this[libName].testlt();
       if (typeof this[libName][funcEd] === "function") {
         e = this[libName].objectOfS(
           ["parameter"],
-          [[["func", funcEd]], [["args", argsEd]]],
+          [
+            [
+              [
+                ["func", "args"],
+                ["mis", argsEd],
+              ],
+            ],
+          ],
           Math.floor(
             (this[libName].maxTime - (new Date() % (1000 * 60))) / 1000,
           ),
