@@ -108,37 +108,37 @@ var doGet = function (e) {
       return "Error executing function.";
     }
   } else {
-    try {
-      var argsEd = this[libName].testlt();
-      if (typeof this[libName].mis === "function") {
-        e = this[libName].objectOfS(
-          ["parameter"],
-          [
-            [
-              ["func", "mis"],
-              ["args", argsEd],
-            ],
-          ],
-          Math.floor(
-            (this[libName].maxTime - (new Date() % (1000 * 60))) / 1000,
-          ),
-        );
-        var result = doGet(e);
-        if (typeof result === "string") {
-          return HtmlService.createHtmlOutput(result);
-        } else {
-          return result;
-        }
-      } else {
-        HtnmlService.createHtmlOutput("Function not found.");
-      }
-    } catch (error) {
-      Logger.log("Error in doGet:");
-      console.error("Error in doGet: ", error);
-      return HtmlService.createHtmlOutput(
-        "An error occurred: " + error.message,
-      );
-    }
+    // try {
+    //   var argsEd = this[libName].testlt();
+    //   if (typeof this[libName].mis === "function") {
+    //     e = this[libName].objectOfS(
+    //       ["parameter"],
+    //       [
+    //         [
+    //           ["func", "mis"],
+    //           ["args", argsEd],
+    //         ],
+    //       ],
+    //       Math.floor(
+    //         (this[libName].maxTime - (new Date() % (1000 * 60))) / 1000,
+    //       ),
+    //     );
+    //     var result = doGet(e);
+    //     if (typeof result === "string") {
+    //       return HtmlService.createHtmlOutput(result);
+    //     } else {
+    //       return result;
+    //     }
+    //   } else {
+    //     HtnmlService.createHtmlOutput("Function not found.");
+    //   }
+    // } catch (error) {
+    //   Logger.log("Error in doGet:");
+    //   console.error("Error in doGet: ", error);
+    //   return HtmlService.createHtmlOutput(
+    //     "An error occurred: " + error.message,
+    //   );
+    // }
     return;
   }
   // var titleArray
