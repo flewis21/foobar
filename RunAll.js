@@ -10,13 +10,24 @@ var doGet = function (e) {
   // if (accessGranted){this[libName].validGroup()
   // ? accessGranted :youNeedAccess;
   // if (accessGranted) {
-  e
-    ? console.log(JSON.stringify(e))
-    : (e = this[libName].objectOfS(
+  if (e) {
+    console.log(JSON.stringify(e));
+  } else {
+    var argsEd = this[libName].testlt();
+    if (typeof this[libName].mis === "function") {
+      e = this[libName].objectOfS(
         ["parameter"],
-        [[["func", arguments.callee.caller.name]]],
+        [
+          [
+            ["func", "mis"],
+            ["args", argsEd],
+          ],
+        ],
         Math.floor((this[libName].maxTime - (new Date() % (1000 * 60))) / 1000),
-      ));
+      );
+      console.log(JSON.stringify(e));
+    }
+  }
   console.log(
     Math.floor((this[libName].maxTime - (new Date() % (1000 * 60))) / 1000) +
       "\n" +
