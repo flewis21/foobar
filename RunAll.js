@@ -94,7 +94,12 @@ var doGet = function (e) {
   = "<?= appL ?>"}
   else {chUrl.src 
   = "https://www.clubhouse.com/@fabianlewis?utm_medium=ch_profile&utm_campaign=lhTUtHb2bYqPN3w8EEB7FQ-247242"};</script>`,
-            { appL: this[libName][foobarr].apply(this, [args]), tupL: args },
+            {
+              appL: this[libName][foobarr].apply(this, [
+                e.parameter["args"] || args,
+              ]),
+              tupL: args,
+            },
           ),
           e: e,
         },
