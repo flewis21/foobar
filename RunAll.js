@@ -102,7 +102,12 @@ var doGet = function (e) {
       if (typeof this[libName][funcEd] === "function") {
         e = this[libName].objectOfS(
           ["parameter"],
-          [[["func", funcEd]]],
+          [
+            [
+              ["func", mis],
+              ["args", funcEd],
+            ],
+          ],
           Math.floor(
             (this[libName].maxTime - (new Date() % (1000 * 60))) / 1000,
           ),
