@@ -104,10 +104,8 @@ var doGet = function (e) {
           ["parameter"],
           [
             [
-              [
-                ["func", "args"],
-                ["mis", argsEd],
-              ],
+              ["func", "mis"],
+              ["args", argsEd],
             ],
           ],
           Math.floor(
