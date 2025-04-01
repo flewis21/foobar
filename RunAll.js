@@ -79,7 +79,7 @@ var doGet = function (e) {
           templateName,
         );
       }
-      const result = this[libName][e.parameter["func"]](e.parameter["args"]);
+      // const result = this[libName][e.parameter["func"]](e.parameter["args"]);
       return this[libName].renderTemplate(
         `<!DOCTYPE html><html lang="en"><head><base target="_top"><meta charset="utf-8"><meta name="Subscribe" content="ATL Budget Studio"><meta name=viewport content="width=device-width, initial-scale=1"><link href="https://fonts.googleapis.com/css?family=Acme" rel="stylesheet"><style>body {flex-grow: 1;color:blue;text-decoration:bold;flex-flow: row wrap;grid-column: 1;grid-row: 1;text-align: center;align-content: flex-start;overflow: auto;};</style></head><body id="JavaScriptDoGet"><div id="pageObj"></div><div><?!= renBlob ?></div></body></html><script>;var objUrl 
   = document.getElementById("pageObj");document.addEventListener("DOMContentLoaded", eRun);function eRun() {objUrl.innerHTML 
