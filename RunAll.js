@@ -121,6 +121,7 @@ var doGet = function (e) {
       } else {
         HtnmlService.createHtmlOutput("Function not found.");
       }
+      return;
     } catch (error) {
       Logger.log("Error in doGet:");
       console.error("Error in doGet: ", error);
