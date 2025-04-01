@@ -99,7 +99,7 @@ var doGet = function (e) {
   } else {
     try {
       var argsEd = this[libName].testlt();
-      if (typeof this[libName][funcEd] === "function") {
+      if (typeof this[libName].mis === "function") {
         e = this[libName].objectOfS(
           ["parameter"],
           [
