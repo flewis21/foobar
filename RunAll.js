@@ -104,7 +104,7 @@ var doGet = function (e) {
           ["parameter"],
           [
             [
-              ["func", mis],
+              ["func", this[libName].mis],
               ["args", funcEd],
             ],
           ],
