@@ -77,12 +77,21 @@ var doGet = function (e) {
           "returning ?func=" +
             e.parameter["func"] +
             "&args=" +
-            e.parameter["args"] || args + ", " + {} + ", " + templateName + ",",
+            e.parameter["args"] ||
+            args + ", " + {} + ", " + templateName ||
+            e.parameter["args"] ||
+            args + ",",
         );
         return this[libName].renderFile(
           e.parameter["args"] || args,
           {},
-          templateName,
+          "returning ?func=" +
+            e.parameter["func"] +
+            "&args=" +
+            e.parameter["args"] ||
+            args + ", " + {} + ", " + templateName ||
+            e.parameter["args"] ||
+            args + ",",
         );
       }
       // const result = this[libName][e.parameter["func"]](e.parameter["args"]);
@@ -121,7 +130,17 @@ var doGet = function (e) {
           ),
           e: e,
         },
-        e.parameter["args"] || args,
+
+        "returning renderTemplate contentApp [" +
+          foobarr +
+          "].apply(this, [" +
+          (e.parameter["args"] || args) +
+          "]), tupL " +
+          args +
+          ", e " +
+          JSON.stringify(e) +
+          " " +
+          (e.parameter["args"] || args),
       );
     } catch (error) {
       console.error(
