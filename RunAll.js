@@ -94,7 +94,7 @@ var doGet = function (e) {
           "]), tupL " +
           args +
           ", e " +
-          e +
+          JSON.stringify(e) +
           " " +
           (e.parameter["args"] || args),
       );
