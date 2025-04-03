@@ -90,7 +90,7 @@ var doGet = function (e) {
       // const result = this[libName][e.parameter["func"]](e.parameter["args"]);
       console.log(
         "returning renderTemplate contentApp " +
-          this[libName][foobarr] +
+          foobarr +
           "apply(this, " +
           e.parameter["args"] || args,
       );
