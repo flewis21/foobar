@@ -77,9 +77,7 @@ var doGet = function (e) {
           "returning ?func=" +
             e.parameter["func"] +
             "&args=" +
-            e.parameter["args"] || args,
-          {},
-          templateName,
+            e.parameter["args"] || args + ", " + {} + ", " + templateName + ",",
         );
         return this[libName].renderFile(
           e.parameter["args"] || args,
@@ -89,10 +87,16 @@ var doGet = function (e) {
       }
       // const result = this[libName][e.parameter["func"]](e.parameter["args"]);
       console.log(
-        "returning renderTemplate contentApp " +
+        "returning renderTemplate contentApp [" +
           foobarr +
-          "apply(this, " +
-          e.parameter["args"] || args,
+          "].apply(this, [" +
+          (e.parameter["args"] || args) +
+          "]), tupL " +
+          args +
+          ", e " +
+          e +
+          " " +
+          (e.parameter["args"] || args),
       );
       return this[libName].renderTemplate(
         `<!DOCTYPE html><html lang="en"><head><base target="_top"><meta charset="utf-8"><meta name="Subscribe" content="ATL Budget Studio"><meta name=viewport content="width=device-width, initial-scale=1"><link href="https://fonts.googleapis.com/css?family=Acme" rel="stylesheet"><style>body {flex-grow: 1;color:blue;text-decoration:bold;flex-flow: row wrap;grid-column: 1;grid-row: 1;text-align: center;align-content: flex-start;overflow: auto;};</style></head><body id="JavaScriptDoGet"><div id="pageObj"></div><div><?!= renBlob ?></div></body></html><script>;var objUrl 
@@ -117,7 +121,7 @@ var doGet = function (e) {
           ),
           e: e,
         },
-        args,
+        e.parameter["args"] || args,
       );
     } catch (error) {
       console.error(
