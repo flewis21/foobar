@@ -107,6 +107,7 @@ var doGet = function (e) {
     ? (args = htmlArray[index])
     : (args =
         htmlArray[Math.floor(Math.random() * Math.floor(htmlArray.length))]);
+  console.log("e {parameter: {func: " + e.parameter["func"] + "}}");
   let templateName = e.parameter["func"];
   if (e.parameter["func"] === "crmGWI") {
     templateName = "General Work Invoice";
