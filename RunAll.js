@@ -15,16 +15,62 @@ var doGet = function (e) {
   } else {
     var argsEd = this[libName].testlt();
     if (typeof this[libName].mis === "function") {
-      e = this[libName].objectOfS(
-        ["parameter"],
-        [
+      if (typeof argsEd === "string") {
+        e = this[libName].objectOfS(
+          ["parameter"],
           [
-            ["func", "mis"],
-            ["args", argsEd],
+            [
+              ["func", "mis"],
+              ["args", argsEd],
+            ],
           ],
-        ],
-        Math.floor((this[libName].maxTime - (new Date() % (1000 * 60))) / 1000),
-      );
+          Math.floor(
+            (this[libName].maxTime - (new Date() % (1000 * 60))) / 1000,
+          ),
+        );
+      } else if (typeof argsEd === "object" && argsEd !== null && argsEd.name) {
+        if (argsEd.parameters && argsEd.parameters.length > 0) {
+          e = this[libName].objectOfS(
+            ["parameter"],
+            [
+              [
+                ["func", "mis"],
+                ["args", [argsEd.name, ...argsEd.parameters]],
+              ],
+            ],
+            Math.floor(
+              (this[libName].maxTime - (new Date() % (1000 * 60))) / 1000,
+            ),
+          );
+        } else {
+          e = this[libName].objectOfS(
+            ["parameter"],
+            [
+              [
+                ["func", "mis"],
+                ["args", argsEd.name],
+              ],
+            ],
+            Math.floor(
+              (this[libName].maxTime - (new Date() % (1000 * 60))) / 1000,
+            ),
+          );
+        }
+      } else {
+        console.log("Unexpected argsEd type: ", argsEd);
+        e = this[libName].objectOfS(
+          ["parameter"],
+          [
+            [
+              ["func", "mis"],
+              ["args", "Invalid Entry"],
+            ],
+          ],
+          Math.floor(
+            (this[libName].maxTime - (new Date() % (1000 * 60))) / 1000,
+          ),
+        );
+      }
       console.log(JSON.stringify(e));
     }
   }
