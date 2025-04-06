@@ -10,7 +10,7 @@ var doGet = function (e) {
   // if (accessGranted){this[libName].validGroup()
   // ? accessGranted :youNeedAccess;
   // if (accessGranted) {
-  if (e.parameter["func"]) {
+  if (e && e.parameter["func"]) {
     console.log(JSON.stringify(e));
   } else {
     var argsEd = this[libName].testlt();
