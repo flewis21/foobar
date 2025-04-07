@@ -105,7 +105,12 @@ var doGet = function (e) {
   var tres = htmlArray.findIndex(function (element) {
     return element === e.parameter["file"];
   });
-  console.log("index:", index + "\ntres", tres);
+  console.log(
+    "funcTres",
+    funcTres + ", " + htmlArray.indexOf(func) + "\nindex:",
+    index + "\ntres",
+    tres,
+  );
   var args;
   index !== -1
     ? (args = htmlArray[index])
