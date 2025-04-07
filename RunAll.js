@@ -100,10 +100,9 @@ var doGet = function (e) {
     .toString()
     .split(" ");
   var index = htmlArray.findIndex(function (element) {
-    return {
-      dos: element === e.parameter["args"],
-      tres: element === e.parameter["file"],
-    };
+    var arg = element === e.parameter["args"];
+    var fil = element === e.parameter["file"];
+    return { dos: arg, tres: fil };
   });
   console.log("Index:", index);
   var args;
