@@ -178,7 +178,7 @@ var doGet = function (e) {
               appL: this[libName][foobarr].apply(this, [
                 e.parameter["args"] || args,
               ]),
-              tupL: index.tres || args,
+              tupL: htmlArray[index.tres] || args,
             },
           ),
           e: e,
@@ -189,7 +189,7 @@ var doGet = function (e) {
           "].apply(this, [" +
           (e.parameter["args"] || args) +
           "]), tupL " +
-          (index.tres || args) +
+          (htmlArray[index.tres] || args) +
           ", e " +
           JSON.stringify(e) +
           " " +
