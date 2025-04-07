@@ -10,6 +10,9 @@ var doGet = function (e) {
   // if (accessGranted){this[libName].validGroup()
   // ? accessGranted :youNeedAccess;
   // if (accessGranted) {
+  if (e && e.parameter["file"]) {
+    var funcTres = e.parameter["file"];
+  }
   if (e && e.parameter["func"]) {
     console.log(JSON.stringify(e));
   } else {
@@ -90,7 +93,6 @@ var doGet = function (e) {
   var funcDos = e.parameter["args"];
   // ? console.log(e.parameter["args"] + " funcDos  = " + typeof funcDos)
   // : console.error(e.parameter["args"] + " funcDos  = " + typeof funcDos);
-  var funcTres = e.parameter["file"];
   console.log("e.parameter['args'] after funcDos:", e.parameter["args"]);
   console.log("funcDos:", funcDos);
   var foobarr = funcUno || "renderFile";
@@ -107,7 +109,7 @@ var doGet = function (e) {
   });
   console.log(
     "funcTres",
-    funcTres + ", " + htmlArray.indexOf(func) + "\nindex:",
+    funcTres + ", " + htmlArray.indexOf(funcTres) + "\nindex:",
     index + "\ntres",
     tres,
   );
