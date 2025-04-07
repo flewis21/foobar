@@ -90,6 +90,7 @@ var doGet = function (e) {
   var funcDos = e.parameter["args"];
   // ? console.log(e.parameter["args"] + " funcDos  = " + typeof funcDos)
   // : console.error(e.parameter["args"] + " funcDos  = " + typeof funcDos);
+  var funcTres = e.parameter["file"];
   console.log("e.parameter['args'] after funcDos:", e.parameter["args"]);
   console.log("funcDos:", funcDos);
   var foobarr = funcUno || "renderFile";
@@ -99,11 +100,14 @@ var doGet = function (e) {
     .toString()
     .split(" ");
   var index = htmlArray.findIndex(function (element) {
-    return element === e.parameter["args"];
+    return {
+      dos: element === e.parameter["args"],
+      tres: element === e.parameter["file"],
+    };
   });
   console.log("Index:", index);
   var args;
-  index !== -1
+  index.dos !== -1
     ? (args = htmlArray[index])
     : (args =
         htmlArray[Math.floor(Math.random() * Math.floor(htmlArray.length))]);
@@ -174,7 +178,7 @@ var doGet = function (e) {
               appL: this[libName][foobarr].apply(this, [
                 e.parameter["args"] || args,
               ]),
-              tupL: args,
+              tupL: index.tres || args,
             },
           ),
           e: e,
@@ -185,7 +189,7 @@ var doGet = function (e) {
           "].apply(this, [" +
           (e.parameter["args"] || args) +
           "]), tupL " +
-          args +
+          (index.tres || args) +
           ", e " +
           JSON.stringify(e) +
           " " +
