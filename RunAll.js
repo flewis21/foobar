@@ -100,13 +100,14 @@ var doGet = function (e) {
     .toString()
     .split(" ");
   var index = htmlArray.findIndex(function (element) {
-    var arg = element === e.parameter["args"];
-    var fil = element === e.parameter["file"];
-    return { dos: arg, tres: fil };
+    return element === e.parameter["args"];
   });
-  console.log("Index:", index);
+  var tres = htmlArray.findIndex(function (element) {
+    return element === e.parameter["file"];
+  });
+  console.log("index:", index + "\ntres", tres);
   var args;
-  index.dos !== -1
+  index !== -1
     ? (args = htmlArray[index])
     : (args =
         htmlArray[Math.floor(Math.random() * Math.floor(htmlArray.length))]);
@@ -177,7 +178,7 @@ var doGet = function (e) {
               appL: this[libName][foobarr].apply(this, [
                 e.parameter["args"] || args,
               ]),
-              tupL: htmlArray[index.tres] || args,
+              tupL: htmlArray[tres] || args,
             },
           ),
           e: e,
@@ -188,7 +189,7 @@ var doGet = function (e) {
           "].apply(this, [" +
           (e.parameter["args"] || args) +
           "]), tupL " +
-          (htmlArray[index.tres] || args) +
+          (htmlArray[tres] || args) +
           ", e " +
           JSON.stringify(e) +
           " " +
