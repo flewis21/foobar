@@ -12,6 +12,8 @@ var doGet = function (e) {
   // if (accessGranted) {
   if (e && e.parameter["file"]) {
     var funcTres = e.parameter["file"];
+  } else {
+    var funcTres = "uiAccess";
   }
   if (e && e.parameter["func"]) {
     console.log(JSON.stringify(e));
