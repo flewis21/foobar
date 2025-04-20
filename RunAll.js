@@ -187,7 +187,7 @@ var doGet = function (e) {
   function eRun() {
     objUrl.innerHTML 
   = <?= JSON.stringify(e) ?>;jsonInput.value 
-  = <?= JSON.stringify(currentE, null, 2) ?>
+  = <?= JSON.stringify(e, null, 2) ?>
   };
   jsonInput.addEventListener("input", function() {
     try {var parsedE 
