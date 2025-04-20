@@ -194,7 +194,7 @@ var doGet = function (e) {
     try {var parsedE 
   = JSON.parse(jsonInput.value);console.log("Updated e object:", parsedE);currentE 
   = parsedE;var texRes 
-    = this.doGet(currentE);alert("e object updated (check the console). You would now typically send this back to the server.");return textRes}
+    = globalThis.doGet(currentE);alert("e object updated (check the console). You would now typically send this back to the server.");return textRes}
     catch (error) {alert("Error parsing JSON. Please ensure the input is valid JSON.");console.error("JSON parsing error:", error);};});
           </script>`,
         {
