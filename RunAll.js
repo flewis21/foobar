@@ -165,9 +165,34 @@ var doGet = function (e) {
           args,
       );
       return this[libName].renderTemplate(
-        `<!DOCTYPE html><html lang="en"><head><base target="_top"><meta charset="utf-8"><meta name="Subscribe" content="ATL Budget Studio"><meta name=viewport content="width=device-width, initial-scale=1"><link href="https://fonts.googleapis.com/css?family=Acme" rel="stylesheet"><style>body {flex-grow: 1;color:blue;text-decoration:bold;flex-flow: row wrap;grid-column: 1;grid-row: 1;text-align: center;align-content: flex-start;overflow: auto;};</style></head><body id="JavaScriptDoGet"><div id="pageObj"></div><div><?!= renBlob ?></div></body></html><script>;var objUrl 
-  = document.getElementById("pageObj");document.addEventListener("DOMContentLoaded", eRun);function eRun() {objUrl.innerHTML 
-  = <?= JSON.stringify(e) ?>};</script>`,
+        `<!DOCTYPE html>
+          <html lang="en">
+            <head><base target="_top">
+              <meta charset="utf-8">
+              <meta name="Subscribe" content="ATL Budget Studio">
+              <meta name=viewport content="width=device-width, initial-scale=1">
+              <link href="https://fonts.googleapis.com/css?family=Acme" rel="stylesheet">
+              <style>body {flex-grow: 1;color:blue;text-decoration:bold;flex-flow: row wrap;grid-column: 1;grid-row: 1;text-align: center;align-content: flex-start;overflow: auto;};</style>
+            </head>
+            <body id="JavaScriptDoGet">
+              <div id="pageObj"></div>
+              <textarea id="jsonInput"></textarea>
+              <div><?!= renBlob ?></div>
+            </body>
+          </html>
+          <script>;var objUrl 
+  = document.getElementById("pageObj");var jsonInput 
+  = document.getElementById("jsonInput");var currentE 
+  = <?= JSON.stringify(e) ?>;document.addEventListener("DOMContentLoaded", eRun);
+  function eRun() {
+    objUrl.innerHTML 
+  = <?= JSON.stringify(e) ?>;jsonInput.value 
+  = <?= JSON.stringify(currentE, null, 2) ?>
+  };
+  jsonInput.addEventListener("input", function() {try {}catch (error) {alert("Error parsing JSON. Please ensure the input is valid JSON.");console.error("JSON parsing error:", error);}var parsedE 
+  = JSON.parse(jsonInput.value);console.log("Updated e object:", parsedE);currentE 
+  = parsedE;alert("e object updated (check the console). You would now typically send this back to the server.")});
+          </script>`,
         {
           renBlob: this[libName].contentApp(
             `<!DOCTYPE html><html lang="en"><head><base target="_top"><meta charset="utf-8"><meta name="Subscribe" content="JavaScript webapp"><meta name=viewport content="width=device-width, initial-scale=1"><link href="https://fonts.googleapis.com/css?family=Acme" rel="stylesheet"><style>body {flex-grow: 1;color:blue;text-decoration:bold;flex-flow: row wrap;grid-column: 1;grid-row: 1;text-align: center;align-content: flex-start;overflow: auto;};</style></head><body id="JavaScript"><div class="row"><div id="zeroSize"></div><div><?!= HtmlService.createTemplateFromFile(tupL).evaluate().getContent() ?></div></div><div class="row"><div class="col s8 l8 m8 push-m2 push-s2 push-l2 responsive-section"><div class="container"><iframe src="" id="indexBeta" width="100%" height="3000vh" allow="autoplay" allow="encrypted-media" title="Dontime Life Website" frameborder="0" allowfullscreen></iframe></div></div></div><div class="container"><?!= typeof appL === "object" && typeof appL["app"] !== "string" ? JSON.stringify(appL["app"]):appL["app"] ?></div></body></html><script>;var chUrl 
