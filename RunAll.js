@@ -186,7 +186,8 @@ var doGet = function (e) {
   = <?= JSON.stringify(e) ?>;document.addEventListener("DOMContentLoaded", eRun);
   function eRun() {
     objUrl.innerHTML 
-  = <?= JSON.stringify(e) ?>;jsonInput.value 
+  = <?= JSON.stringify(e) ?>;jsonInput.style.display 
+  = "block";jsonInput.value 
   = <?= JSON.stringify(e, null, 2) ?>
   };
   jsonInput.addEventListener("input", function() {
