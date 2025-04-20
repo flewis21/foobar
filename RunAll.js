@@ -193,7 +193,7 @@ var doGet = function (e) {
   jsonInput.addEventListener("change", function() {
     try {var parsedE 
   = JSON.parse(jsonInput.value);console.log("Updated e object:", parsedE);currentE 
-  = parsedE;var textRes = <?= homePage + "?func=" + currentE.parameter["func"] + "&args=" + currentE.parameter["args"] ?>;alert("e object updated (check the console). You would now typically send this back to the server.");window.open(JSON.stringify(textRes));}
+  = parsedE;var textRes = <?= homePage ?> + "?func=&args=";alert("e object updated (check the console). You would now typically send this back to the server.");window.open(JSON.stringify(textRes));}
     catch (error) {alert("Error parsing JSON. Please ensure the input is valid JSON.");console.error("JSON parsing error:", error);};});
           </script>`,
         {
