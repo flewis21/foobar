@@ -1,4 +1,8 @@
 var doGet = function (e) {
+  Logger.log(
+    ">>> [MAIN] MAIN WEB APP's doGet() called. e: " + JSON.stringify(e),
+  );
+
   var libName = "foo";
   // const accessGranted
   // = this[libName].validateFiles();const youNeedAccess
@@ -23,6 +27,9 @@ var doGet = function (e) {
   if (e && e.parameter["func"]) {
     console.log(JSON.stringify(e));
   } else {
+    console.log(
+      "No e.parameter[" + e.parameter["func"] + "] " + JSON.stringify(e),
+    );
     var argsEd = this[libName].testlt();
     if (typeof this[libName].mis === "function") {
       if (typeof argsEd === "string") {
@@ -100,6 +107,8 @@ var doGet = function (e) {
   ]
     .toString()
     .split(" ");
+  var rndHtmlIndex = Math.floor(Math.random() * Math.floor(htmlArray.length));
+  console.log("rndHtmlIndex = " + htmlArray[rndHtmlIndex]);
   var index = htmlArray.findIndex(function (element) {
     return element === e.parameter["args"];
   });
@@ -108,10 +117,7 @@ var doGet = function (e) {
   });
   console.log("index:", index + "\ntres", tres);
   var args;
-  index !== -1
-    ? (args = htmlArray[index])
-    : (args =
-        htmlArray[Math.floor(Math.random() * Math.floor(htmlArray.length))]);
+  index !== -1 ? (args = htmlArray[index]) : (args = htmlArray[rndHtmlIndex]);
   console.log("e {parameter: {func: " + e.parameter["func"] + "}}");
   let templateName = e.parameter["func"];
   if (e.parameter["func"] === "crmGWI") {
@@ -181,70 +187,6 @@ var doGet = function (e) {
                   align-content: flex-start;
                   overflow: auto;
                 }
-                #jsonInput {
-                  display: none;
-                  width: 100%;
-                  height: 8vh; /* Or whatever height you need */
-                  margin:10px auto;
-                  padding: 0px;
-                  box-sizing: border-box; /* Include padding in width/height */
-                  border:1px solid #ccc;
-                  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'monospace'; /* Monospaced font is crucial */
-                  font-size: 14px;
-                  line-height: 1.5; /* Good for readability */
-                  white-space:pre-wrap;
-                  text-align:left;
-                  background-color: #282c34; /* Dark background common for code editors */
-                  color: #abb2bf; /* Light text color for contrast */
-                  resize: vertical; /* Allow vertical resizing, or 'none' to disable */
-                  overflow: auto; /* Enable scrolling if content exceeds height */
-
-
-                  /* Focus state */
-                  outline: none; /* Remove default blue outline on focus */
-                  box-shadow: 0 0 0 2px rgba(97, 175, 239, 0.5); /* Custom focus highlight */
-                  transition: box-shadow 0.2s ease-in-out;
-                }
-                /* Style for the new textarea */
-                #indexBeta {
-                  /* Basic layout and appearance */
-                  width: 100%;
-                  height: 80vh; /* Or whatever height you need */
-                  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'monospace'; /* Monospaced font is crucial */
-                  font-size: 14px;
-                  line-height: 1.5; /* Good for readability */
-                  margin:10px auto;
-                  white-space:pre-wrap;
-                  text-align:left;
-                  padding: 0px;
-                  box-sizing: border-box; /* Include padding in width/height */
-                  border: 1px solid #333;
-                  background-color: #282c34; /* Dark background common for code editors */
-                  color: #abb2bf; /* Light text color for contrast */
-                  resize: vertical; /* Allow vertical resizing, or 'none' to disable */
-                  overflow: auto; /* Enable scrolling if content exceeds height */
-
-                  /* Hide default textarea scrollbar (optional, but common for custom scrollbars) */
-                  /* If you hide this, you'd need to implement custom scrollbars with JavaScript */
-                  /* -webkit-overflow-scrolling: touch; */ /* For smooth scrolling on touch devices */
-                  /* &::-webkit-scrollbar { display: none; } */
-                  /* & { -ms-overflow-style: none; scrollbar-width: none; } */
-
-
-                  /* Focus state */
-                  outline: none; /* Remove default blue outline on focus */
-                  box-shadow: 0 0 0 2px rgba(97, 175, 239, 0.5); /* Custom focus highlight */
-                  transition: box-shadow 0.2s ease-in-out;
-                };
-
-                #indexBeta,#jsonInput:focus {
-                    box-shadow: 0 0 0 2px rgba(97, 175, 239, 0.8); /* More prominent on focus */
-                }
-
-                /* Optional: Placeholder styling */
-                #indexBeta,#jsonInput::placeholder {
-                    color: #616e7f;
-                }
               </style>
             </head>
             <body id="JavaScriptDoGet">
@@ -253,6 +195,10 @@ var doGet = function (e) {
             </body>
           </html>
           <script>
+
+
+
+
             function serverSide(func, args) {
               return new Promise((resolve, reject) => {
                 google.script.run
@@ -270,89 +216,289 @@ var doGet = function (e) {
                   .runBoilerplate(func, args);
               });
             }
+
+
+
+
+            console.log("line 209");
             const currentE = JSON.parse(<?= e ?>);
+            console.log("line 210");
             const homePageUrl = <?= homePage ?>;
 
+            
+            console.log("line 213");
             console.log("Client-side: Initial doGet event object:", currentE);
             console.log("Client-side: Home Page URL:", homePageUrl);
 
-            console.log("line 261");
+            console.log("line 215");
             document.addEventListener("DOMContentLoaded", eRun);
+
+
+            
             function eRun() {
-              console.log("line 258");
+              console.log("line 218");
               var objUrl = document.getElementById("pageObj");
-              console.log("line 259");
+              console.log("line 220");
               var objDiv = document.getElementById("eObject");
-              console.log("line 260");
+              console.log("line 222");
               let initialArgs = currentE.parameter["args"];
               if (initialArgs !== undefined && initialArgs !== null) {
                 if (typeof initialArgs === 'object') {
-                  objUrl.value = JSON.stringify(initialArgs, null, 2);
+                  objUrl.value = JSON.stringify(initialArgs, null, 0);
                 } else {
                   objUrl.value = initialArgs; // If it's a string directly
                 }
               } else {
                 objUrl.value = '[""]'; // Default if args is missing
               }
-              objUrl.addEventListener("change", function () {
-                try {
-                  // Parse the user's input as the new 'args' value
-                  // Allow direct strings or JSON arrays/objects
-                  let parsedE;
-                  try {
-                    parsedE = JSON.parse(this.value);
-                  } catch (jsonError) {
-                    // If it's not valid JSON, treat it as a plain string
-                    parsedE = this.value;
-                  }
 
-                  // --- MODIFICATION STARTS HERE ---
-                  // Create a *new*, reduced e object containing only func and args
-                  const updatedClientE = {
-                    parameter: {
-                      func: currentE.parameter.func, // Keep the original func
-                      args: parsedE                 // Use the new parsed args
-                    }
-                  };
-                  // --- MODIFICATION ENDS HERE ---
 
-                  alert("e.parameter['args'] updated. Sending back to server for re-render.");
-                  console.log("Client-side: Updated e object to send:", updatedClientE);
-                  async function handlePageUpdate() {
-                    try {
-                      const newHtmlContent = await serverSide("reRenderPageWithNewE", [updatedClientE]);
-                      document.open();
-                      document.write(newHtmlContent);
-                      document.close();
-                      console.log("Client-side: Page re-rendered with new content from server.");
-                    } catch (error) {
-                      console.error("Client-side Error during full re-render:", error);
-                      alert("Error re-rendering: " + error.message);
-                    }
-                  }
-                  handlePageUpdate();
-                } catch (error) {
-                  alert("Error processing input. Please ensure it's valid JSON or a plain string.");
-                  console.error("Input processing error:", error);
-                }
-              });
+                      
+                      objUrl.addEventListener("change", function () {
+                        try {
+                          // Parse the user's input as the new 'args' value
+                          // Allow direct strings or JSON arrays/objects
+                          let parsedE;
+                          try {
+                            parsedE = JSON.parse(this.value);
+                          } catch (jsonError) {
+                            // If it's not valid JSON, treat it as a plain string
+                            parsedE = this.value;
+                          }
+
+                          // --- MODIFICATION STARTS HERE ---
+                          // Create a *new*, reduced e object containing only func and args
+                          const updatedClientE = {
+                            parameter: {
+                              func: currentE.parameter.func, // Keep the original func
+                              args: parsedE                 // Use the new parsed args
+                            }
+                          };
+                          // --- MODIFICATION ENDS HERE ---
+
+                          alert("e.parameter['args'] updated. Sending back to server for re-render.");
+                          console.log("Client-side: Updated e object to send:", updatedClientE);
+
+
+                                  
+                                  async function handlePageUpdate() {
+                                    try {
+                                      // This part is still problematic if newStackContent is meant to be HTML
+                                      // and it directly comes from updatedClientApp (which is the textarea value)
+                                      // If updatedClientApp contains HTML, it needs to be processed to be displayable.
+                                      const newHtmlContent = await serverSide(updatedClientE.parameter["func"], [updatedClientE.parameter["args"]]);
+                                      if (newHtmlContent && newHtmlContent.type === "html" && newHtmlContent.data) {
+                                        document.open();
+                                        document.write(newHtmlContent.data); // Use the data property
+                                        document.close();
+                                        console.log("Client-side: Page re-rendered with new content from server.");
+                                      } 
+                                      else if (newHtmlContent && newHtmlContent.type === "object" && newHtmlContent.data) {
+                                        document.open();
+                                        document.write(newHtmlContent.data.index); // Use the data property
+                                        document.close();
+                                        console.log("Client-side: Page re-rendered with new content from server.");
+                                      } 
+                                      else {
+                                        document.open();
+                                        document.write(newHtmlContent);
+                                        document.close();
+                                        console.log("Client-side: Page re-rendered with new content from server.");
+                                      }
+                                    } 
+                                    catch (error) {
+                                      console.error("Client-side Error during full re-render:", error);
+                                      alert("Error re-rendering: " + error.message);
+                                    }
+                                  }
+
+
+
+                          handlePageUpdate();
+                        } catch (error) {
+                          alert("Error processing input. Please ensure it's valid JSON or a plain string.");
+                          console.error("Input processing error:", error);
+                        }
+                      });
+
+
+
             }
+
+
+
           </script>`,
         {
           renBlob: this[libName].contentApp(
-            `<!DOCTYPE html><html lang="en"><head><base target="_top"><meta charset="utf-8"><meta name="Subscribe" content="JavaScript webapp"><meta name=viewport content="width=device-width, initial-scale=1"><link href="https://fonts.googleapis.com/css?family=Acme" rel="stylesheet"><style>body {flex-grow: 1;color:blue;text-decoration:bold;flex-flow: row wrap;grid-column: 1;grid-row: 1;text-align: center;align-content: flex-start;overflow: auto;};</style></head><body id="JavaScript"><div class="row"><div id="zeroSize"></div></div><div class="row"><div class="responsive-section"><div class="container"><div class="row"><div class="col s12 card-panel amber"><div class="responsive-section"><div class="container"><div class="col s12 receipt red"><table class="striped centered highlight responsive-table grey z-depth-5" style="width:100%"><thead></thead><tbody><tr style="justify-content: space-around;overflow: auto;border-radius: 3%;max-width: 100%;height: auto;display: block;margin: auto;"><td style="vertical-align: top;text-align: left;flex-flow: row wrap;grid-column: 1;grid-row: 1;align-content: flex-start;z-index: 0;height: 100%;overflow: auto;"><table class="striped centered highlight responsive-table grey z-depth-5" style="width:100%"><tbody><td><div><textarea id="indexBeta" spellcheck="false"></textarea></div><br /></td></tbody></table></td></tr></tbody></table></div></div></div></div></div></div></div></div></body></html><script>;var chUrl 
-  = document.getElementById("indexBeta");var pageUrl 
-  = document.getElementById("zeroSize");console.log(<?= appL["index"].length ?>);
-  if (!<?!= appL["index"].length  === 99 || appL["index"].length === 94 || appL["index"].length === 83 ?>) {pageUrl.innerHTML 
-  = "";chUrl.value 
-  = "<?= appL["index"] ?>"}
-  else {chUrl.value 
-  = "<?= appL["index"] ?>"};</script>`,
+            `<!DOCTYPE html>
+            <html lang="en">
+              <head>
+                <base target="_top">
+                <meta charset="utf-8">
+                <meta name="Subscribe" content="JavaScript webapp">
+                <meta name=viewport content="width=device-width, initial-scale=1">
+                <link href="https://fonts.googleapis.com/css?family=Acme" rel="stylesheet">
+                <style>
+                  body 
+                    {
+                      flex-grow: 1;color:blue;text-decoration:bold;
+                      flex-flow: row wrap;
+                      grid-column: 1;grid-row: 1;
+                      text-align: center;
+                      align-content: flex-start;
+                      overflow: auto;
+                    };
+                </style>
+              </head>
+              <body id="JavaScript">
+                <div class="row">
+                  <div id="zeroSize"></div></div>
+                <div class="row">
+                  <div class="responsive-section">
+                    <div class="container">
+                      <label id="labSEOC">
+                        <strong></strong></label>
+                      <div class="row">
+                        <div class="col s12 card-panel amber">
+                          <div class="responsive-section">
+                            <div class="container">
+                              <div class="col s12 receipt red">
+                                <table class="striped centered highlight responsive-table grey z-depth-5" style="width:100%">
+                                  <thead></thead>
+                                  <tbody>
+                                    <tr style="justify-content: space-around;overflow: auto;border-radius: 3%;max-width: 100%;height: auto;display: block;margin: auto;">
+                                      <td style="vertical-align: top;text-align: left;flex-flow: row wrap;grid-column: 1;grid-row: 1;align-content: flex-start;z-index: 0;height: 100%;overflow: auto;">
+                                        <table class="striped centered highlight responsive-table grey z-depth-5" style="width:100%">
+                                          <tbody>
+                                            <td>
+                                              <div>
+                                                <textarea id="indexBeta" spellcheck="false" rows="10" cols="50"></textarea></div><br /></td></tbody></table></td></tr></tbody></table></div></div></div></div></div></div></div></div>
+              </body>
+            </html>
+            <script>
+
+
+
+
+            function clientSide(func, args) {
+              return new Promise((resolve, reject) => {
+                google.script.run
+                  .withSuccessHandler((result) => {
+                    resolve(result); // result will be { type: "...", data: "..." }
+                    // You would then process 'result' here to update specific parts of your current page
+                    // For example, update a div with result.data if result.type is "text" or "html"
+                    console.log("Server side call success:", result);
+                  })
+                  .withFailureHandler((error) => {
+                    reject(error);
+                    console.error("Server-side call error:", error);
+                    alert("Error during server call: " + error.message);
+                  })
+                  .runBoilerplate(func, args);
+              });
+            }
+
+
+
+
+            // Parse the input as the new value
+            // Allow direct strings or JSON arrays/objects
+            let currentApp;
+            try {
+              currentApp = JSON.parse(<?= appL["index"] ?>);
+            } 
+            catch (jsonError) {
+              // If it's not valid JSON, treat it as a plain string
+              currentApp = <?= appL["index"] ?>;
+            }
+            const homeStackUrl = <?= homePage ?>;
+
+            console.log("Client-side: Initial WebApp:", currentApp);
+            console.log("Client-side: Home Page URL:", homeStackUrl);
+
+            console.log("line 359");
+            document.addEventListener("DOMContentLoaded", runStack);
+
+
+
+                    
+                    function runStack() {
+                      console.log("line 362");
+                      var chUrl = document.getElementById("indexBeta");
+                      console.log("line 364");
+                      let initialArgs = currentApp;
+                      if (initialArgs !== undefined && initialArgs !== null) {
+                        if (typeof initialArgs === 'object') {
+                          chUrl.value = JSON.stringify(initialArgs, null, 2);
+                        } else {
+                          chUrl.value = initialArgs; // If it's a string directly
+                        }
+                      } else {
+                        chUrl.value = '[""]'; // Default if args is missing
+                      }
+
+
+
+
+                              chUrl.addEventListener("change", function () {
+                                try {
+                                  // Parse the user's input as the new value
+                                  // Allow direct strings or JSON arrays/objects
+                                  let htmlApp;
+                                  try {
+                                    htmlApp = JSON.parse(this.value);
+                                  } 
+                                  catch (jsonError) {
+                                    // If it's not valid JSON, treat it as a plain string
+                                    htmlApp = this.value;
+                                  }
+
+                                  // --- MODIFICATION STARTS HERE ---
+                                  // Create a *new*, reduced e object containing only func and args
+                                  const updatedClientApp = htmlApp;
+                                  // --- MODIFICATION ENDS HERE ---
+
+                                  alert("WebApp updated. Sending back to server for re-render.");
+                                  console.log("Client-side: Updated WebApp to send:", updatedClientApp);
+
+
+
+
+                                          async function handleStackUpdate() {
+                                            try {
+                                              const newStackContent = updatedClientApp;
+                                              document.open();
+                                              document.write(newStackContent);
+                                              document.close();
+                                              console.log("Client-side: Page re-rendered with new content from server.");
+                                            } 
+                                            catch (error) {
+                                              console.error("Client-side Error during full re-render:", error);
+                                              alert("Error re-rendering: " + error.message);
+                                            }
+                                          }
+
+
+
+                                          
+                                  handleStackUpdate();
+                                } catch (error) {
+                                  alert("Error processing input. Please ensure it's valid JSON or a plain string.");
+                                  console.error("Input processing error:", error);
+                                }
+                              });
+
+
+
+                              
+                    }
+          </script>`,
             {
               appL: this[libName][foobarr].apply(this, [
                 e.parameter["args"] || args,
               ]),
               tupL: htmlArray[tres] || args,
+              homePage: this[libName].getScriptUrl(),
             },
           ),
           e: JSON.stringify(e),
@@ -543,15 +689,23 @@ var doGet = function (e) {
 //   }
 // }
 
-function runBoilerplate(func, args) {
+/**
+ * Server-side function to receive a new 'e' object from the client
+ * and re-render the entire page based on it.
+ * @param {GoogleAppsScript.Events.AppsScriptHttpRequestEvent} clientEObject The 'e' object sent from the client, with updated parameters.
+ * @returns {GoogleAppsScript.HTML.HtmlOutput} The complete new HTML content wrapped in HtmlOutput.
+ */ function runBoilerplate(func, args) {
+  Logger.log(
+    "Server-side: runBoilerplate called with clientEObject: " +
+      JSON.stringify(func, ...args),
+  );
   var libName = "foo";
   // Check if maxTime exists as a global variable
   const timeRemaining =
     typeof this[libName].maxTime !== "undefined" &&
     this[libName].maxTime instanceof Date
       ? Math.floor(
-          (this[libName].maxTime.getTime() -
-            (new Date().getTime() % (1000 * 60))) /
+          (functionRegistry.maxTime - (new Date().getTime() % (1000 * 60))) /
             1000,
         ) // Use .getTime() for Date objects
       : "N/A"; // Provide a fallback if maxTime is not defined or not a Date
