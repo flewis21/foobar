@@ -405,11 +405,11 @@ var doGet = function (e) {
             // Allow direct strings or JSON arrays/objects
             let currentApp;
             try {
-              currentApp = JSON.parse(<?= appL["index"] ?>);
+              currentApp = JSON.parse(<?= appL["app"] ?>);
             } 
             catch (jsonError) {
               // If it's not valid JSON, treat it as a plain string
-              currentApp = <?= appL["index"] ?>;
+              currentApp = <?= appL["app"] ?>;
             }
             const homeStackUrl = <?= homePage ?>;
 
