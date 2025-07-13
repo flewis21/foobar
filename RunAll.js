@@ -4,16 +4,7 @@ var doGet = function (e) {
   );
 
   var libName = "foo";
-  // const accessGranted
-  // = this[libName].validateFiles();const youNeedAccess
-  // = this[libName].scriptQuit();
-  // try {this[libName].validateFiles()
-  // ? accessGranted:youNeedAccess;
-  // if (accessGranted){this[libName].validateFolders()
-  // ? accessGranted:youNeedAccess;
-  // if (accessGranted){this[libName].validGroup()
-  // ? accessGranted :youNeedAccess;
-  // if (accessGranted) {
+
 
   // Early return for getData action
   if (e && e.parameter && e.parameter.action === "getData") {
@@ -93,12 +84,9 @@ var doGet = function (e) {
       JSON.stringify(e),
   );
   var funcUno = e.parameter["func"];
-  // ? console.log(e.parameter["func"] + " funcUno  = " + typeof funcUno)
-  // : console.error(e.parameter["func"] + " funcUno  = " + typeof funcUno);
+
   console.log("e.parameter['args'] before funcDos:", e.parameter["args"]);
   var funcDos = e.parameter["args"];
-  // ? console.log(e.parameter["args"] + " funcDos  = " + typeof funcDos)
-  // : console.error(e.parameter["args"] + " funcDos  = " + typeof funcDos);
   console.log("e.parameter['args'] after funcDos:", e.parameter["args"]);
   console.log("funcDos:", funcDos);
   var foobarr = funcUno || "renderFile";
@@ -405,11 +393,11 @@ var doGet = function (e) {
             // Allow direct strings or JSON arrays/objects
             let currentApp;
             try {
-              currentApp = JSON.parse(<?= appL["app"] || appL ?>);
+              currentApp = JSON.parse(<?= appL["app"] || JSON.stringify(appL) ?>);
             } 
             catch (jsonError) {
               // If it's not valid JSON, treat it as a plain string
-              currentApp = <?= appL["app"] || appL ?>;
+              currentApp = <?= appL["app"] || JSON.stringify(appL) ?>;
             }
             const homeStackUrl = <?= homePage ?>;
 
@@ -430,8 +418,44 @@ var doGet = function (e) {
                       if (initialArgs !== undefined && initialArgs !== null) {
                         if (typeof initialArgs === 'object') {
                           chUrl.value = JSON.stringify(initialArgs, null, 2);
-                        } else {
-                          chUrl.value = initialArgs; // If it's a string directly
+                        } 
+                        // --- else {
+                        // ---  chUrl.value = initialArgs; // If it's a string directly
+                        // --- }
+                        // --- 3. Handle String content (URL, JSON, HTML, or plain text)
+                        else if (typeof initialArgs === 'string') {
+                          // --- MODIFIED: Use Regex for URL check ---
+                          // Regex for a basic HTTP/HTTPS URL validation
+                          // This regex is fairly comprehensive for common URLs but can be refined if needed.
+                          const urlRegexString = "/^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&//=]*)$/";
+                          const urlRegex = new RegExp(urlRegexString);
+                          if (urlRegex.test(initialArgs)) {
+                            console.log("urlRegex.test(" + JSON.stringify(initialArgs) + ")");
+                            console.log("initialArgs is a URL, navigating to: " + initialArgs);
+                            window.location.href = initialArgs; // New type "url" for strings
+                            return;
+                          }
+                          // --- END MODIFIED ---
+
+                          try {
+                            console.log("JSON.parse(" + initialArgs + ")");
+                            const parsedJson = JSON.parse(initialArgs);
+                            document.open();
+                            document.write(parsedJson);
+                            document.close();
+                          } catch (jsonError) {
+                            // Not JSON, treat as HTML or plain text
+                            if (initialArgs.trim().startsWith("<") && initialArgs.trim().endsWith(">")) {
+                              // More robust HTML check
+                              console.log("initialArgs.trim(" + initialArgs + ")");
+                              document.open();
+                              document.write(initialArgs);
+                              document.close();
+                            } else {
+                                console.log("typeof initialArgs === " + typeof initialArgs)
+                                chUrl.value = initialArgs;
+                            }
+                          }
                         }
                       } else {
                         chUrl.value = '[""]'; // Default if args is missing
@@ -524,6 +548,25 @@ var doGet = function (e) {
       return "Error executing function.";
     }
   } else {
+
+    return;
+  }
+
+};
+    // const accessGranted
+  // = this[libName].validateFiles();const youNeedAccess
+  // = this[libName].scriptQuit();
+  // try {this[libName].validateFiles()
+  // ? accessGranted:youNeedAccess;
+  // if (accessGranted){this[libName].validateFolders()
+  // ? accessGranted:youNeedAccess;
+  // if (accessGranted){this[libName].validGroup()
+  // ? accessGranted :youNeedAccess;
+  // if (accessGranted) {
+    // ? console.log(e.parameter["func"] + " funcUno  = " + typeof funcUno)
+  // : console.error(e.parameter["func"] + " funcUno  = " + typeof funcUno);
+  // ? console.log(e.parameter["args"] + " funcDos  = " + typeof funcDos)
+  // : console.error(e.parameter["args"] + " funcDos  = " + typeof funcDos);
     // try {
     //   var argsEd = this[libName].testlt();
     //   if (typeof this[libName].mis === "function") {
@@ -555,8 +598,6 @@ var doGet = function (e) {
     //     "An error occurred: " + error.message,
     //   );
     // }
-    return;
-  }
   // var titleArray
   // = [];for (var key in globalThis) {if (typeof globalThis[key] == "function") {titleArray.push(key);}};var objMaster
   // = {miscellaneous: {section: titleArray}}
@@ -657,8 +698,6 @@ var doGet = function (e) {
   // else {return "Folder Access denied"}}
   // else {return "File Permissions Denied"}}
   // catch(error){return; this[libName].doGet(e)}
-};
-
 // var runBoilerplate =  function(func, someargs)  {
 //   var libName = "foo"
 //   console.log(Math.floor((this[libName].maxTime - new Date() % (1000 * 60)) / 1000) + "\n" + arguments.callee.name + "\nfunc is !" + !func + ", = " + func + "\nsomeargs is !" + !someargs + ", = " + someargs);
