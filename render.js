@@ -426,7 +426,7 @@ var renderTemplate = function (blob, argsObject, title) {
       keys.forEach(function (key) {
         tmp[key] = argsObject[key];
       });
-    };
+    }
     var funcCheck = appList();
     var schedule = foo.dateTime(new Date());
     // var research = geneFrame(seoSheet(coUtility()[0].rndTitle).url)
