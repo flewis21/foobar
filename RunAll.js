@@ -1,8 +1,4 @@
 var doGet = function (e) {
-  Logger.log(
-    ">>> [MAIN] MAIN WEB APP's doGet() called. e: " + JSON.stringify(e),
-  );
-
   var libName = "foo";
 
   // Early return for getData action
@@ -15,10 +11,10 @@ var doGet = function (e) {
 
   // Logging
   if (e && e.parameter["func"]) {
-    console.log(JSON.stringify(e));
+    Logger.log(">>> [MAIN] MAIN WEB APP CLIENT REQUEST: " + JSON.stringify(e));
   } else {
-    console.log(
-      "No e.parameter[" + e.parameter["func"] + "] " + JSON.stringify(e),
+    Logger.log(
+      ">>> [MAIN] MAIN WEB APP No e.parameter[" + e.parameter["func"] + "] " + JSON.stringify(e),
     );
     var argsEd = this[libName].testlt();
     if (typeof this[libName].mis === "function") {
@@ -70,10 +66,11 @@ var doGet = function (e) {
           functionRegistry.time,
         );
       }
-      console.log(JSON.stringify(e));
+      Logger.log(">>> [MAIN] MAIN WEB APP's FINAL e: " + JSON.stringify(e));
     }
   }
-  console.log(
+  Logger.log(
+    ">>> [MAIN] MAIN WEB APP's ELAPSED TIME: " +
     functionRegistry.time +
       "\n" +
       arguments.callee.name +

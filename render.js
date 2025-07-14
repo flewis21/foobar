@@ -30,12 +30,82 @@ const functionRegistry = {
     return this.paramsList;
   },
   maxTime: 6 * 60 * 1000,
-  get time() {
-    return Math.floor(
-      (this.maxTime - (new Date().getTime() % (1000 * 60))) / 1000,
-    );
+  _startTime: null,       // Private variable to store the timestamp when the process begins
+
+  /**
+   * Starts the global timer for your process.
+   * This should be called only ONCE at the beginning of your main execution.
+   */
+  startProcessTimer: function() {
+    if (this._startTime === null) {
+      this._startTime = new Date().getTime();
+      console.log("Process timer started at:", new Date(this._startTime).toISOString());
+    } else {
+      console.warn("Process timer has already started. Call resetProcessTimer() if you want to restart.");
+    }
   },
+
+  /**
+   * Resets the global timer. Call this if you want to start a completely new execution cycle.
+   */
+  resetProcessTimer: function() {
+    this._startTime = null;
+    console.log("Process timer reset.");
+  },
+
+  /**
+   * Get the elapsed time since the process started.
+   * Returns 0 if the timer hasn't been started.
+   * @returns {number} Elapsed time in milliseconds.
+   */
+  get time() {
+    if (this._startTime === null) {
+      return 0;
+    }
+    return new Date().getTime() - this._startTime;
+  },
+
+  /**
+   * Get the time remaining until the 'maxTime' timeout is reached.
+   * Returns 'maxTime' if the timer hasn't been started.
+   * Ensures the returned value is not negative.
+   * @returns {number} Time left to execute in milliseconds.
+   */
+  get timeLeftToExecute() {
+    if (this._startTime === null) {
+      return this.maxTime; // Full time remaining if not started
+    }
+    const elapsed = this.time;
+    const remaining = this.maxTime - elapsed;
+    return Math.max(0, remaining); // Ensure remaining time doesn't go below zero
+  },
+
+  /**
+   * Helper to get elapsed time in seconds for easier readability.
+   * @returns {number} Elapsed time in seconds.
+   */
+  get elapsedTimeInSeconds() {
+    return Math.floor(this.time / 1000);
+  },
+
+  /**
+   * Helper to get time left in seconds for easier readability.
+   * @returns {number} Time left in seconds.
+   */
+  get timeLeftInSeconds() {
+    return Math.floor(this.timeLeftToExecute / 1000);
+  },
+
+  // get time() {
+  //   return Math.floor(
+  //     (this.maxTime - (new Date().getTime() % (1000 * 60))) / 1000,
+  //   );
+  // },
 };
+
+// Set some global variables
+functionRegistry.initialize();
+functionRegistry.startProcessTimer();
 
 var renderFile = function (file, argsObject, title) {
   try {
