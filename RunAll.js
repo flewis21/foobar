@@ -14,7 +14,10 @@ var doGet = function (e) {
     Logger.log(">>> [MAIN] MAIN WEB APP CLIENT REQUEST: " + JSON.stringify(e));
   } else {
     Logger.log(
-      ">>> [MAIN] MAIN WEB APP No e.parameter[" + e.parameter["func"] + "] " + JSON.stringify(e),
+      ">>> [MAIN] MAIN WEB APP No e.parameter[" +
+        e.parameter["func"] +
+        "] " +
+        JSON.stringify(e),
     );
     var argsEd = this[libName].testlt();
     if (typeof this[libName].mis === "function") {
@@ -71,7 +74,7 @@ var doGet = function (e) {
   }
   Logger.log(
     ">>> [MAIN] MAIN WEB APP's ELAPSED TIME: " +
-    functionRegistry.time +
+      functionRegistry.time +
       "\n" +
       arguments.callee.name +
       "\ne is !" +
