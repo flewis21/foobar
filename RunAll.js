@@ -423,7 +423,7 @@ var doGet = function (e) {
                           // --- MODIFIED: Use Regex for URL check ---
                           // Regex for a basic HTTP/HTTPS URL validation
                           // This regex is fairly comprehensive for common URLs but can be refined if needed.
-                          const urlRegexString = "/^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&//=]*)$/";
+                          const urlRegexString = "^https?://(?:www\\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}(?:[-a-zA-Z0-9()@:%_+.~#?&//=]*)$";
                           const urlRegex = new RegExp(urlRegexString);
                           if (urlRegex.test(initialArgs)) {
                             console.log("urlRegex.test(" + JSON.stringify(initialArgs) + ")");
