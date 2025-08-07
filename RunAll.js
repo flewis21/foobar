@@ -682,7 +682,9 @@ var doGet = function (e) {
         `Error executing function "${e.parameter["func"]}":`,
         error,
       );
-      throw new Error("Error executing function: " + error.toString() + "\n" + error.stack);
+      throw new Error(
+        "Error executing function: " + error.toString() + "\n" + error.stack,
+      );
     }
   } else {
     return;
