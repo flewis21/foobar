@@ -390,17 +390,49 @@ var doGet = function (e) {
 
             // Parse the input as the new value
             // Allow direct strings or JSON arrays/objects
+            let appLRaw;
+            if (<?= appL ?>) {
+              try {
+                var aRaw = JSON.parse(<?= appL ?>)
+                appLRaw = JSON.stringify(aRaw);
+              } 
+              catch (jsonError) {
+                // If it's not valid JSON, treat it as a plain string
+                appLRaw = JSON.stringify(<?= appL ?>);
+              }
+            }
             let currentApp;
+            if (appLRaw["app"]) {
+              try {
+                currentApp = JSON.parse(appLRaw["app"]);
+              } 
+              catch (jsonError) {
+                // If it's not valid JSON, treat it as a plain string
+                currentApp = appLRaw["app"];
+              }
+            }
+            let webAppL;
             try {
-              currentApp = JSON.parse(<?= appL["app"] || JSON.stringify(appL) ?>);
+              webAppL = JSON.parse(appLRaw["index"]["funcStr"]);
             } 
             catch (jsonError) {
               // If it's not valid JSON, treat it as a plain string
-              currentApp = <?= appL["app"] || JSON.stringify(appL) ?>;
+              webAppL = appLRaw["index"]["funcStr"];
             }
+            let resAppL;
+            try {
+              resAppL = JSON.parse(appLRaw["index"]["dataStr"]);
+            } 
+            catch (jsonError) {
+              // If it's not valid JSON, treat it as a plain string
+              resAppL = appLRaw["index"]["dataStr"];
+            }
+
             const homeStackUrl = <?= homePage ?>;
 
             console.log("Client-side: Initial WebApp:", currentApp);
+            console.log("serverSide Runall line 404\ndoGet(webAppL: " + webAppL.subString(0,15) + "...,)");
+            console.log("serverSide Runall line 408\ndoGet(resAppL: " + resAppL.subString(0,15) + "...,)");
             console.log("Client-side: Home Page URL:", homeStackUrl);
 
             console.log("line 359");
@@ -413,50 +445,156 @@ var doGet = function (e) {
                       console.log("line 362");
                       var chUrl = document.getElementById("indexBeta");
                       console.log("line 364");
-                      let initialArgs = currentApp;
-                      if (initialArgs !== undefined && initialArgs !== null) {
-                        if (typeof initialArgs === 'object') {
-                          chUrl.value = JSON.stringify(initialArgs, null, 2);
+                      let persuantArgs;
+                      if (currentApp !== undefined && currentApp !== null) {
+                        persuantArgs = currentApp;
+                        if (typeof persuantArgs === 'object') {
+                          chUrl.value = JSON.stringify(persuantArgs, null, 2);
                         } 
                         // --- else {
-                        // ---  chUrl.value = initialArgs; // If it's a string directly
+                        // ---  chUrl.value = persuantArgs; // If it's a string directly
                         // --- }
                         // --- 3. Handle String content (URL, JSON, HTML, or plain text)
-                        else if (typeof initialArgs === 'string') {
+                        // Not JSON, treat as URL, HTML or plain text
+                        else if (typeof persuantArgs === 'string') {
                           // --- MODIFIED: Use Regex for URL check ---
                           // Regex for a basic HTTP/HTTPS URL validation
                           // This regex is fairly comprehensive for common URLs but can be refined if needed.
                           const urlRegexString = "^https?://(?:www\\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}(?:[-a-zA-Z0-9()@:%_+.~#?&//=]*)$";
                           const urlRegex = new RegExp(urlRegexString);
-                          if (urlRegex.test(initialArgs)) {
-                            console.log("urlRegex.test(" + JSON.stringify(initialArgs) + ")");
-                            console.log("initialArgs is a URL, navigating to: " + initialArgs);
-                            window.location.href = initialArgs; // New type "url" for strings
+                          if (urlRegex.test(persuantArgs)) {
+                            console.log("urlRegex.test(" + JSON.stringify(persuantArgs) + ")");
+                            console.log("persuantArgs is a URL, navigating to: " + persuantArgs);
+                            window.location.href = persuantArgs; // New type "url" for strings
                             return;
                           }
                           // --- END MODIFIED ---
 
-                          try {
-                            console.log("JSON.parse(" + initialArgs + ")");
-                            const parsedJson = JSON.parse(initialArgs);
+                          
+                          if (persuantArgs.trim().startsWith("<") && persuantArgs.trim().endsWith(">")) {
+                            // More robust HTML check
+                            console.log("persuantArgs.trim(" + persuantArgs + ")");
                             document.open();
-                            document.write(parsedJson);
+                            document.write(persuantArgs);
                             document.close();
-                          } catch (jsonError) {
-                            // Not JSON, treat as HTML or plain text
-                            if (initialArgs.trim().startsWith("<") && initialArgs.trim().endsWith(">")) {
-                              // More robust HTML check
-                              console.log("initialArgs.trim(" + initialArgs + ")");
-                              document.open();
-                              document.write(initialArgs);
-                              document.close();
-                            } else {
-                                console.log("typeof initialArgs === " + typeof initialArgs)
-                                chUrl.value = initialArgs;
-                            }
+                          } else {
+                              console.log("typeof persuantArgs === " + typeof persuantArgs)
+                              chUrl.value = persuantArgs;
                           }
                         }
-                      } else {
+                      } 
+                      else if (webAppL !== undefined && webAppL !== null) {
+                        persuantArgs = webAppL;
+                        if (typeof persuantArgs === 'object') {
+                          chUrl.value = JSON.stringify(persuantArgs, null, 2);
+                        } 
+                        // --- else {
+                        // ---  chUrl.value = persuantArgs; // If it's a string directly
+                        // --- }
+                        // --- 3. Handle String content (URL, JSON, HTML, or plain text)
+                        // Not JSON, treat as URL, HTML or plain text
+                        else if (typeof persuantArgs === 'string') {
+                          // --- MODIFIED: Use Regex for URL check ---
+                          // Regex for a basic HTTP/HTTPS URL validation
+                          // This regex is fairly comprehensive for common URLs but can be refined if needed.
+                          const urlRegexString = "^https?://(?:www\\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}(?:[-a-zA-Z0-9()@:%_+.~#?&//=]*)$";
+                          const urlRegex = new RegExp(urlRegexString);
+                          if (urlRegex.test(persuantArgs)) {
+                            console.log("urlRegex.test(" + JSON.stringify(persuantArgs) + ")");
+                            console.log("persuantArgs is a URL, navigating to: " + persuantArgs);
+                            window.location.href = persuantArgs; // New type "url" for strings
+                            return;
+                          }
+                          // --- END MODIFIED ---
+
+                          
+                          if (persuantArgs.trim().startsWith("<") && persuantArgs.trim().endsWith(">")) {
+                            // More robust HTML check
+                            console.log("persuantArgs.trim(" + persuantArgs + ")");
+                            document.open();
+                            document.write(persuantArgs);
+                            document.close();
+                          } else {
+                              console.log("typeof persuantArgs === " + typeof persuantArgs)
+                              chUrl.value = persuantArgs;
+                          }
+                        }
+                      } 
+                      else if (resAppL !== undefined && resAppL !== null) {
+                        persuantArgs = resAppL;
+                        if (typeof persuantArgs === 'object') {
+                          chUrl.value = JSON.stringify(persuantArgs, null, 2);
+                        } 
+                        // --- else {
+                        // ---  chUrl.value = persuantArgs; // If it's a string directly
+                        // --- }
+                        // --- 3. Handle String content (URL, JSON, HTML, or plain text)
+                        // Not JSON, treat as URL, HTML or plain text
+                        else if (typeof persuantArgs === 'string') {
+                          // --- MODIFIED: Use Regex for URL check ---
+                          // Regex for a basic HTTP/HTTPS URL validation
+                          // This regex is fairly comprehensive for common URLs but can be refined if needed.
+                          const urlRegexString = "^https?://(?:www\\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}(?:[-a-zA-Z0-9()@:%_+.~#?&//=]*)$";
+                          const urlRegex = new RegExp(urlRegexString);
+                          if (urlRegex.test(persuantArgs)) {
+                            console.log("urlRegex.test(" + JSON.stringify(persuantArgs) + ")");
+                            console.log("persuantArgs is a URL, navigating to: " + persuantArgs);
+                            window.location.href = persuantArgs; // New type "url" for strings
+                            return;
+                          }
+                          // --- END MODIFIED ---
+
+                          
+                          if (persuantArgs.trim().startsWith("<") && persuantArgs.trim().endsWith(">")) {
+                            // More robust HTML check
+                            console.log("persuantArgs.trim(" + persuantArgs + ")");
+                            document.open();
+                            document.write(persuantArgs);
+                            document.close();
+                          } else {
+                              console.log("typeof persuantArgs === " + typeof persuantArgs)
+                              chUrl.value = persuantArgs;
+                          }
+                        }
+                      } 
+                      else if (appLRaw !== undefined && appLRaw !== null) {
+                        persuantArgs = appLRaw;
+                        if (typeof persuantArgs === 'object') {
+                          chUrl.value = JSON.stringify(persuantArgs, null, 2);
+                        } 
+                        // --- else {
+                        // ---  chUrl.value = persuantArgs; // If it's a string directly
+                        // --- }
+                        // --- 3. Handle String content (URL, JSON, HTML, or plain text)
+                        // Not JSON, treat as URL, HTML or plain text
+                        else if (typeof persuantArgs === 'string') {
+                          // --- MODIFIED: Use Regex for URL check ---
+                          // Regex for a basic HTTP/HTTPS URL validation
+                          // This regex is fairly comprehensive for common URLs but can be refined if needed.
+                          const urlRegexString = "^https?://(?:www\\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}(?:[-a-zA-Z0-9()@:%_+.~#?&//=]*)$";
+                          const urlRegex = new RegExp(urlRegexString);
+                          if (urlRegex.test(persuantArgs)) {
+                            console.log("urlRegex.test(" + JSON.stringify(persuantArgs) + ")");
+                            console.log("persuantArgs is a URL, navigating to: " + persuantArgs);
+                            window.location.href = persuantArgs; // New type "url" for strings
+                            return;
+                          }
+                          // --- END MODIFIED ---
+
+                          
+                          if (persuantArgs.trim().startsWith("<") && persuantArgs.trim().endsWith(">")) {
+                            // More robust HTML check
+                            console.log("persuantArgs.trim(" + persuantArgs + ")");
+                            document.open();
+                            document.write(persuantArgs);
+                            document.close();
+                          } else {
+                              console.log("typeof persuantArgs === " + typeof persuantArgs)
+                              chUrl.value = persuantArgs;
+                          }
+                        }
+                      } 
+                      else {
                         chUrl.value = '[""]'; // Default if args is missing
                       }
 
@@ -544,7 +682,7 @@ var doGet = function (e) {
         `Error executing function "${e.parameter["func"]}":`,
         error,
       );
-      return "Error executing function.";
+      throw new Error("Error executing function: " + error.toString() + "\n" + error.stack);
     }
   } else {
     return;
