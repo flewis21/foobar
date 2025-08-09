@@ -178,7 +178,7 @@ var doGet = function (e) {
             </head>
             <body id="JavaScriptDoGet">
               <div id="eObject"><input type="text" id="pageObj" value=""></div>
-              <div><?!= renBlob ?></div>
+              <div><?= renBlob ?></div>
             </body>
           </html>
           <script>
@@ -214,7 +214,7 @@ var doGet = function (e) {
 
             
             console.log("line 213");
-            console.log("Client-side: Initial doGet event object:", currentE);
+            console.log("Client-side: Initial doGet event object:",  currentE);
             console.log("Client-side: Home Page URL:", homePageUrl);
 
             console.log("line 215");
@@ -230,12 +230,15 @@ var doGet = function (e) {
               console.log("line 222");
               let initialArgs = currentE.parameter["args"];
               if (initialArgs !== undefined && initialArgs !== null) {
+                console.log("line 233: initialArgs ===", typeof initialArgs)
                 if (typeof initialArgs === 'object') {
                   objUrl.value = JSON.stringify(initialArgs, null, 0);
                 } else {
+                  console.log("line 237: falling back to initialArgs string");
                   objUrl.value = initialArgs; // If it's a string directly
                 }
               } else {
+                console.log("line 241: falling back to empty string");
                 objUrl.value = '[""]'; // Default if args is missing
               }
 
@@ -360,8 +363,6 @@ var doGet = function (e) {
                                             <td>
                                               <div>
                                                 <textarea id="indexBeta" spellcheck="false" rows="10" cols="50"></textarea></div><br /></td></tbody></table></td></tr></tbody></table></div></div></div></div></div></div></div></div>
-              </body>
-            </html>
             <script>
 
 
@@ -390,49 +391,56 @@ var doGet = function (e) {
 
             // Parse the input as the new value
             // Allow direct strings or JSON arrays/objects
-            let appLRaw;
-            if (<?= appL ?>) {
+            console.log("line 396: \nEntering server-side evaluation");
+            if (<?!= appL ?>) {
+              console.log("line 398: \nappL:", <?= appL ?>)
               try {
-                var aRaw = JSON.parse(<?= appL ?>)
-                appLRaw = JSON.stringify(aRaw);
+                var aRaw = JSON.parse(<?!= appL ?>);
+                var appLRaw = JSON.stringify(aRaw);
               } 
               catch (jsonError) {
+                console.log("line 404 Falling back to plain string: \nappL:", <?= JSON.stringify(appL) ?>);
                 // If it's not valid JSON, treat it as a plain string
-                appLRaw = JSON.stringify(<?= appL ?>);
+                var appLRaw = JSON.stringify(<?= appL ?>);
               }
             }
-            let currentApp;
             if (appLRaw["app"]) {
+              console.log('line 411 \nappRaw["app"]:', appRaw["app"]);
               try {
-                currentApp = JSON.parse(appLRaw["app"]);
+                var currentApp = JSON.parse(appLRaw["app"]);
               } 
               catch (jsonError) {
+                console.log('line 416 Falling back to plain string: \nappRaw["app"]:', appRaw["app"]);
                 // If it's not valid JSON, treat it as a plain string
-                currentApp = appLRaw["app"];
+                var currentApp = appLRaw["app"];
               }
             }
-            let webAppL;
-            try {
-              webAppL = JSON.parse(appLRaw["index"]["funcStr"]);
-            } 
-            catch (jsonError) {
-              // If it's not valid JSON, treat it as a plain string
-              webAppL = appLRaw["index"]["funcStr"];
-            }
-            let resAppL;
-            try {
-              resAppL = JSON.parse(appLRaw["index"]["dataStr"]);
-            } 
-            catch (jsonError) {
-              // If it's not valid JSON, treat it as a plain string
-              resAppL = appLRaw["index"]["dataStr"];
+            if (appRaw["index"]) {
+              console.log('line 423 \nappRaw["index"]:', appRaw["index"]);
+              try {
+                var webAppL = JSON.parse(appLRaw["index"]["funcStr"]);
+              } 
+              catch (jsonError) {
+                console.log('line 428 Falling back to plain string: \nappRaw["index"]["funcStr"]:', appRaw["app"]["funcStr"]);
+                // If it's not valid JSON, treat it as a plain string
+                var webAppL = appLRaw["index"]["funcStr"];
+              }
+              try {
+                var resAppL = JSON.parse(appLRaw["index"]["dataStr"]);
+              } 
+              catch (jsonError) {
+                console.log('line 428 Falling back to plain string: \nappRaw["index"]["dataStr"]:', appRaw["app"]["dataStr"]);
+                // If it's not valid JSON, treat it as a plain string
+                var resAppL = appLRaw["index"]["dataStr"];
+              }
+
             }
 
             const homeStackUrl = <?= homePage ?>;
 
             console.log("Client-side: Initial WebApp:", currentApp);
-            console.log("serverSide Runall line 404\ndoGet(webAppL: " + webAppL.subString(0,15) + "...,)");
-            console.log("serverSide Runall line 408\ndoGet(resAppL: " + resAppL.subString(0,15) + "...,)");
+            console.log("serverSide Runall line 404\ndoGet(webAppL:", webAppL,  "...,)");
+            console.log("serverSide Runall line 408\ndoGet(resAppL:", resAppL, "...,)");
             console.log("Client-side: Home Page URL:", homeStackUrl);
 
             console.log("line 359");
@@ -442,9 +450,9 @@ var doGet = function (e) {
 
                     
                     function runStack() {
-                      console.log("line 362");
+                      // console.log("line 362");
                       var chUrl = document.getElementById("indexBeta");
-                      console.log("line 364");
+                      // console.log("line 364");
                       let persuantArgs;
                       if (currentApp !== undefined && currentApp !== null) {
                         persuantArgs = currentApp;
@@ -462,23 +470,33 @@ var doGet = function (e) {
                           // This regex is fairly comprehensive for common URLs but can be refined if needed.
                           const urlRegexString = "^https?://(?:www\\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}(?:[-a-zA-Z0-9()@:%_+.~#?&//=]*)$";
                           const urlRegex = new RegExp(urlRegexString);
-                          if (urlRegex.test(persuantArgs)) {
-                            console.log("urlRegex.test(" + JSON.stringify(persuantArgs) + ")");
-                            console.log("persuantArgs is a URL, navigating to: " + persuantArgs);
-                            window.location.href = persuantArgs; // New type "url" for strings
-                            return;
+                          try {
+                            if (urlRegex.test(persuantArgs)) {
+                              // console.log("urlRegex.test(" + JSON.stringify(persuantArgs) + ")");
+                              // console.log("persuantArgs is a URL, navigating to: " + persuantArgs);
+                              window.location.href = persuantArgs; // New type "url" for strings
+                              return;
+                            }
+                          }
+                          catch(error) {
+                            throw new Error("Error inside RunAll.gs renblob contentApp: " + error.toString() + "\n" + error.stack)
                           }
                           // --- END MODIFIED ---
 
                           
                           if (persuantArgs.trim().startsWith("<") && persuantArgs.trim().endsWith(">")) {
-                            // More robust HTML check
-                            console.log("persuantArgs.trim(" + persuantArgs + ")");
-                            document.open();
-                            document.write(persuantArgs);
-                            document.close();
+                            try {
+                              // More robust HTML check
+                              // console.log("persuantArgs.trim(" + persuantArgs + ")");
+                              document.open();
+                              document.write(persuantArgs);
+                              document.close();
+                            }
+                            catch(error) {
+                              throw new Error("Error inside RunAll.gs renblob contentApp: " + error.toString() + "\n" + error.stack)
+                            }
                           } else {
-                              console.log("typeof persuantArgs === " + typeof persuantArgs)
+                              // console.log("typeof persuantArgs === " + typeof persuantArgs)
                               chUrl.value = persuantArgs;
                           }
                         }
@@ -500,8 +518,8 @@ var doGet = function (e) {
                           const urlRegexString = "^https?://(?:www\\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}(?:[-a-zA-Z0-9()@:%_+.~#?&//=]*)$";
                           const urlRegex = new RegExp(urlRegexString);
                           if (urlRegex.test(persuantArgs)) {
-                            console.log("urlRegex.test(" + JSON.stringify(persuantArgs) + ")");
-                            console.log("persuantArgs is a URL, navigating to: " + persuantArgs);
+                            // console.log("urlRegex.test(" + JSON.stringify(persuantArgs) + ")");
+                            // console.log("persuantArgs is a URL, navigating to: " + persuantArgs);
                             window.location.href = persuantArgs; // New type "url" for strings
                             return;
                           }
@@ -509,13 +527,18 @@ var doGet = function (e) {
 
                           
                           if (persuantArgs.trim().startsWith("<") && persuantArgs.trim().endsWith(">")) {
-                            // More robust HTML check
-                            console.log("persuantArgs.trim(" + persuantArgs + ")");
-                            document.open();
-                            document.write(persuantArgs);
-                            document.close();
+                            try {
+                              // More robust HTML check
+                              // console.log("persuantArgs.trim(" + persuantArgs + ")");
+                              document.open();
+                              document.write(persuantArgs);
+                              document.close();
+                            }
+                            catch(error) {
+                              throw new Error("Error inside RunAll.gs renblob contentApp: " + error.toString() + "\n" + error.stack)
+                            }
                           } else {
-                              console.log("typeof persuantArgs === " + typeof persuantArgs)
+                              // console.log("typeof persuantArgs === " + typeof persuantArgs)
                               chUrl.value = persuantArgs;
                           }
                         }
@@ -537,8 +560,8 @@ var doGet = function (e) {
                           const urlRegexString = "^https?://(?:www\\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}(?:[-a-zA-Z0-9()@:%_+.~#?&//=]*)$";
                           const urlRegex = new RegExp(urlRegexString);
                           if (urlRegex.test(persuantArgs)) {
-                            console.log("urlRegex.test(" + JSON.stringify(persuantArgs) + ")");
-                            console.log("persuantArgs is a URL, navigating to: " + persuantArgs);
+                            // console.log("urlRegex.test(" + JSON.stringify(persuantArgs) + ")");
+                            // console.log("persuantArgs is a URL, navigating to: " + persuantArgs);
                             window.location.href = persuantArgs; // New type "url" for strings
                             return;
                           }
@@ -546,13 +569,18 @@ var doGet = function (e) {
 
                           
                           if (persuantArgs.trim().startsWith("<") && persuantArgs.trim().endsWith(">")) {
-                            // More robust HTML check
-                            console.log("persuantArgs.trim(" + persuantArgs + ")");
-                            document.open();
-                            document.write(persuantArgs);
-                            document.close();
+                            try {
+                              // More robust HTML check
+                              // console.log("persuantArgs.trim(" + persuantArgs + ")");
+                              document.open();
+                              document.write(persuantArgs);
+                              document.close();
+                            }
+                            catch(error) {
+                              throw new Error("Error inside RunAll.gs renblob contentApp: " + error.toString() + "\n" + error.stack)
+                            }
                           } else {
-                              console.log("typeof persuantArgs === " + typeof persuantArgs)
+                              // console.log("typeof persuantArgs === " + typeof persuantArgs)
                               chUrl.value = persuantArgs;
                           }
                         }
@@ -574,8 +602,8 @@ var doGet = function (e) {
                           const urlRegexString = "^https?://(?:www\\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}(?:[-a-zA-Z0-9()@:%_+.~#?&//=]*)$";
                           const urlRegex = new RegExp(urlRegexString);
                           if (urlRegex.test(persuantArgs)) {
-                            console.log("urlRegex.test(" + JSON.stringify(persuantArgs) + ")");
-                            console.log("persuantArgs is a URL, navigating to: " + persuantArgs);
+                            // console.log("urlRegex.test(" + JSON.stringify(persuantArgs) + ")");
+                            // console.log("persuantArgs is a URL, navigating to: " + persuantArgs);
                             window.location.href = persuantArgs; // New type "url" for strings
                             return;
                           }
@@ -583,13 +611,18 @@ var doGet = function (e) {
 
                           
                           if (persuantArgs.trim().startsWith("<") && persuantArgs.trim().endsWith(">")) {
-                            // More robust HTML check
-                            console.log("persuantArgs.trim(" + persuantArgs + ")");
-                            document.open();
-                            document.write(persuantArgs);
-                            document.close();
+                            try {
+                              // More robust HTML check
+                              // console.log("persuantArgs.trim(" + persuantArgs + ")");
+                              document.open();
+                              document.write(persuantArgs);
+                              document.close();
+                            }
+                            catch(error) {
+                              throw new Error("Error inside RunAll.gs renblob contentApp: " + error.toString() + "\n" + error.stack)
+                            }
                           } else {
-                              console.log("typeof persuantArgs === " + typeof persuantArgs)
+                              // console.log("typeof persuantArgs === " + typeof persuantArgs)
                               chUrl.value = persuantArgs;
                           }
                         }
@@ -620,7 +653,7 @@ var doGet = function (e) {
                                   // --- MODIFICATION ENDS HERE ---
 
                                   alert("WebApp updated. Sending back to server for re-render.");
-                                  console.log("Client-side: Updated WebApp to send:", updatedClientApp);
+                                  // console.log("Client-side: Updated WebApp to send:", updatedClientApp);
 
 
 
@@ -631,10 +664,10 @@ var doGet = function (e) {
                                               document.open();
                                               document.write(newStackContent);
                                               document.close();
-                                              console.log("Client-side: Page re-rendered with new content from server.");
+                                              // console.log("Client-side: Page re-rendered with new content from server.");
                                             } 
                                             catch (error) {
-                                              console.error("Client-side Error during full re-render:", error);
+                                              // console.error("Client-side Error during full re-render: " + error);
                                               alert("Error re-rendering: " + error.message);
                                             }
                                           }
@@ -645,7 +678,7 @@ var doGet = function (e) {
                                   handleStackUpdate();
                                 } catch (error) {
                                   alert("Error processing input. Please ensure it's valid JSON or a plain string.");
-                                  console.error("Input processing error:", error);
+                                  // console.error("Input processing error:", error);
                                 }
                               });
 
@@ -653,7 +686,9 @@ var doGet = function (e) {
 
                               
                     }
-          </script>`,
+          </script>
+        </body>
+      </html>`,
             {
               appL: this[libName][foobarr].apply(this, [
                 e.parameter["args"] || args,
