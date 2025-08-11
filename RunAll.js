@@ -178,7 +178,7 @@ var doGet = function (e) {
             </head>
             <body id="JavaScriptDoGet">
               <div id="eObject"><input type="text" id="pageObj" value=""></div>
-              <div><?= renBlob ?></div>
+              <div><?!= renBlob ?></div>
             </body>
           </html>
           <script>
@@ -230,8 +230,8 @@ var doGet = function (e) {
               console.log("line 222");
               let initialArgs = currentE.parameter["args"];
               if (initialArgs !== undefined && initialArgs !== null) {
-                console.log("line 233: initialArgs ===", typeof initialArgs)
                 if (typeof initialArgs === 'object') {
+                  console.log("line 234: creating pretty-printed initialArgs object");
                   objUrl.value = JSON.stringify(initialArgs, null, 0);
                 } else {
                   console.log("line 237: falling back to initialArgs string");
@@ -364,276 +364,194 @@ var doGet = function (e) {
                                               <div>
                                                 <textarea id="indexBeta" spellcheck="false" rows="10" cols="50"></textarea></div><br /></td></tbody></table></td></tr></tbody></table></div></div></div></div></div></div></div></div>
             <script>
-
-
-
-
-            function clientSide(func, args) {
-              return new Promise((resolve, reject) => {
-                google.script.run
-                  .withSuccessHandler((result) => {
-                    resolve(result); // result will be { type: "...", data: "..." }
-                    // You would then process 'result' here to update specific parts of your current page
-                    // For example, update a div with result.data if result.type is "text" or "html"
-                    console.log("Server side call success:", result);
-                  })
-                  .withFailureHandler((error) => {
-                    reject(error);
-                    console.error("Server-side call error:", error);
-                    alert("Error during server call: " + error.message);
-                  })
-                  .runBoilerplate(func, args);
-              });
-            }
-
-
-
-
-            // Parse the input as the new value
-            // Allow direct strings or JSON arrays/objects
-            console.log("line 396: \nEntering server-side evaluation");
-            if (<?!= appL ?>) {
-              console.log("line 398: \nappL:", <?= appL ?>)
-              try {
-                var aRaw = JSON.parse(<?!= appL ?>);
-                var appLRaw = JSON.stringify(aRaw);
-              } 
-              catch (jsonError) {
-                console.log("line 404 Falling back to plain string: \nappL:", <?= JSON.stringify(appL) ?>);
-                // If it's not valid JSON, treat it as a plain string
-                var appLRaw = JSON.stringify(<?= appL ?>);
+              var chUrl = document.getElementById("indexBeta");
+              console.log("line 367: \nBeginning appL evaluation");
+              let currentApp;
+              let webAppL;
+              let resAppL;
+              let persuantArgs;
+              function clientSide(func, args) {
+                return new Promise((resolve, reject) => {
+                  google.script.run
+                    .withSuccessHandler((result) => {
+                      resolve(result); // result will be { type: "...", data: "..." }
+                      // You would then process 'result' here to update specific parts of your current page
+                      // For example, update a div with result.data if result.type is "text" or "html"
+                      console.log("Server side call success:", result);
+                    })
+                    .withFailureHandler((error) => {
+                      reject(error);
+                      console.error("Server-side call error:", error);
+                      alert("Error during server call: " + error.message);
+                    })
+                    .runBoilerplate(func, args);
+                });
               }
-            }
-            if (appLRaw["app"]) {
-              console.log('line 411 \nappRaw["app"]:', appRaw["app"]);
-              try {
-                var currentApp = JSON.parse(appLRaw["app"]);
-              } 
-              catch (jsonError) {
-                console.log('line 416 Falling back to plain string: \nappRaw["app"]:', appRaw["app"]);
-                // If it's not valid JSON, treat it as a plain string
-                var currentApp = appLRaw["app"];
-              }
-            }
-            if (appRaw["index"]) {
-              console.log('line 423 \nappRaw["index"]:', appRaw["index"]);
-              try {
-                var webAppL = JSON.parse(appLRaw["index"]["funcStr"]);
-              } 
-              catch (jsonError) {
-                console.log('line 428 Falling back to plain string: \nappRaw["index"]["funcStr"]:', appRaw["app"]["funcStr"]);
-                // If it's not valid JSON, treat it as a plain string
-                var webAppL = appLRaw["index"]["funcStr"];
-              }
-              try {
-                var resAppL = JSON.parse(appLRaw["index"]["dataStr"]);
-              } 
-              catch (jsonError) {
-                console.log('line 428 Falling back to plain string: \nappRaw["index"]["dataStr"]:', appRaw["app"]["dataStr"]);
-                // If it's not valid JSON, treat it as a plain string
-                var resAppL = appLRaw["index"]["dataStr"];
-              }
+              // Parse the input as the new value
+              // Allow direct strings or JSON arrays/objects
+              const homeStackUrl = <?= homePage ?>;
+              console.log("Client-side: Home Page URL:", homeStackUrl);
+              console.log("line 394");
+                      if (<?= appL !== "undefined" && appL !== null ?>) {
+                        try {
+                          if (<?= appL && appL["app"] ?>) {
+                            console.log('line 401 \nappL["app"]:', <?= appL["app"] ?>);
+                            try {
+                              persuantArgs = JSON.parse(<?= appL["app"] ?>);
+                            } 
+                            catch (jsonError) {
+                              console.log('line 406 Falling back to plain string: \nappL["app"]:', <?= appL["app"] ?>);
+                              // If it's not valid JSON, treat it as a plain string
+                              persuantArgs = <?= appL["app"] ?>;
+                            }
+                            if (typeof persuantArgs === 'object') {
+                              chUrl.value = JSON.stringify(persuantArgs, null, 2);
+                            } 
+                            // --- 3. Handle String content (URL, JSON, HTML, or plain text)
+                            // Not JSON, treat as URL, HTML or plain text
+                            else {
+                              // --- MODIFIED: Use Regex for URL check ---
+                              // Regex for a basic HTTP/HTTPS URL validation
+                              // This regex is fairly comprehensive for common URLs but can be refined if needed.
+                              const urlRegexString = "^https?://(?:www\\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}(?:[-a-zA-Z0-9()@:%_+.~#?&//=]*)$";
+                              const urlRegex = new RegExp(urlRegexString);
+                              try {
+                                if (urlRegex.test(persuantArgs)) {
+                                  // console.log("urlRegex.test(" + JSON.stringify(persuantArgs) + ")");
+                                  // console.log("persuantArgs is a URL, navigating to: " + persuantArgs);
+                                  window.location.href = persuantArgs; // New type "url" for strings
+                                  return;
+                                }
+                              }
+                              catch(error) {
+                                throw new Error("Error inside RunAll.gs renblob contentApp:", error.toString(), error?.stack)
+                              }
+                              // --- END MODIFIED ---
+                            
+                              if (persuantArgs.trim().startsWith("<") && persuantArgs.trim().endsWith(">")) {
+                                try {
+                                  // More robust HTML check
+                                  // console.log("persuantArgs.trim(" + persuantArgs + ")");
+                                  document.open();
+                                  document.write(persuantArgs);
+                                  document.close();
+                                }
+                                catch(error) {
+                                  throw new Error("Error inside RunAll.gs renblob contentApp:", error.toString(), error?.stack)
+                                }
+                              } 
+                              else {
+                                  // console.log("typeof persuantArgs === " + typeof persuantArgs)
+                                  chUrl.value = JSON.stringify(persuantArgs);
+                              }
+                            }
+                          }
+                          else if (<?= appL && appL["index"] ?>) {
+                            console.log('line 453 \nappL["index"]:', <?= appL["index"] ?>);
+                            if (<?= appL["index"]["funcStr"] ?>) {
+                              try {
+                                persuantArgs = JSON.parse(<?= appL["index"]["funcStr"] ?>);
+                              } 
+                              catch (jsonError) {
+                                console.log('line 459 Falling back to plain string: \nappL["index"]["funcStr"]:', <?= appL["index"]["funcStr"] ?>);
+                                // If it's not valid JSON, treat it as a plain string
+                                persuantArgs = <?= appL["index"]["funcStr"] ?>;
+                              }
+                            }
+                            else if (<?= appL["index"]["dataStr"] ?>) {
+                              try {
+                                persuantArgs = JSON.parse(<?= appL["index"]["dataStr"] ?>);
+                              } 
+                              catch (jsonError) {
+                                console.log('line 469 Falling back to plain string: \nappL["index"]["dataStr"]:', appRaw["app"]["dataStr"]);
+                                // If it's not valid JSON, treat it as a plain string
+                                persuantArgs = <?= appL["index"]["dataStr"] ?>;
+                              }
+                            }
+                            if (typeof persuantArgs === 'object') {
+                              chUrl.value = JSON.stringify(persuantArgs, null, 2);
+                            } 
+                            // --- 3. Handle String content (URL, JSON, HTML, or plain text)
+                            // Not JSON, treat as URL, HTML or plain text
+                            else {
+                              // --- MODIFIED: Use Regex for URL check ---
+                              // Regex for a basic HTTP/HTTPS URL validation
+                              // This regex is fairly comprehensive for common URLs but can be refined if needed.
+                              const urlRegexString = "^https?://(?:www\\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}(?:[-a-zA-Z0-9()@:%_+.~#?&//=]*)$";
+                              const urlRegex = new RegExp(urlRegexString);
+                              if (urlRegex.test(persuantArgs)) {
+                                // console.log("urlRegex.test(" + JSON.stringify(persuantArgs) + ")");
+                                // console.log("persuantArgs is a URL, navigating to: " + persuantArgs);
+                                window.location.href = persuantArgs; // New type "url" for strings
+                                return;
+                              }
+                              // --- END MODIFIED ---
 
-            }
-
-            const homeStackUrl = <?= homePage ?>;
-
-            console.log("Client-side: Initial WebApp:", currentApp);
-            console.log("serverSide Runall line 404\ndoGet(webAppL:", webAppL,  "...,)");
-            console.log("serverSide Runall line 408\ndoGet(resAppL:", resAppL, "...,)");
-            console.log("Client-side: Home Page URL:", homeStackUrl);
-
-            console.log("line 359");
-            document.addEventListener("DOMContentLoaded", runStack);
-
-
-
-                    
-                    function runStack() {
-                      // console.log("line 362");
-                      var chUrl = document.getElementById("indexBeta");
-                      // console.log("line 364");
-                      let persuantArgs;
-                      if (currentApp !== undefined && currentApp !== null) {
-                        persuantArgs = currentApp;
-                        if (typeof persuantArgs === 'object') {
-                          chUrl.value = JSON.stringify(persuantArgs, null, 2);
+                              
+                              else if (persuantArgs.trim().startsWith("<") && persuantArgs.trim().endsWith(">")) {
+                                try {
+                                  // More robust HTML check
+                                  // console.log("persuantArgs.trim(" + persuantArgs + ")");
+                                  document.open();
+                                  document.write(persuantArgs);
+                                  document.close();
+                                }
+                                catch(error) {
+                                  throw new Error("Error inside RunAll.gs renblob contentApp:", error.toString(), error?.stack)
+                                }
+                              } else {
+                                  // console.log("typeof persuantArgs === " + typeof persuantArgs)
+                                  chUrl.value = JSON.stringify(persuantArgs);
+                              }
+                            }
+                          }
                         } 
-                        // --- else {
-                        // ---  chUrl.value = persuantArgs; // If it's a string directly
-                        // --- }
-                        // --- 3. Handle String content (URL, JSON, HTML, or plain text)
-                        // Not JSON, treat as URL, HTML or plain text
-                        else if (typeof persuantArgs === 'string') {
-                          // --- MODIFIED: Use Regex for URL check ---
-                          // Regex for a basic HTTP/HTTPS URL validation
-                          // This regex is fairly comprehensive for common URLs but can be refined if needed.
-                          const urlRegexString = "^https?://(?:www\\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}(?:[-a-zA-Z0-9()@:%_+.~#?&//=]*)$";
-                          const urlRegex = new RegExp(urlRegexString);
-                          try {
+                        catch(error) {
+                          console.log(error)
+                          var persuantArgs = <?= JSON.stringify(appL) ?>;
+                          if (typeof persuantArgs === 'object') {
+                            chUrl.value = JSON.stringify(persuantArgs, null, 2);
+                          }
+                          // --- 3. Handle String content (URL, JSON, HTML, or plain text)
+                          // Not JSON, treat as URL, HTML or plain text
+                          else {
+                            // --- MODIFIED: Use Regex for URL check ---
+                            // Regex for a basic HTTP/HTTPS URL validation
+                            // This regex is fairly comprehensive for common URLs but can be refined if needed.
+                            const urlRegexString = "^https?://(?:www\\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}(?:[-a-zA-Z0-9()@:%_+.~#?&//=]*)$";
+                            const urlRegex = new RegExp(urlRegexString);
                             if (urlRegex.test(persuantArgs)) {
                               // console.log("urlRegex.test(" + JSON.stringify(persuantArgs) + ")");
                               // console.log("persuantArgs is a URL, navigating to: " + persuantArgs);
                               window.location.href = persuantArgs; // New type "url" for strings
                               return;
                             }
-                          }
-                          catch(error) {
-                            throw new Error("Error inside RunAll.gs renblob contentApp: " + error.toString() + "\n" + error.stack)
-                          }
-                          // --- END MODIFIED ---
+                            // --- END MODIFIED ---
 
-                          
-                          if (persuantArgs.trim().startsWith("<") && persuantArgs.trim().endsWith(">")) {
-                            try {
-                              // More robust HTML check
-                              // console.log("persuantArgs.trim(" + persuantArgs + ")");
-                              document.open();
-                              document.write(persuantArgs);
-                              document.close();
+                            
+                            if (persuantArgs.trim().startsWith("<") && persuantArgs.trim().endsWith(">")) {
+                              try {
+                                // More robust HTML check
+                                // console.log("persuantArgs.trim(" + persuantArgs + ")");
+                                document.open();
+                                document.write(persuantArgs);
+                                document.close();
+                              }
+                              catch(error) {
+                                throw new Error("Error inside RunAll.gs renblob contentApp:", error.toString(), error?.stack)
+                              }
+                            } else {
+                                // console.log("typeof persuantArgs === " + typeof persuantArgs)
+                                chUrl.value = JSON.stringify(persuantArgs);
                             }
-                            catch(error) {
-                              throw new Error("Error inside RunAll.gs renblob contentApp: " + error.toString() + "\n" + error.stack)
-                            }
-                          } else {
-                              // console.log("typeof persuantArgs === " + typeof persuantArgs)
-                              chUrl.value = persuantArgs;
                           }
                         }
-                      } 
-                      else if (webAppL !== undefined && webAppL !== null) {
-                        persuantArgs = webAppL;
-                        if (typeof persuantArgs === 'object') {
-                          chUrl.value = JSON.stringify(persuantArgs, null, 2);
-                        } 
-                        // --- else {
-                        // ---  chUrl.value = persuantArgs; // If it's a string directly
-                        // --- }
-                        // --- 3. Handle String content (URL, JSON, HTML, or plain text)
-                        // Not JSON, treat as URL, HTML or plain text
-                        else if (typeof persuantArgs === 'string') {
-                          // --- MODIFIED: Use Regex for URL check ---
-                          // Regex for a basic HTTP/HTTPS URL validation
-                          // This regex is fairly comprehensive for common URLs but can be refined if needed.
-                          const urlRegexString = "^https?://(?:www\\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}(?:[-a-zA-Z0-9()@:%_+.~#?&//=]*)$";
-                          const urlRegex = new RegExp(urlRegexString);
-                          if (urlRegex.test(persuantArgs)) {
-                            // console.log("urlRegex.test(" + JSON.stringify(persuantArgs) + ")");
-                            // console.log("persuantArgs is a URL, navigating to: " + persuantArgs);
-                            window.location.href = persuantArgs; // New type "url" for strings
-                            return;
-                          }
-                          // --- END MODIFIED ---
-
-                          
-                          if (persuantArgs.trim().startsWith("<") && persuantArgs.trim().endsWith(">")) {
-                            try {
-                              // More robust HTML check
-                              // console.log("persuantArgs.trim(" + persuantArgs + ")");
-                              document.open();
-                              document.write(persuantArgs);
-                              document.close();
-                            }
-                            catch(error) {
-                              throw new Error("Error inside RunAll.gs renblob contentApp: " + error.toString() + "\n" + error.stack)
-                            }
-                          } else {
-                              // console.log("typeof persuantArgs === " + typeof persuantArgs)
-                              chUrl.value = persuantArgs;
-                          }
-                        }
-                      } 
-                      else if (resAppL !== undefined && resAppL !== null) {
-                        persuantArgs = resAppL;
-                        if (typeof persuantArgs === 'object') {
-                          chUrl.value = JSON.stringify(persuantArgs, null, 2);
-                        } 
-                        // --- else {
-                        // ---  chUrl.value = persuantArgs; // If it's a string directly
-                        // --- }
-                        // --- 3. Handle String content (URL, JSON, HTML, or plain text)
-                        // Not JSON, treat as URL, HTML or plain text
-                        else if (typeof persuantArgs === 'string') {
-                          // --- MODIFIED: Use Regex for URL check ---
-                          // Regex for a basic HTTP/HTTPS URL validation
-                          // This regex is fairly comprehensive for common URLs but can be refined if needed.
-                          const urlRegexString = "^https?://(?:www\\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}(?:[-a-zA-Z0-9()@:%_+.~#?&//=]*)$";
-                          const urlRegex = new RegExp(urlRegexString);
-                          if (urlRegex.test(persuantArgs)) {
-                            // console.log("urlRegex.test(" + JSON.stringify(persuantArgs) + ")");
-                            // console.log("persuantArgs is a URL, navigating to: " + persuantArgs);
-                            window.location.href = persuantArgs; // New type "url" for strings
-                            return;
-                          }
-                          // --- END MODIFIED ---
-
-                          
-                          if (persuantArgs.trim().startsWith("<") && persuantArgs.trim().endsWith(">")) {
-                            try {
-                              // More robust HTML check
-                              // console.log("persuantArgs.trim(" + persuantArgs + ")");
-                              document.open();
-                              document.write(persuantArgs);
-                              document.close();
-                            }
-                            catch(error) {
-                              throw new Error("Error inside RunAll.gs renblob contentApp: " + error.toString() + "\n" + error.stack)
-                            }
-                          } else {
-                              // console.log("typeof persuantArgs === " + typeof persuantArgs)
-                              chUrl.value = persuantArgs;
-                          }
-                        }
-                      } 
-                      else if (appLRaw !== undefined && appLRaw !== null) {
-                        persuantArgs = appLRaw;
-                        if (typeof persuantArgs === 'object') {
-                          chUrl.value = JSON.stringify(persuantArgs, null, 2);
-                        } 
-                        // --- else {
-                        // ---  chUrl.value = persuantArgs; // If it's a string directly
-                        // --- }
-                        // --- 3. Handle String content (URL, JSON, HTML, or plain text)
-                        // Not JSON, treat as URL, HTML or plain text
-                        else if (typeof persuantArgs === 'string') {
-                          // --- MODIFIED: Use Regex for URL check ---
-                          // Regex for a basic HTTP/HTTPS URL validation
-                          // This regex is fairly comprehensive for common URLs but can be refined if needed.
-                          const urlRegexString = "^https?://(?:www\\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}(?:[-a-zA-Z0-9()@:%_+.~#?&//=]*)$";
-                          const urlRegex = new RegExp(urlRegexString);
-                          if (urlRegex.test(persuantArgs)) {
-                            // console.log("urlRegex.test(" + JSON.stringify(persuantArgs) + ")");
-                            // console.log("persuantArgs is a URL, navigating to: " + persuantArgs);
-                            window.location.href = persuantArgs; // New type "url" for strings
-                            return;
-                          }
-                          // --- END MODIFIED ---
-
-                          
-                          if (persuantArgs.trim().startsWith("<") && persuantArgs.trim().endsWith(">")) {
-                            try {
-                              // More robust HTML check
-                              // console.log("persuantArgs.trim(" + persuantArgs + ")");
-                              document.open();
-                              document.write(persuantArgs);
-                              document.close();
-                            }
-                            catch(error) {
-                              throw new Error("Error inside RunAll.gs renblob contentApp: " + error.toString() + "\n" + error.stack)
-                            }
-                          } else {
-                              // console.log("typeof persuantArgs === " + typeof persuantArgs)
-                              chUrl.value = persuantArgs;
-                          }
-                        }
-                      } 
                       else {
                         chUrl.value = '[""]'; // Default if args is missing
                       }
-
-
-
-
+              document.addEventListener("DOMContentLoaded", runStack);
+                    function runStack() {
+                      console.log("line 397");
                               chUrl.addEventListener("change", function () {
                                 try {
                                   // Parse the user's input as the new value
@@ -667,7 +585,7 @@ var doGet = function (e) {
                                               // console.log("Client-side: Page re-rendered with new content from server.");
                                             } 
                                             catch (error) {
-                                              // console.error("Client-side Error during full re-render: " + error);
+                                              // console.error("Client-side Error during full re-render:", error);
                                               alert("Error re-rendering: " + error.message);
                                             }
                                           }
@@ -681,10 +599,7 @@ var doGet = function (e) {
                                   // console.error("Input processing error:", error);
                                 }
                               });
-
-
-
-                              
+                      }
                     }
           </script>
         </body>
