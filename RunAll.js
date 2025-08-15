@@ -390,15 +390,15 @@ var doGet = function (e) {
               console.log("Client-side: Initial WebApp:", currentApp);
             } 
             catch (jsonError) {
-              alert("jsonError", jsonError)
+              // alert("jsonError", jsonError)
               // If it's not valid JSON, treat it as a plain string
               if (<?= typeof appL["app"] === "object" ?>) {
                 currentApp = <?= JSON.stringify(appL["app"]) ?>;
-                console.log("Client-side: Initial WebApp:", <?= appL["app"] ?> + "OR" + <?= JSON.stringify(appL) ?>);
+                console.log("Client-side: Initial Object of WebApp:", <?= appL["app"] ?> + "OR" + <?= JSON.stringify(appL) ?>);
               }
               else {
                 currentApp = <?= appL["app"] ?>;
-                console.log("Client-side: Initial WebApp:", <?= appL["app"] ?> + "OR" + <?= JSON.stringify(appL) ?>);
+                console.log("Client-side: Initial String of WebApp:", <?= appL["app"] ?> + "OR" + <?= JSON.stringify(appL) ?>);
               }
             }
             const homeStackUrl = <?= homePage ?>;
@@ -436,6 +436,7 @@ var doGet = function (e) {
                           // --- END MODIFIED ---
 
                           try {
+                            console.log(currentApp.trim().startsWith("<") && currentApp.trim().endsWith(">"));
                             const parsedJson = JSON.parse(currentApp);
                             if (parsedJson) {
                               console.log("JSON.parse(" + currentApp + ")");
@@ -451,7 +452,7 @@ var doGet = function (e) {
                             // Not JSON, treat as HTML or plain text
                             if (currentApp.trim().startsWith("<") && currentApp.trim().endsWith(">")) {
                               // More robust HTML check
-                              console.log("currentApp.trim(" + currentApp + ")");
+                              console.log("currentApp.trim(" + currentApp.trim().startsWith("<") && currentApp.trim().endsWith(">") + ")");
                               document.open();
                               document.write(currentApp);
                               document.close();
