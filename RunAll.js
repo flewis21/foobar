@@ -384,85 +384,93 @@ var doGet = function (e) {
             console.log("line 367: Beginning appL evaluation");
             // Parse the input as the new value
             // Allow direct strings or JSON arrays/objects
+            let initialArgs;
             let currentApp;
             try {
               currentApp = JSON.parse(<?= appL["app"] ?>);
               console.log("Client-side: Initial WebApp:", currentApp);
             } 
             catch (jsonError) {
-              // alert("jsonError", jsonError)
               // If it's not valid JSON, treat it as a plain string
               if (<?= typeof appL["app"] === "object" ?>) {
-                currentApp = <?= JSON.stringify(appL["app"]) ?>;
-                console.log("Client-side: Initial Object of WebApp:", <?= appL["app"] ?> + "OR" + <?= JSON.stringify(appL) ?>);
+                currentApp = JSON.stringify(<?= appL["app"] ?>);
+                console.log("Client-side: Initial Object of WebApp:", <?= appL["app"] ?> + "OR" + JSON.stringify(<?= appL ?>));
               }
               else {
                 currentApp = <?= appL["app"] ?>;
-                console.log("Client-side: Initial String of WebApp:", <?= appL["app"] ?> + "OR" + <?= JSON.stringify(appL) ?>);
+                console.log("Client-side: Initial String of WebApp:", <?= appL["app"] ?> + "OR" + JSON.stringify(<?= appL ?>));
               }
             }
             const homeStackUrl = <?= homePage ?>;
+            const chUrl = document.getElementById("indexBeta");
+            console.log("line 406 Inside renBlob block of serverside Runall doGet");
 
-            console.log("Client-side: Home Page URL:", homeStackUrl);
+            // console.log("Client-side: Home Page URL:", homeStackUrl);
 
-            console.log("line 359");
+            console.log("line 408 Inside renBlob block of serverside Runall doGet");
             document.addEventListener("DOMContentLoaded", runStack);
                     function runStack() {
-                      console.log("line 362");
-                      var chUrl = document.getElementById("indexBeta");
-                      console.log("line 364");
-                      let initialArgs;
+                      console.log("line 413 Inside _renBlob block of serverside Runall doGet _runStack");
                       initialArgs = currentApp;
                       if (initialArgs !== undefined && initialArgs !== null) {
-                        if (typeof currentApp === 'object') {
-                          chUrl.value = JSON.stringify(currentApp, null, 2);
+
+                        // If trying to parse JSON on appL["app"] succeeds
+                        if (typeof initialArgs === 'object') {
+                          console.log("JSON.stringify(" + initialArgs + ")");
+                          chUrl.value = JSON.stringify(initialArgs, null, 2);
                         } 
-                        // --- else {
-                        // ---  chUrl.value = initialArgs; // If it's a string directly
-                        // --- }
-                        // --- 3. Handle String content (URL, JSON, HTML, or plain text)
-                        else if (typeof currentApp === 'string') {
+
+                        // --- 3. if json error, handle String content (URL, JSON, HTML, or plain text)
+                        else if (typeof initialArgs === 'object' || typeof initialArgs === 'string') {
                           // --- MODIFIED: Use Regex for URL check ---
                           // Regex for a basic HTTP/HTTPS URL validation
                           // This regex is fairly comprehensive for common URLs but can be refined if needed.
-                          const urlRegexString = "/^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&//=]*)$/";
-                          const urlRegex = new RegExp(urlRegexString);
-                          if (urlRegex.test(currentApp)) {
-                            console.log("urlRegex.test(" + JSON.stringify(currentApp) + ")");
-                            console.log("currentApp is a URL, navigating to: " + currentApp);
-                            window.location.href = currentApp; // New type "url" for strings
+                          // "^https?://(?:www\\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}(?:[-a-zA-Z0-9()@:%_+.~#?&//=]*)$";
+                          const urlRegExString = "^(https?://(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9].[^s]{2,}|www.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9].[^s]{2,}|https?://[a-zA-Z0-9]+.[^s]{2,}|[a-zA-Z0-9]+.[^s]{2,})$/i"
+                          const urlRegEx = new RegExp(urlRegExString);
+
+                          console.log(urlRegEx.test(initialArgs));
+                          console.log("line 431 inside _runStack _urlRegEx.test(" + initialArgs + ")");
+
+                          if (urlRegEx.test(initialArgs)) {
+
+                            console.log("initialArgs is a URL, navigating to: " + initialArgs);
+                            window.location.href = initialArgs; // New type "url" for strings
                             return;
+
                           }
                           // --- END MODIFIED ---
 
                           try {
-                            console.log(currentApp.trim().startsWith("<") && currentApp.trim().endsWith(">"));
-                            const parsedJson = JSON.parse(currentApp);
+                            console.log(initialArgs.trim().startsWith("<") && initialArgs.trim().endsWith(">"));
+                            console.log("line 444 _runStack JSON.parse(" + initialArgs + ")");
+                            const parsedJson = JSON.parse(initialArgs);
                             if (parsedJson) {
-                              console.log("JSON.parse(" + currentApp + ")");
                               
                               // Convert the JavaScript object into a formatted JSON string
+                              console.log("initialArgs is a JSON object, navigating to: " + initialArgs);
                               const jsonString = JSON.stringify(parsedJson, null, 2); 
 
                               document.open();
                               document.write("<pre>" + jsonString + "</pre>"); // Wrap in <pre> for formatting
                               document.close();
+                              
                             }
                           } catch (jsonError) {
                             // Not JSON, treat as HTML or plain text
-                            if (currentApp.trim().startsWith("<") && currentApp.trim().endsWith(">")) {
+                            if (initialArgs.trim().startsWith("<") && initialArgs.trim().endsWith(">")) {
                               // More robust HTML check
-                              console.log("currentApp.trim(" + currentApp.trim().startsWith("<") && currentApp.trim().endsWith(">") + ")");
+                              console.log(initialArgs.trim().startsWith("<") && initialArgs.trim().endsWith(">"));
                               document.open();
-                              document.write(currentApp);
+                              document.write(initialArgs);
                               document.close();
                             } else {
                                 let appStr = null;
-                                  if (typeof currentApp === 'object') {
-                                    appStr = JSON.stringify(currentApp);
+                                  if (typeof initialArgs === 'object') {
+                                    appStr = JSON.stringify(initialArgs);
                                   } else {
                                     // Escape special characters and wrap in quotes for the HTML template
-                                    appStr = JSON.stringify(currentApp); 
+                                    appStr = JSON.stringify(initialArgs); 
                                   }
                                 const funcStr = <?= appL["index"]["funcStr"] || "null" ?>;
                                 const dataStr = <?= appL["index"]["dataStr"] || "null" ?>;
