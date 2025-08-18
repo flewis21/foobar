@@ -426,16 +426,17 @@ var doGet = function (e) {
                           // Regex for a basic HTTP/HTTPS URL validation
                           // This regex is fairly comprehensive for common URLs but can be refined if needed.
                           // "^https?://(?:www\\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}(?:[-a-zA-Z0-9()@:%_+.~#?&//=]*)$";
-                          const urlRegExString = "^(https?://(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9].[^s]{2,}|www.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9].[^s]{2,}|https?://[a-zA-Z0-9]+.[^s]{2,}|[a-zA-Z0-9]+.[^s]{2,})$/i"
-                          const urlRegEx = new RegExp(urlRegExString);
+                          // const urlRegExString = "^https?://(.+?)."
+                          // const urlRegEx = new RegExp(urlRegExString);
+                          let addr = URL.canParse(<?= appL["app"] ?>)
 
-                          console.log(urlRegEx.test(initialArgs));
-                          console.log("line 431 inside _runStack _urlRegEx.test(" + initialArgs + ")");
+                          console.log(addr);
+                          console.log("line 431 inside _runStack _URL.canParse(" + <?= appL["app"] ?> + ")");
 
-                          if (urlRegEx.test(initialArgs)) {
+                          if (addr) {
 
-                            console.log("initialArgs is a URL, navigating to: " + initialArgs);
-                            window.location.href = initialArgs; // New type "url" for strings
+                            console.log("appL["app"] is a URL, navigating to: " + <?= appL["app"] ?>);
+                            window.location.href = <?= appL["app"] ?>; // New type "url" for strings
                             return;
 
                           }
