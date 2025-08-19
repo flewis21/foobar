@@ -363,8 +363,8 @@ var doGet = function (e) {
                                             <td>
                                               <div>
                                                 <textarea id="indexBeta" spellcheck="false" rows="10" cols="50"></textarea></div><br /></td></tbody></table></td></tr></tbody></table></div></div></div></div></div></div></div></div>
-            <script>
-     function clientSide(func, args) {
+          <script>
+            function clientSide(func, args) {
               return new Promise((resolve, reject) => {
                 google.script.run
                   .withSuccessHandler((result) => {
@@ -381,24 +381,24 @@ var doGet = function (e) {
                   .runBoilerplate(func, args);
               });
             }
-            console.log("line 367: Beginning appL evaluation");
+            console.log("line 367: Beginning <?= appL ?> evaluation");
             // Parse the input as the new value
             // Allow direct strings or JSON arrays/objects
             let initialArgs;
             let currentApp;
             try {
-              currentApp = JSON.parse(<?= appL["app"] ?>);
-              console.log("Client-side: Initial WebApp:", currentApp);
+              currentApp = JSON.parse((<?= appL["app"] ?> || <?= appL ?>));
+              console.log("Client-side: Initial WebApp:", JSON.parse(<?= appL["app"] ?>) + " OR " + JSON.parse(<?= appL ?>));
             } 
-            catch (jsonError) {
+            catch (error) {
               // If it's not valid JSON, treat it as a plain string
-              if (<?= typeof appL["app"] === "object" ?>) {
-                currentApp = JSON.stringify(<?= appL["app"] ?>);
-                console.log("Client-side: Initial Object of WebApp:", <?= appL["app"] ?> + "OR" + JSON.stringify(<?= appL ?>));
+              if ((<?= typeof appL["app"] === "object" ?> || <?= typeof appL === "object" ?>)) {
+                currentApp = JSON.stringify((<?= appL["app"] ?> || <?= appL ?>));
+                console.log("Client-side: Initial Object of WebApp:", JSON.stringify(<?= appL["app"] ?>) + " OR " + JSON.stringify(<?= appL ?>));
               }
               else {
-                currentApp = <?= appL["app"] ?>;
-                console.log("Client-side: Initial String of WebApp:", <?= appL["app"] ?> + "OR" + JSON.stringify(<?= appL ?>));
+                currentApp = ((<?= appL["app"] ?> || <?= appL ?>));
+                console.log("Client-side: Initial String of WebApp:", <?= appL["app"] ?> + " OR " + <?= appL ?>);
               }
             }
             const homeStackUrl = <?= homePage ?>;
@@ -410,7 +410,7 @@ var doGet = function (e) {
             console.log("line 408 Inside renBlob block of serverside Runall doGet");
             document.addEventListener("DOMContentLoaded", runStack);
                     function runStack() {
-                      console.log("line 413 Inside _renBlob block of serverside Runall doGet _runStack");
+                      console.log("line 413 Inside _renBlob block of serverside Runall doGet _runStack(" + currentApp + ")");
                       initialArgs = currentApp;
                       if (initialArgs !== undefined && initialArgs !== null) {
 
@@ -428,15 +428,15 @@ var doGet = function (e) {
                           // "^https?://(?:www\\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}(?:[-a-zA-Z0-9()@:%_+.~#?&//=]*)$";
                           // const urlRegExString = "^https?://(.+?)."
                           // const urlRegEx = new RegExp(urlRegExString);
-                          let addr = URL.canParse(<?= appL["app"] ?>)
+                          let addr = URL.canParse((<?= appL["app"] ?> || <?= appL ?>))
 
                           console.log(addr);
-                          console.log("line 431 inside _runStack _URL.canParse(" + <?= appL["app"] ?> + ")");
+                          console.log("line 431 inside _runStack _URL.canParse(" + (<?= appL["app"] ?> || <?= appL ?>) + ")");
 
                           if (addr) {
 
-                            console.log("appL["app"] is a URL, navigating to: " + <?= appL["app"] ?>);
-                            window.location.href = <?= appL["app"] ?>; // New type "url" for strings
+                            console.log('appL["app"] is a URL, navigating to: ' + (<?= appL["app"] ?> || <?= appL ?>));
+                            window.location.href = (<?= appL["app"] ?> || <?= appL ?>); // New type "url" for strings
                             return;
 
                           }
@@ -473,19 +473,19 @@ var doGet = function (e) {
                                     // Escape special characters and wrap in quotes for the HTML template
                                     appStr = JSON.stringify(initialArgs); 
                                   }
-                                const funcStr = <?= appL["index"]["funcStr"] || "null" ?>;
-                                const dataStr = <?= appL["index"]["dataStr"] || "null" ?>;
-                                const indStr = funcStr? funcStr:dataStr;
-                                const combineStr = indStr + " " + appStr
+                                // const fStr = <?= appL["index"]? appL["index"]["funcStr"]:"null" ?>;
+                                // const dStr = <?= appL["index"]? appL["index"]["dataStr"]:"null" ?>;
+                                // const indStr = fStr? fStr:dStr;
+                                // const combineStr = indStr + " " + appStr
                                 console.log("typeof initialArgs === " + typeof initialArgs)
-                                chUrl.value = JSON.stringify(combineStr, null, 2);
+                                chUrl.value = JSON.stringify(appStr, null, 2);
                             }
                           }
                         }
                       } else {
                         chUrl.value = '[""]'; // Default if args is missing
                       }
-                              chUrl.addEventListener("change", function () {
+                              chUrl.addEventListener("change", function() {
                                 try {
                                   // Parse the user's input as the new value
                                   // Allow direct strings or JSON arrays/objects
