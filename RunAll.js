@@ -303,6 +303,7 @@ var doGet = function (e) {
   }
   // --- END Refactored payLoad processing ---
 
+
   var htmlArray = [
     `untitled proMedia epaWebsite callBack oddChances jsGame checkOnDay uiAccess popUpOpen congressLeg congressMembers jFundamentals gnuFree myGNUFreeJS Section3.Challenge1 cors edgarFriendly editor ssForms styling theRoll theWorks uiAccess cGWI`,
   ]
@@ -310,7 +311,8 @@ var doGet = function (e) {
     .split(" ");
   var rndHtmlIndex = Math.floor(Math.random() * Math.floor(htmlArray.length));
   console.log("rndHtml = " + htmlArray[rndHtmlIndex]);
-  var rndPage = htmlArray[rndHtmlIndex];
+  var rndPage =
+    htmlArray[rndHtmlIndex];
   // console.log("index:", index + "\ntres", tres);
   // Simplify args logic:
   // var htmlArg;
@@ -319,62 +321,65 @@ var doGet = function (e) {
   var htmlTresArg = rndPage; // Default value
   if (foobarr) {
     if (Array.isArray(foobarr)) {
-      const firstArg = foobarr[0];
-      if (htmlArray.includes(firstArg)) {
-        var foobarr0Index = htmlArray.findIndex(function (element) {
-          return element === firstArg;
-        });
-        htmlDosArg = htmlArray[foobarr0Index];
-      }
-    } else if (htmlArray.includes(foobarr)) {
-      var foobarrIndex = htmlArray.findIndex(function (element) {
-        return element === foobarr;
-      });
-      htmlDosArg = htmlArray[foobarrIndex];
+          const firstArg = foobarr[0];
+          if (htmlArray.includes(firstArg)) {
+              var foobarr0Index = htmlArray.findIndex(function (element) {
+                return element === firstArg;
+              });
+            htmlDosArg = htmlArray[foobarr0Index];
+          }
+    } 
+    else if (htmlArray.includes(foobarr)) {
+                  var foobarrIndex = htmlArray.findIndex(function (element) {
+                    return element === foobarr;
+                  });
+                  htmlDosArg = htmlArray[foobarrIndex];
     }
   }
   if (funcTres) {
     if (Array.isArray(funcTres)) {
-      const firstArg = funcTres[0];
-      if (htmlArray.includes(firstArg)) {
-        var funcTres0Index = htmlArray.findIndex(function (element) {
-          return element === firstArg;
-        });
-        htmlTresArg = htmlArray[funcTres0Index];
-      }
-    } else if (htmlArray.includes(funcTres)) {
-      var funcTresIndex = htmlArray.findIndex(function (element) {
-        return element === funcTres;
-      });
-      htmlTresArg = htmlArray[funcTresIndex];
+          const firstArg = funcTres[0];
+          if (htmlArray.includes(firstArg)) {
+              var funcTres0Index = htmlArray.findIndex(function (element) {
+                return element === firstArg;
+              });
+            htmlTresArg = htmlArray[funcTres0Index];
+          }
+    } 
+    else if (htmlArray.includes(funcTres)) {
+              var funcTresIndex = htmlArray.findIndex(function (element) {
+                return element === funcTres;
+              });
+              htmlTresArg = htmlArray[funcTresIndex];
     }
   }
   console.log("e {parameter: {func: " + libFunc + "}}");
   const vLen = [83, 94, 97, 99, 101, 103, 136, 132];
 
   // Final renderTemplate call
-  if (this[libName] && typeof this[libName][libFunc] === "function") {
+  if (
+    this[libName] &&
+    typeof this[libName][libFunc] === "function"
+  ) {
     try {
       if (libFunc === "renderFile") {
         console.log(
-          "returning ?func=" + libFunc + "&args=" + foobarr ||
-            (htmlArray[foobarr0Index] || htmlArray[foobarrIndex]) +
-              ", " +
-              {} +
-              ", " +
-              templateName ||
+          "returning ?func=" +
+            libFunc +
+            "&args=" +
+            foobarr ||
+            (htmlArray[foobarr0Index] || htmlArray[foobarrIndex]) + ", " + {} + ", " + templateName ||
             foobarr ||
             (htmlArray[foobarr0Index] || htmlArray[foobarrIndex]) + ",",
         );
         return this[libName].renderFile(
-          foobarr || htmlArray[foobarr0Index] || htmlArray[foobarrIndex],
+          foobarr || (htmlArray[foobarr0Index] || htmlArray[foobarrIndex]),
           {},
-          "returning ?func=" + libFunc + "&args=" + foobarr ||
-            (htmlArray[foobarr0Index] || htmlArray[foobarrIndex]) +
-              ", " +
-              {} +
-              ", " +
-              templateName ||
+          "returning ?func=" +
+            libFunc +
+            "&args=" +
+            foobarr ||
+            (htmlArray[foobarr0Index] || htmlArray[foobarrIndex]) + ", " + {} + ", " + templateName ||
             foobarr ||
             (htmlArray[foobarr0Index] || htmlArray[foobarrIndex]) + ",",
         );
@@ -392,8 +397,7 @@ var doGet = function (e) {
             JSON.stringify(e) +
             " " +
             foobarr ||
-          htmlArray[foobarr0Index] ||
-          htmlArray[foobarrIndex],
+          (htmlArray[foobarr0Index] || htmlArray[foobarrIndex]),
       );
       return this[libName].renderTemplate(
         `<!DOCTYPE html>
@@ -622,12 +626,20 @@ var doGet = function (e) {
                   .runBoilerplate(func, args);
               });
             }
-            console.log("line 367: Beginning evaluation")
+            console.log("line 367: Beginning evaluation");
+            const homeStackUrl = JSON.stringify(<?= homePage ?>);
+            const chUrl = document.getElementById("indexBeta");
+            // alert("line 653 Inside renBlob block of serverside Runall doGet");
+
+            console.log("Client-side: Home Page URL:", homeStackUrl);
+
+            // console.log("line 657 Inside renBlob block of serverside Runall doGet");
             // Parse the input as the new value
             // Allow direct strings or JSON arrays/objects
             let initialArgs
             let currentApp
             try {
+              console.log("Processing", <?= appL ?>)
               // if (<?= appL["app"] ?>) {
               //   currentApp = JSON.parse(<?= appL["app"] ?>);
               //   console.log("Client-side: Initial WebApp:", <?= appL["app"] ?>);
@@ -638,13 +650,15 @@ var doGet = function (e) {
               // }
             } 
             catch (error) {
+              console.log("Processing error invalid JSON", <?= appL ?>)
               // If it's not valid JSON, treat it as a plain string
               // if (<?= typeof appL["app"] === "object" ?>) {
               //   currentApp = JSON.stringify(<?= appL["app"] ?>);
               //   console.log("Client-side: Initial Object of WebApp:", JSON.stringify(<?= appL["app"] ?>));
               // }
               // else 
-              if (<?= typeof appL === "object" ?>) {
+              if (<?= typeof JSON.stringify(appL) ?> === "object") {
+                  console.log("Processing object", <?= typeof appL ?>)
                   currentApp = JSON.stringify(<?= appL ?>);
                   // console.log("Client-side: Initial Object of WebApp:", JSON.stringify(<?= appL ?>))
               }
@@ -655,18 +669,12 @@ var doGet = function (e) {
                 // }
                 // else 
                 if (<?= appL ?>) {
+                  console.log("Processing this", <?= appL ?>)
                   currentApp = <?= appL ?>
                   // console.log("Client-side: Initial String of WebApp:", <?= appL ?>);
                 }
               }
             }
-            const homeStackUrl = <?= homePage ?>
-            const chUrl = document.getElementById("indexBeta");
-            // console.log("line 653 Inside renBlob block of serverside Runall doGet");
-
-            // console.log("Client-side: Home Page URL:", homeStackUrl);
-
-            // console.log("line 657 Inside renBlob block of serverside Runall doGet");
             document.addEventListener("DOMContentLoaded", runStack)
                     function runStack() {
                       // console.log("line 660 Inside _renBlob block of serverside Runall doGet _runStack(" + currentApp + ")");
@@ -675,12 +683,13 @@ var doGet = function (e) {
 
                         // If trying to parse JSON on appL["app"] succeeds
                         if (typeof initialArgs === 'object') {
-                          // console.log("JSON.stringify(" + initialArgs + ")");
+                          console.log("Processing object", typeof initialArgs);
                           chUrl.value = JSON.stringify(initialArgs, null, 2);
                         } 
 
                         // --- 3. if json error, handle String content (URL, JSON, HTML, or plain text)
                         else if (typeof initialArgs === 'object' || typeof initialArgs === 'string') {
+                          console.log("Processing object or string", typeof initialArgs);
                           // --- MODIFIED: Use Regex for URL check ---
                           // Regex for a basic HTTP/HTTPS URL validation
                           // This regex is fairly comprehensive for common URLs but can be refined if needed.
@@ -701,10 +710,10 @@ var doGet = function (e) {
 
                           // }
                           // else 
-                          if (<?= appL ?>) {
-                            let addr = URL.canParse(<?= appL ?>);
+                          if (initialArgs) {
+                            let addr = URL.canParse(initialArgs);
                             // console.log(addr);
-                            // console.log("line 431 inside _runStack _URL.canParse(" + <?= appL ?> + ")");
+                            // console.log("line 431 inside _runStack _URL.canParse(" + initialArgs + ")");
                             if (addr) {
 
                               // console.log('appL is a URL, navigating to: ' + addr);
@@ -717,14 +726,15 @@ var doGet = function (e) {
                           // --- END MODIFIED ---
 
                           try {
+                            console.log("Processing Json object", typeof initialArgs);
                             // console.log(initialArgs.trim().startsWith("<") && initialArgs.trim().endsWith(">"));
                             // console.log("line 444 _runStack JSON.parse(" + initialArgs + ")");
                             const parsedJson = JSON.parse(initialArgs);
                             if (parsedJson) {
                               
                               // Convert the JavaScript object into a formatted JSON string
-                              // console.log("initialArgs is a JSON object, navigating to: ", initialArgs);
-                              const jsonString = JSON.stringify(parsedJson, null, 2); 
+                              console.log("initialArgs is a JSON object, navigating to", initialArgs);
+                              // const jsonString = JSON.stringify(parsedJson, null, 2); 
 
                               document.open();
                               document.write("<pre>" + jsonString + "</pre>"); // Wrap in <pre> for formatting
@@ -732,14 +742,36 @@ var doGet = function (e) {
                               
                             }
                           } catch (jsonError) {
+                            console.log("Processing error invalid Json", typeof initialArgs);
                             // Not JSON, treat as HTML or plain text
+                            console.log("Processing HTML", typeof initialArgs);
                             if (initialArgs.trim().startsWith("<") && initialArgs.trim().endsWith(">")) {
                               // More robust HTML check
                               // console.log(initialArgs.trim().startsWith("<") && initialArgs.trim().endsWith(">"));
                               document.open();
-                              document.write(initialArgs);
+                              document.write('<pre class="z-depth-5 card-panel deep-purple darken-1 scale-transition scale-out scale-in btn-large" id="eventRes01" class="menu-img grey darken-4 z-depth-5" style="width: 100%; height: 100%; border: none;" allow="autoplay" allow="encrypted-media" title="Dontime Life Website" frameborder="0" allowfullscreen >' + initialArgs + '</pre>');
                               document.close();
+
+                              // const iframe = document.createElement("iframe");
+                              // iframe.id = "eventRes01";
+                              // iframe.title = "Dontime Life Website";
+                              // iframe.allow = "autoplay; encrypted-media";
+                              // iframe.allowFullscreen = true;
+                              // iframe.style.width = "100%";
+                              // iframe.style.height = "100%";
+                              // iframe.style.border = "none";
+                              // iframe.className = "z-depth-5 card-panel deep-purple darken-1 scale-transition scale-out scale-in btn-large menu-img grey darken-4 z-depth-5";
+
+                              // document.getElementById("iframeContainer").appendChild(iframe);
+
+                              // const iframeDoc = iframe.contentWindow.document;
+                              // iframeDoc.open();
+                              // document.open();
+                              // document.write('<div id="iframeContainer">' + iframeDoc.write(initialArgs) + '</div>');
+                              // document.close();
+                              // iframeDoc.close();
                             } else {
+                                console.log("Processing this", typeof initialArgs);
                                 let appStr = null;
                                   if (typeof initialArgs === "object") {
                                     appStr = JSON.stringify(initialArgs);
@@ -747,8 +779,8 @@ var doGet = function (e) {
                                     // Escape special characters and wrap in quotes for the HTML template
                                     appStr = JSON.stringify(initialArgs); 
                                   }
-                                // const fStr = <?= appL["index"]? appL["index"]["funcStr"]:"null" ?>;
-                                // const dStr = <?= appL["index"]? appL["index"]["dataStr"]:"null" ?>;
+                                // const fStr = JSON.stringify(<?= appL["index"]? appL["index"]["funcStr"]:"null" ?>);
+                                // const dStr = JSON.stringify(<?= appL["index"]? appL["index"]["dataStr"]:"null" ?>);
                                 // const indStr = fStr? fStr:dStr;
                                 // const combineStr = indStr + " " + appStr
                                 // console.log("typeof initialArgs === ", typeof initialArgs);
@@ -803,8 +835,8 @@ var doGet = function (e) {
         </body>
       </html>`,
             {
-              appL: finalAppLContent,
-              tupL: htmlArray[funcTres0Index] || htmlArray[funcTresIndex],
+              appL: payLoad,
+              tupL: (htmlArray[funcTres0Index] || htmlArray[funcTresIndex]),
               homePage: this[libName].getScriptUrl(),
             },
           ),
@@ -815,16 +847,19 @@ var doGet = function (e) {
         "returning renderTemplate contentApp [" +
           libFunc +
           "].apply(this, [" +
-          (foobarr || htmlArray[foobarr0Index] || htmlArray[foobarrIndex]) +
+          (foobarr || (htmlArray[foobarr0Index] || htmlArray[foobarrIndex])) +
           "]), tupL " +
           (htmlArray[funcTres0Index] || htmlArray[funcTresIndex]) +
           ", e " +
           JSON.stringify(e) +
           " " +
-          (foobarr || htmlArray[foobarr0Index] || htmlArray[foobarrIndex]),
+          (foobarr || (htmlArray[foobarr0Index] || htmlArray[foobarrIndex])),
       );
     } catch (error) {
-      console.error(`Error executing function "${libFunc}":`, error);
+      console.error(
+        `Error executing function "${libFunc}":`,
+        error,
+      );
       throw new Error(
         "Error executing function: " + error.toString() + "\n" + error.stack,
       );
