@@ -7,7 +7,7 @@ var doGet = function (e) {
   }
 
   // Determine funcTres
-  var funcTres = e && e.parameter["file"] ? e.parameter["file"] : "uiAccess";
+  var funcTres = e?.parameter["file"];
 
   // Logging
   if (e && e.parameter["func"]) {
@@ -15,7 +15,7 @@ var doGet = function (e) {
   } else {
     Logger.log(
       ">>> [MAIN] MAIN WEB APP No e.parameter[" +
-        e.parameter["func"] +
+        e?.parameter["func"] +
         "] " +
         JSON.stringify(e),
     );
@@ -82,77 +82,322 @@ var doGet = function (e) {
       ", = " +
       JSON.stringify(e),
   );
-  var funcUno = e.parameter["func"];
 
-  console.log("e.parameter['args'] before funcDos:", e.parameter["args"]);
-  var funcDos = e.parameter["args"];
-  console.log("e.parameter['args'] after funcDos:", e.parameter["args"]);
-  console.log("funcDos:", funcDos);
-  var foobarr = funcUno || "renderFile";
-  var htmlArray = [
-    `untitled proMedia epaWebsite callBack oddChances jsGame checkOnDay uiAccess popUpOpen congressLeg congressMembers jFundamentals gnuFree myGNUFreeJS Section3.Challenge1 cors edgarFriendly editor ssForms styling theRoll theWorks uiAccess cGWI`,
-  ]
-    .toString()
-    .split(" ");
-  var rndHtmlIndex = Math.floor(Math.random() * Math.floor(htmlArray.length));
-  console.log("rndHtmlIndex = " + htmlArray[rndHtmlIndex]);
-  var index = htmlArray.findIndex(function (element) {
-    return element === e.parameter["args"];
-  });
-  var tres = htmlArray.findIndex(function (element) {
-    return element === funcTres;
-  });
-  console.log("index:", index + "\ntres", tres);
-  var args;
-  index !== -1 ? (args = htmlArray[index]) : (args = htmlArray[rndHtmlIndex]);
-  console.log("e {parameter: {func: " + e.parameter["func"] + "}}");
+  // Determine templateName (not directly used in the provided template, but good for context)
   let templateName = e.parameter["func"];
   if (e.parameter["func"] === "crmGWI") {
     templateName = "General Work Invoice";
   } else if (e.parameter["func"] === "crmEBI") {
     templateName = "Employee Benefits Inquiry";
   }
+  var funcUno = e.parameter["func"];
+
+  console.log("e.parameter['args'] before funcDos:", e.parameter["args"]);
+  var funcDos = e.parameter["args"];
+  console.log("e.parameter['args'] after funcDos:", e.parameter["args"]);
+  // console.log("funcDos:", funcDos);
+  var libFunc = funcUno || "renderFile";
+  var foobarr = funcDos || ""; // Redundant variable
+  var payLoad = {}; // Initialize payload
+
+  // --- BEGIN Refactored payLoad processing ---
+  let finalAppLContent = "";
+  let iframeSrc =
+    "https://www.clubhouse.com/@fabianlewis?utm_medium=ch_profile&utm_campaign=lhTUtHb2bYqPN3w8EEB7FQ-247242"; // Default iframe src
+  let finalFeedDivContent = "";
+
+  try {
+    let rawFuncResult = null;
+    if (this[libName] && typeof this[libName][libFunc] === "function") {
+      let parsedFuncArgs = [];
+
+      // Check if foobarr is already an array (from internal re-assignment by objectOfS)
+      if (Array.isArray(foobarr)) {
+        parsedFuncArgs = foobarr; // It's already the array we want
+      } else if (typeof foobarr === "string" && foobarr) {
+        try {
+          parsedFuncArgs = JSON.parse(foobarr);
+          if (!Array.isArray(parsedFuncArgs)) {
+            parsedFuncArgs = [parsedFuncArgs];
+          }
+        } catch (jsonError) {
+          parsedFuncArgs = [foobarr]; // Treat as a single string argument if not valid JSON
+        }
+      } else {
+        // Handle other cases for foobarr, or it might be null/undefined
+        finalArgsForFunction = [];
+      }
+      rawFuncResult = this[libName][libFunc].apply(this, parsedFuncArgs);
+    } else {
+      console.error(
+        `Error: Function "${libFunc}" not found or not callable in "${libName}".`,
+      );
+      rawFuncResult = {
+        type: "error",
+        message: `Function "${libFunc}" not found.`,
+      };
+    }
+
+    // Helper function to process any value (rawFuncResult or a nested property like .app)
+    function processContent(content) {
+      if (!content) {
+        return { type: "unknown", data: null };
+      }
+
+      // Regex for a basic HTTP/HTTPS URL validation
+      // This regex is fairly comprehensive for common URLs but can be refined if needed.
+      const urlRegex =
+        /^(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/[a-zA-Z0-9]+\.[^\s]{2,}|[a-zA-Z0-9]+\.[^\s]{2,})$/i;
+
+      // 1. Handle UrlFetchApp.HTTPResponse
+      if (
+        typeof content.getResponseCode === "function" &&
+        typeof content.getContentText === "function"
+      ) {
+        const contentType = content.getHeaders()["Content-Type"] || "";
+        const responseText = content.getContentText();
+
+        if (contentType.includes("application/json")) {
+          try {
+            return { type: "jsonData", data: JSON.parse(responseText) };
+          } catch (e) {
+            return {
+              type: "text",
+              data: `Error parsing JSON from URL fetch: ${responseText}`,
+            };
+          }
+        } else if (contentType.includes("text/html")) {
+          return { type: "html", data: responseText };
+        } else {
+          return { type: "text", data: responseText };
+        }
+      }
+      // 2. Handle Google Apps Script HtmlOutput
+      else if (typeof content.getContent === "function") {
+        return { type: "html", data: content.getContent() };
+      }
+      // 3. Handle String content (URL, JSON, HTML, or plain text)
+      else if (typeof content === "string") {
+        // --- MODIFIED: Use Regex for URL check ---
+        if (urlRegex.test(content)) {
+          return { type: "url", data: content }; // New type "url" for strings
+        }
+        // --- END MODIFIED ---
+
+        try {
+          const parsedJson = JSON.parse(content);
+          return { type: "jsonData", data: parsedJson };
+        } catch (jsonError) {
+          // Not JSON, treat as HTML or plain text
+          if (content.trim().startsWith("<") && content.trim().endsWith(">")) {
+            // More robust HTML check
+            return { type: "html", data: content };
+          } else {
+            return { type: "text", data: content };
+          }
+        }
+      }
+      // 4. Handle Generic Objects
+      else if (typeof content === "object" && content !== null) {
+        // If the object itself contains structured data you want to directly use
+        if (content.html) {
+          // If there's an explicit 'html' property
+          return { type: "html", data: content.html };
+        }
+        if (content.url && urlRegex.test(content.url)) {
+          // Use regex for object.url as well
+          return { type: "url", data: content.url };
+        }
+        // Add other specific object property checks here if needed
+        return { type: "object", data: content }; // Default for other objects
+      }
+      // 5. Default unknown
+      else {
+        return { type: "unknown", data: content };
+      }
+    }
+
+    // Process the main rawFuncResult
+    payLoad = processContent(rawFuncResult);
+
+    // If rawFuncResult was an object and it had an 'app' property,
+    // we should specifically process that 'app' property as well.
+    // This assumes that the 'app' property might override or provide the primary content.
+    if (
+      rawFuncResult &&
+      typeof rawFuncResult === "object" &&
+      rawFuncResult.app
+    ) {
+      console.log("the 'app' property:", rawFuncResult);
+      const appProcessed = processContent(rawFuncResult.app);
+      // Overwrite payLoad if 'app' property yields more specific or desired content
+      // You might want more sophisticated merging here if both rawFuncResult and .app hold valuable distinct data.
+      if (
+        appProcessed.type !== "unknown" ||
+        (appProcessed.data !== null && appProcessed.data !== undefined)
+      ) {
+        payLoad = appProcessed;
+        // Also, if rawFuncResult has a 'link' or 'vApp' property, ensure it's retained if meaningful
+        // This part of merging can be tailored to your specific needs if 'link' or 'vApp'
+        // represent something distinct from the 'app' content but should still be propagated.
+        if (rawFuncResult.link && !payLoad.link) {
+          // Only add if payLoad doesn't already have it
+          payLoad.link = rawFuncResult.link;
+        }
+        if (rawFuncResult.index && !payLoad.index) {
+          // Only add if payLoad doesn't already have it
+          payLoad.index = rawFuncResult.index;
+        }
+      }
+    }
+
+    console.log("payLoad.type === ", payLoad.type);
+    console.log("payLoad.data === ", payLoad.data);
+
+    // Now, use the structured 'payLoad' to set the final content variables
+    // (This part needs adjustments to handle the new "url" type)
+    if (payLoad.type === "html") {
+      iframeSrc = payLoad.index; // Assign iframeSrc
+      finalAppLContent = payLoad.data;
+      finalFeedDivContent = `URL provided: <a href="${payLoad.link}" target="_blank">${payLoad.link}</a>`;
+    } else if (payLoad.type === "url") {
+      // --- NEW: Handle "url" type directly ---
+      iframeSrc = payLoad.data; // Assign the URL to iframeSrc
+      finalAppLContent = `URL provided: <a href="${payLoad.index}" target="_blank">${payLoad.index}</a>`;
+      finalFeedDivContent = `URL provided: <a href="${payLoad.link}" target="_blank">${payLoad.link}</a>`;
+    } else if (payLoad.type === "jsonData") {
+      iframeSrc = payLoad.index; // Assign iframeSrc
+      finalAppLContent = `<pre>${JSON.stringify(payLoad.data, null, 2)}</pre>`;
+      finalFeedDivContent = `URL provided: <a href="${payLoad.link}" target="_blank">${payLoad.link}</a>`;
+    } else if (payLoad.type === "text") {
+      iframeSrc = payLoad.index; // Assign iframeSrc
+      finalAppLContent = payLoad.data;
+      finalFeedDivContent = `URL provided: <a href="${payLoad.link}" target="_blank">${payLoad.link}</a>`;
+    } else if (payLoad.type === "object") {
+      // Here, if payLoad.data is an object, you need to decide how to display it.
+      // It could contain sub-properties you want to render.
+      if (payLoad.data.html || payLoad.data.app) {
+        finalAppLContent = payLoad.data.html || payLoad.data.app;
+        // If the object itself contains a URL, use it for iframeSrc
+        iframeSrc = payLoad.data.url || iframeSrc;
+      } else if (payLoad.data.url) {
+        // If the object explicitly has a 'url' property
+        iframeSrc = payLoad.data.url;
+        finalAppLContent = `URL provided: <a href="${payLoad.data.index}" target="_blank">${payLoad.data.index}</a>`;
+        finalFeedDivContent = `URL provided: <a href="${payLoad.data.link}" target="_blank">${payLoad.data.link}</a>`;
+      } else {
+        // Default way to display a generic object: stringify it
+        iframeSrc = payLoad.data.index; // Assign iframeSrc
+        finalAppLContent = `<pre>${JSON.stringify(payLoad.data.app, null, 2)}</pre>`;
+        finalFeedDivContent = `URL provided: <a href="${payLoad.data.link}" target="_blank">${payLoad.data.link}</a>`;
+      }
+    } else if (payLoad.type === "unknown" || payLoad.type === "error") {
+      finalAppLContent = `<div>Error: ${payLoad.message || payLoad.data || "Unknown error."}</div>`;
+      finalFeedDivContent = `Error: ${payLoad.message || payLoad.data || "Unknown error."}`;
+    }
+  } catch (error) {
+    console.error(`Error during payload processing:`, error);
+    finalAppLContent = `<div>Critical Error: ${error.message}</div>`;
+    finalFeedDivContent = `Critical Error: ${error.message}`;
+    iframeSrc = ""; // Clear iframe on critical error
+  }
+  // --- END Refactored payLoad processing ---
+
+
+  var htmlArray = [
+    `untitled proMedia epaWebsite callBack oddChances jsGame checkOnDay uiAccess popUpOpen congressLeg congressMembers jFundamentals gnuFree myGNUFreeJS Section3.Challenge1 cors edgarFriendly editor ssForms styling theRoll theWorks uiAccess cGWI`,
+  ]
+    .toString()
+    .split(" ");
+  var rndHtmlIndex = Math.floor(Math.random() * Math.floor(htmlArray.length));
+  console.log("rndHtml = " + htmlArray[rndHtmlIndex]);
+  var rndPage =
+    htmlArray[rndHtmlIndex];
+  // console.log("index:", index + "\ntres", tres);
+  // Simplify args logic:
+  // var htmlArg;
+  // index !== -1 ? (htmlArg = htmlArray[index]) : (htmlArg = htmlArray[rndHtmlIndex]);
+  var htmlDosArg = rndPage; // Default value
+  var htmlTresArg = rndPage; // Default value
+  if (foobarr) {
+    if (Array.isArray(foobarr)) {
+          const firstArg = foobarr[0];
+          if (htmlArray.includes(firstArg)) {
+              var foobarr0Index = htmlArray.findIndex(function (element) {
+                return element === firstArg;
+              });
+            htmlDosArg = htmlArray[foobarr0Index];
+          }
+    } 
+    else if (htmlArray.includes(foobarr)) {
+                  var foobarrIndex = htmlArray.findIndex(function (element) {
+                    return element === foobarr;
+                  });
+                  htmlDosArg = htmlArray[foobarrIndex];
+    }
+  }
+  if (funcTres) {
+    if (Array.isArray(funcTres)) {
+          const firstArg = funcTres[0];
+          if (htmlArray.includes(firstArg)) {
+              var funcTres0Index = htmlArray.findIndex(function (element) {
+                return element === firstArg;
+              });
+            htmlTresArg = htmlArray[funcTres0Index];
+          }
+    } 
+    else if (htmlArray.includes(funcTres)) {
+              var funcTresIndex = htmlArray.findIndex(function (element) {
+                return element === funcTres;
+              });
+              htmlTresArg = htmlArray[funcTresIndex];
+    }
+  }
+  console.log("e {parameter: {func: " + libFunc + "}}");
+  const vLen = [83, 94, 97, 99, 101, 103, 136, 132];
+
+  // Final renderTemplate call
   if (
     this[libName] &&
-    typeof this[libName][e.parameter["func"]] === "function"
+    typeof this[libName][libFunc] === "function"
   ) {
     try {
-      if (e.parameter["func"] === "renderFile") {
+      if (libFunc === "renderFile") {
         console.log(
           "returning ?func=" +
-            e.parameter["func"] +
+            libFunc +
             "&args=" +
-            e.parameter["args"] ||
-            args + ", " + {} + ", " + templateName ||
-            e.parameter["args"] ||
-            args + ",",
+            foobarr ||
+            (htmlArray[foobarr0Index] || htmlArray[foobarrIndex]) + ", " + {} + ", " + templateName ||
+            foobarr ||
+            (htmlArray[foobarr0Index] || htmlArray[foobarrIndex]) + ",",
         );
         return this[libName].renderFile(
-          e.parameter["args"] || args,
+          foobarr || (htmlArray[foobarr0Index] || htmlArray[foobarrIndex]),
           {},
           "returning ?func=" +
-            e.parameter["func"] +
+            libFunc +
             "&args=" +
-            e.parameter["args"] ||
-            args + ", " + {} + ", " + templateName ||
-            e.parameter["args"] ||
-            args + ",",
+            foobarr ||
+            (htmlArray[foobarr0Index] || htmlArray[foobarrIndex]) + ", " + {} + ", " + templateName ||
+            foobarr ||
+            (htmlArray[foobarr0Index] || htmlArray[foobarrIndex]) + ",",
         );
       }
-      // const result = this[libName][e.parameter["func"]](e.parameter["args"]);
+      // const result = this[libName][libFunc](foobarr);
       console.log(
         "returning renderTemplate contentApp [" +
-          foobarr +
+          libFunc +
           "].apply(this, [" +
-          e.parameter["args"] ||
-          args +
+          foobarr ||
+          (htmlArray[foobarr0Index] || htmlArray[foobarrIndex]) +
             "]), tupL " +
-            args +
+            (htmlArray[funcTres0Index] || htmlArray[funcTresIndex]) +
             ", e " +
             JSON.stringify(e) +
             " " +
-            e.parameter["args"] ||
-          args,
+            foobarr ||
+          (htmlArray[foobarr0Index] || htmlArray[foobarrIndex]),
       );
       return this[libName].renderTemplate(
         `<!DOCTYPE html>
@@ -384,34 +629,36 @@ var doGet = function (e) {
             console.log("line 367: Beginning <?= appL ?> evaluation");
             // Parse the input as the new value
             // Allow direct strings or JSON arrays/objects
-            let initialArgs;
-            let currentApp;
+            var lappIsObj = <?= appL["app"] ?>;
+            var appLIsObj = <?= appL ?>;
+            let initialArgs
+            let currentApp
             try {
-              currentApp = JSON.parse((<?= appL["app"] ?> || <?= appL ?>));
-              console.log("Client-side: Initial WebApp:", JSON.parse(<?= appL["app"] ?>) + " OR " + JSON.parse(<?= appL ?>));
+              currentApp = JSON.parse(lappIsObj) || JSON.parse(appLIsObj)
+              console.log("Client-side: Initial WebApp:", lappIsObj + " OR " + appLIsObj);
             } 
             catch (error) {
               // If it's not valid JSON, treat it as a plain string
-              if ((<?= typeof appL["app"] === "object" ?> || <?= typeof appL === "object" ?>)) {
-                currentApp = JSON.stringify((<?= appL["app"] ?> || <?= appL ?>));
-                console.log("Client-side: Initial Object of WebApp:", JSON.stringify(<?= appL["app"] ?>) + " OR " + JSON.stringify(<?= appL ?>));
+              if ( typeof lappIsObj === "object" || typeof appLIsObj === "object") {
+                currentApp = JSON.stringify(lappIsObj) || JSON.stringify(appLIsObj);
+                console.log("Client-side: Initial Object of WebApp:", JSON.stringify(lappIsObj) + " OR " + JSON.stringify(appLIsObj));
               }
               else {
-                currentApp = ((<?= appL["app"] ?> || <?= appL ?>));
-                console.log("Client-side: Initial String of WebApp:", <?= appL["app"] ?> + " OR " + <?= appL ?>);
+                currentApp = lappIsObj || appLIsObj
+                console.log("Client-side: Initial String of WebApp:", lappIsObj + " OR " + appLIsObj);
               }
             }
-            const homeStackUrl = <?= homePage ?>;
+            const homeStackUrl = <?= homePage ?>
             const chUrl = document.getElementById("indexBeta");
-            console.log("line 406 Inside renBlob block of serverside Runall doGet");
+            console.log("line 659 Inside renBlob block of serverside Runall doGet");
 
             // console.log("Client-side: Home Page URL:", homeStackUrl);
 
-            console.log("line 408 Inside renBlob block of serverside Runall doGet");
-            document.addEventListener("DOMContentLoaded", runStack);
+            console.log("line 663 Inside renBlob block of serverside Runall doGet");
+            document.addEventListener("DOMContentLoaded", runStack)
                     function runStack() {
-                      console.log("line 413 Inside _renBlob block of serverside Runall doGet _runStack(" + currentApp + ")");
-                      initialArgs = currentApp;
+                      console.log("line 666 Inside _renBlob block of serverside Runall doGet _runStack(" + currentApp + ")");
+                      initialArgs = currentApp
                       if (initialArgs !== undefined && initialArgs !== null) {
 
                         // If trying to parse JSON on appL["app"] succeeds
@@ -425,19 +672,19 @@ var doGet = function (e) {
                           // --- MODIFIED: Use Regex for URL check ---
                           // Regex for a basic HTTP/HTTPS URL validation
                           // This regex is fairly comprehensive for common URLs but can be refined if needed.
-                          // "^https?://(?:www\\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}(?:[-a-zA-Z0-9()@:%_+.~#?&//=]*)$";
+                          // "^https?://(?:www\\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}(?:[-a-zA-Z0-9()@:%_+.~#?&//=]*)$"
                           // const urlRegExString = "^https?://(.+?)."
                           // const urlRegEx = new RegExp(urlRegExString);
-                          let addr = URL.canParse((<?= appL["app"] ?> || <?= appL ?>))
+                          let addr = URL.canParse(lappIsObj) || URL.canParse(appLIsObj);
 
                           console.log(addr);
-                          console.log("line 431 inside _runStack _URL.canParse(" + (<?= appL["app"] ?> || <?= appL ?>) + ")");
+                          console.log("line 431 inside _runStack _URL.canParse(" + lappParse || appLParse + ")");
 
                           if (addr) {
 
-                            console.log('appL["app"] is a URL, navigating to: ' + (<?= appL["app"] ?> || <?= appL ?>));
-                            window.location.href = (<?= appL["app"] ?> || <?= appL ?>); // New type "url" for strings
-                            return;
+                            console.log('appL["app"] is a URL, navigating to: ' + lappParse || appLParse);
+                            window.location.href = lappParse || appLParse; // New type "url" for strings
+                            return
 
                           }
                           // --- END MODIFIED ---
@@ -449,7 +696,7 @@ var doGet = function (e) {
                             if (parsedJson) {
                               
                               // Convert the JavaScript object into a formatted JSON string
-                              console.log("initialArgs is a JSON object, navigating to: " + initialArgs);
+                              console.log("initialArgs is a JSON object, navigating to: ", initialArgs);
                               const jsonString = JSON.stringify(parsedJson, null, 2); 
 
                               document.open();
@@ -467,7 +714,7 @@ var doGet = function (e) {
                               document.close();
                             } else {
                                 let appStr = null;
-                                  if (typeof initialArgs === 'object') {
+                                  if (typeof initialArgs === "object") {
                                     appStr = JSON.stringify(initialArgs);
                                   } else {
                                     // Escape special characters and wrap in quotes for the HTML template
@@ -477,7 +724,7 @@ var doGet = function (e) {
                                 // const dStr = <?= appL["index"]? appL["index"]["dataStr"]:"null" ?>;
                                 // const indStr = fStr? fStr:dStr;
                                 // const combineStr = indStr + " " + appStr
-                                console.log("typeof initialArgs === " + typeof initialArgs)
+                                console.log("typeof initialArgs === ", typeof initialArgs);
                                 chUrl.value = JSON.stringify(appStr, null, 2);
                             }
                           }
@@ -489,25 +736,25 @@ var doGet = function (e) {
                                 try {
                                   // Parse the user's input as the new value
                                   // Allow direct strings or JSON arrays/objects
-                                  let htmlApp;
+                                  let htmlApp
                                   try {
                                     htmlApp = JSON.parse(this.value);
                                   } 
                                   catch (jsonError) {
                                     // If it's not valid JSON, treat it as a plain string
-                                    htmlApp = this.value;
+                                    htmlApp = this.value
                                   }
 
                                   // --- MODIFICATION STARTS HERE ---
                                   // Create a *new*, reduced e object containing only func and args
-                                  const updatedClientApp = htmlApp;
+                                  const updatedClientApp = htmlApp
                                   // --- MODIFICATION ENDS HERE ---
 
                                   alert("WebApp updated. Sending back to server for re-render.");
                                   console.log("Client-side: Updated WebApp to send:", updatedClientApp);
                                           async function handleStackUpdate() {
                                             try {
-                                              const newStackContent = updatedClientApp;
+                                              const newStackContent = updatedClientApp
                                               document.open();
                                               document.write(newStackContent);
                                               document.close();
@@ -518,7 +765,7 @@ var doGet = function (e) {
                                               alert("Error re-rendering: " + error.message);
                                             }
                                           }
-                                  handleStackUpdate();
+                                  handleStackUpdate()
                                 } catch (error) {
                                   alert("Error processing input. Please ensure it's valid JSON or a plain string.");
                                   console.error("Input processing error:", error);
@@ -529,10 +776,8 @@ var doGet = function (e) {
         </body>
       </html>`,
             {
-              appL: this[libName][foobarr].apply(this, [
-                e.parameter["args"] || args,
-              ]),
-              tupL: htmlArray[tres] || args,
+              appL: finalAppLContent,
+              tupL: (htmlArray[funcTres0Index] || htmlArray[funcTresIndex]),
               homePage: this[libName].getScriptUrl(),
             },
           ),
@@ -541,19 +786,19 @@ var doGet = function (e) {
         },
 
         "returning renderTemplate contentApp [" +
-          foobarr +
+          libFunc +
           "].apply(this, [" +
-          (e.parameter["args"] || args) +
+          (foobarr || (htmlArray[foobarr0Index] || htmlArray[foobarrIndex])) +
           "]), tupL " +
-          (htmlArray[tres] || args) +
+          (htmlArray[funcTres0Index] || htmlArray[funcTresIndex]) +
           ", e " +
           JSON.stringify(e) +
           " " +
-          (e.parameter["args"] || args),
+          (foobarr || (htmlArray[foobarr0Index] || htmlArray[foobarrIndex])),
       );
     } catch (error) {
       console.error(
-        `Error executing function "${e.parameter["func"]}":`,
+        `Error executing function "${libFunc}":`,
         error,
       );
       throw new Error(
