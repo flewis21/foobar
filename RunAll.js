@@ -303,6 +303,7 @@ var doGet = function (e) {
   }
   // --- END Refactored payLoad processing ---
 
+
   var htmlArray = [
     `untitled proMedia epaWebsite callBack oddChances jsGame checkOnDay uiAccess popUpOpen congressLeg congressMembers jFundamentals gnuFree myGNUFreeJS Section3.Challenge1 cors edgarFriendly editor ssForms styling theRoll theWorks uiAccess cGWI`,
   ]
@@ -310,7 +311,8 @@ var doGet = function (e) {
     .split(" ");
   var rndHtmlIndex = Math.floor(Math.random() * Math.floor(htmlArray.length));
   console.log("rndHtml = " + htmlArray[rndHtmlIndex]);
-  var rndPage = htmlArray[rndHtmlIndex];
+  var rndPage =
+    htmlArray[rndHtmlIndex];
   // console.log("index:", index + "\ntres", tres);
   // Simplify args logic:
   // var htmlArg;
@@ -319,62 +321,65 @@ var doGet = function (e) {
   var htmlTresArg = rndPage; // Default value
   if (foobarr) {
     if (Array.isArray(foobarr)) {
-      const firstArg = foobarr[0];
-      if (htmlArray.includes(firstArg)) {
-        var foobarr0Index = htmlArray.findIndex(function (element) {
-          return element === firstArg;
-        });
-        htmlDosArg = htmlArray[foobarr0Index];
-      }
-    } else if (htmlArray.includes(foobarr)) {
-      var foobarrIndex = htmlArray.findIndex(function (element) {
-        return element === foobarr;
-      });
-      htmlDosArg = htmlArray[foobarrIndex];
+          const firstArg = foobarr[0];
+          if (htmlArray.includes(firstArg)) {
+              var foobarr0Index = htmlArray.findIndex(function (element) {
+                return element === firstArg;
+              });
+            htmlDosArg = htmlArray[foobarr0Index];
+          }
+    } 
+    else if (htmlArray.includes(foobarr)) {
+                  var foobarrIndex = htmlArray.findIndex(function (element) {
+                    return element === foobarr;
+                  });
+                  htmlDosArg = htmlArray[foobarrIndex];
     }
   }
   if (funcTres) {
     if (Array.isArray(funcTres)) {
-      const firstArg = funcTres[0];
-      if (htmlArray.includes(firstArg)) {
-        var funcTres0Index = htmlArray.findIndex(function (element) {
-          return element === firstArg;
-        });
-        htmlTresArg = htmlArray[funcTres0Index];
-      }
-    } else if (htmlArray.includes(funcTres)) {
-      var funcTresIndex = htmlArray.findIndex(function (element) {
-        return element === funcTres;
-      });
-      htmlTresArg = htmlArray[funcTresIndex];
+          const firstArg = funcTres[0];
+          if (htmlArray.includes(firstArg)) {
+              var funcTres0Index = htmlArray.findIndex(function (element) {
+                return element === firstArg;
+              });
+            htmlTresArg = htmlArray[funcTres0Index];
+          }
+    } 
+    else if (htmlArray.includes(funcTres)) {
+              var funcTresIndex = htmlArray.findIndex(function (element) {
+                return element === funcTres;
+              });
+              htmlTresArg = htmlArray[funcTresIndex];
     }
   }
   console.log("e {parameter: {func: " + libFunc + "}}");
   const vLen = [83, 94, 97, 99, 101, 103, 136, 132];
 
   // Final renderTemplate call
-  if (this[libName] && typeof this[libName][libFunc] === "function") {
+  if (
+    this[libName] &&
+    typeof this[libName][libFunc] === "function"
+  ) {
     try {
       if (libFunc === "renderFile") {
         console.log(
-          "returning ?func=" + libFunc + "&args=" + foobarr ||
-            (htmlArray[foobarr0Index] || htmlArray[foobarrIndex]) +
-              ", " +
-              {} +
-              ", " +
-              templateName ||
+          "returning ?func=" +
+            libFunc +
+            "&args=" +
+            foobarr ||
+            (htmlArray[foobarr0Index] || htmlArray[foobarrIndex]) + ", " + {} + ", " + templateName ||
             foobarr ||
             (htmlArray[foobarr0Index] || htmlArray[foobarrIndex]) + ",",
         );
         return this[libName].renderFile(
-          foobarr || htmlArray[foobarr0Index] || htmlArray[foobarrIndex],
+          foobarr || (htmlArray[foobarr0Index] || htmlArray[foobarrIndex]),
           {},
-          "returning ?func=" + libFunc + "&args=" + foobarr ||
-            (htmlArray[foobarr0Index] || htmlArray[foobarrIndex]) +
-              ", " +
-              {} +
-              ", " +
-              templateName ||
+          "returning ?func=" +
+            libFunc +
+            "&args=" +
+            foobarr ||
+            (htmlArray[foobarr0Index] || htmlArray[foobarrIndex]) + ", " + {} + ", " + templateName ||
             foobarr ||
             (htmlArray[foobarr0Index] || htmlArray[foobarrIndex]) + ",",
         );
@@ -392,8 +397,7 @@ var doGet = function (e) {
             JSON.stringify(e) +
             " " +
             foobarr ||
-          htmlArray[foobarr0Index] ||
-          htmlArray[foobarrIndex],
+          (htmlArray[foobarr0Index] || htmlArray[foobarrIndex]),
       );
       return this[libName].renderTemplate(
         `<!DOCTYPE html>
@@ -545,7 +549,7 @@ var doGet = function (e) {
 
 
 
-                          handlePageUpdate();
+                          handlePageUpdate()
                         } catch (error) {
                           alert("Error processing input. Please ensure it's valid JSON or a plain string.");
                           console.error("Input processing error:", error);
@@ -622,44 +626,60 @@ var doGet = function (e) {
                   .runBoilerplate(func, args);
               });
             }
-            console.log("line 367: Beginning <?= appL ?> evaluation");
+            console.log("line 367: Beginning evaluation")
             // Parse the input as the new value
             // Allow direct strings or JSON arrays/objects
-            var lappIsObj = <?= appL["app"] ?>;
-            var appLIsObj = <?= appL ?>;
             let initialArgs
             let currentApp
             try {
-              currentApp = JSON.parse(lappIsObj) || JSON.parse(appLIsObj)
-              console.log("Client-side: Initial WebApp:", lappIsObj + " OR " + appLIsObj);
+              // if (<?= appL["app"] ?>) {
+              //   currentApp = JSON.parse(<?= appL["app"] ?>);
+              //   console.log("Client-side: Initial WebApp:", <?= appL["app"] ?>);
+              // }
+              // else if (<?= appL ?>) {
+                currentApp = JSON.parse(<?= appL ?>);
+                // console.log("Client-side: Initial WebApp:", <?= appL ?>);
+              // }
             } 
             catch (error) {
               // If it's not valid JSON, treat it as a plain string
-              if ( typeof lappIsObj === "object" || typeof appLIsObj === "object") {
-                currentApp = JSON.stringify(lappIsObj) || JSON.stringify(appLIsObj);
-                console.log("Client-side: Initial Object of WebApp:", JSON.stringify(lappIsObj) + " OR " + JSON.stringify(appLIsObj));
+              // if (<?= typeof appL["app"] === "object" ?>) {
+              //   currentApp = JSON.stringify(<?= appL["app"] ?>);
+              //   console.log("Client-side: Initial Object of WebApp:", JSON.stringify(<?= appL["app"] ?>));
+              // }
+              // else 
+              if (<?= typeof appL === "object" ?>) {
+                  currentApp = JSON.stringify(<?= appL ?>);
+                  // console.log("Client-side: Initial Object of WebApp:", JSON.stringify(<?= appL ?>))
               }
               else {
-                currentApp = lappIsObj || appLIsObj
-                console.log("Client-side: Initial String of WebApp:", lappIsObj + " OR " + appLIsObj);
+                // if (<?= appL["app"] ?>) {
+                //   currentApp = <?= appL["app"] ?>
+                //   console.log("Client-side: Initial String of WebApp:", <?= appL["app"] ?>);
+                // }
+                // else 
+                if (<?= appL ?>) {
+                  currentApp = <?= appL ?>
+                  // console.log("Client-side: Initial String of WebApp:", <?= appL ?>);
+                }
               }
             }
             const homeStackUrl = <?= homePage ?>
             const chUrl = document.getElementById("indexBeta");
-            console.log("line 659 Inside renBlob block of serverside Runall doGet");
+            // console.log("line 653 Inside renBlob block of serverside Runall doGet");
 
             // console.log("Client-side: Home Page URL:", homeStackUrl);
 
-            console.log("line 663 Inside renBlob block of serverside Runall doGet");
+            // console.log("line 657 Inside renBlob block of serverside Runall doGet");
             document.addEventListener("DOMContentLoaded", runStack)
                     function runStack() {
-                      console.log("line 666 Inside _renBlob block of serverside Runall doGet _runStack(" + currentApp + ")");
+                      // console.log("line 660 Inside _renBlob block of serverside Runall doGet _runStack(" + currentApp + ")");
                       initialArgs = currentApp
                       if (initialArgs !== undefined && initialArgs !== null) {
 
                         // If trying to parse JSON on appL["app"] succeeds
                         if (typeof initialArgs === 'object') {
-                          console.log("JSON.stringify(" + initialArgs + ")");
+                          // console.log("JSON.stringify(" + initialArgs + ")");
                           chUrl.value = JSON.stringify(initialArgs, null, 2);
                         } 
 
@@ -671,28 +691,43 @@ var doGet = function (e) {
                           // "^https?://(?:www\\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}(?:[-a-zA-Z0-9()@:%_+.~#?&//=]*)$"
                           // const urlRegExString = "^https?://(.+?)."
                           // const urlRegEx = new RegExp(urlRegExString);
-                          let addr = URL.canParse(lappIsObj) || URL.canParse(appLIsObj);
+                          // if (<?= appL["app"] ?>) {
+                          //   let addr = URL.canParse(<?= appL["app"] ?>);
+                          //   console.log(addr);
+                          //   console.log("line 431 inside _runStack _URL.canParse(" + <?= appL["app"] ?> + ")");
+                            // if (addr) {
 
-                          console.log(addr);
-                          console.log("line 431 inside _runStack _URL.canParse(" + lappParse || appLParse + ")");
+                          //     console.log('appL["app"] is a URL, navigating to: ' + addr);
+                          //     window.location.href = addr; // New type "url" for strings
+                          //     return
 
-                          if (addr) {
+                            // }
 
-                            console.log('appL["app"] is a URL, navigating to: ' + lappParse || appLParse);
-                            window.location.href = lappParse || appLParse; // New type "url" for strings
-                            return
+                          // }
+                          // else 
+                          if (<?= appL ?>) {
+                            let addr = URL.canParse(<?= appL ?>);
+                            // console.log(addr);
+                            // console.log("line 431 inside _runStack _URL.canParse(" + <?= appL ?> + ")");
+                            if (addr) {
+
+                              // console.log('appL is a URL, navigating to: ' + addr);
+                              window.location.href = addr; // New type "url" for strings
+                              return
+
+                            }
 
                           }
                           // --- END MODIFIED ---
 
                           try {
-                            console.log(initialArgs.trim().startsWith("<") && initialArgs.trim().endsWith(">"));
-                            console.log("line 444 _runStack JSON.parse(" + initialArgs + ")");
+                            // console.log(initialArgs.trim().startsWith("<") && initialArgs.trim().endsWith(">"));
+                            // console.log("line 444 _runStack JSON.parse(" + initialArgs + ")");
                             const parsedJson = JSON.parse(initialArgs);
                             if (parsedJson) {
                               
                               // Convert the JavaScript object into a formatted JSON string
-                              console.log("initialArgs is a JSON object, navigating to: ", initialArgs);
+                              // console.log("initialArgs is a JSON object, navigating to: ", initialArgs);
                               const jsonString = JSON.stringify(parsedJson, null, 2); 
 
                               document.open();
@@ -704,7 +739,7 @@ var doGet = function (e) {
                             // Not JSON, treat as HTML or plain text
                             if (initialArgs.trim().startsWith("<") && initialArgs.trim().endsWith(">")) {
                               // More robust HTML check
-                              console.log(initialArgs.trim().startsWith("<") && initialArgs.trim().endsWith(">"));
+                              // console.log(initialArgs.trim().startsWith("<") && initialArgs.trim().endsWith(">"));
                               document.open();
                               document.write(initialArgs);
                               document.close();
@@ -720,7 +755,7 @@ var doGet = function (e) {
                                 // const dStr = <?= appL["index"]? appL["index"]["dataStr"]:"null" ?>;
                                 // const indStr = fStr? fStr:dStr;
                                 // const combineStr = indStr + " " + appStr
-                                console.log("typeof initialArgs === ", typeof initialArgs);
+                                // console.log("typeof initialArgs === ", typeof initialArgs);
                                 chUrl.value = JSON.stringify(appStr, null, 2);
                             }
                           }
@@ -773,7 +808,7 @@ var doGet = function (e) {
       </html>`,
             {
               appL: finalAppLContent,
-              tupL: htmlArray[funcTres0Index] || htmlArray[funcTresIndex],
+              tupL: (htmlArray[funcTres0Index] || htmlArray[funcTresIndex]),
               homePage: this[libName].getScriptUrl(),
             },
           ),
@@ -784,16 +819,19 @@ var doGet = function (e) {
         "returning renderTemplate contentApp [" +
           libFunc +
           "].apply(this, [" +
-          (foobarr || htmlArray[foobarr0Index] || htmlArray[foobarrIndex]) +
+          (foobarr || (htmlArray[foobarr0Index] || htmlArray[foobarrIndex])) +
           "]), tupL " +
           (htmlArray[funcTres0Index] || htmlArray[funcTresIndex]) +
           ", e " +
           JSON.stringify(e) +
           " " +
-          (foobarr || htmlArray[foobarr0Index] || htmlArray[foobarrIndex]),
+          (foobarr || (htmlArray[foobarr0Index] || htmlArray[foobarrIndex])),
       );
     } catch (error) {
-      console.error(`Error executing function "${libFunc}":`, error);
+      console.error(
+        `Error executing function "${libFunc}":`,
+        error,
+      );
       throw new Error(
         "Error executing function: " + error.toString() + "\n" + error.stack,
       );
