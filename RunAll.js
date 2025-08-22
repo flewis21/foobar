@@ -303,6 +303,7 @@ var doGet = function (e) {
   }
   // --- END Refactored payLoad processing ---
 
+
   var htmlArray = [
     `untitled proMedia epaWebsite callBack oddChances jsGame checkOnDay uiAccess popUpOpen congressLeg congressMembers jFundamentals gnuFree myGNUFreeJS Section3.Challenge1 cors edgarFriendly editor ssForms styling theRoll theWorks uiAccess cGWI`,
   ]
@@ -310,7 +311,8 @@ var doGet = function (e) {
     .split(" ");
   var rndHtmlIndex = Math.floor(Math.random() * Math.floor(htmlArray.length));
   console.log("rndHtml = " + htmlArray[rndHtmlIndex]);
-  var rndPage = htmlArray[rndHtmlIndex];
+  var rndPage =
+    htmlArray[rndHtmlIndex];
   // console.log("index:", index + "\ntres", tres);
   // Simplify args logic:
   // var htmlArg;
@@ -319,62 +321,65 @@ var doGet = function (e) {
   var htmlTresArg = rndPage; // Default value
   if (foobarr) {
     if (Array.isArray(foobarr)) {
-      const firstArg = foobarr[0];
-      if (htmlArray.includes(firstArg)) {
-        var foobarr0Index = htmlArray.findIndex(function (element) {
-          return element === firstArg;
-        });
-        htmlDosArg = htmlArray[foobarr0Index];
-      }
-    } else if (htmlArray.includes(foobarr)) {
-      var foobarrIndex = htmlArray.findIndex(function (element) {
-        return element === foobarr;
-      });
-      htmlDosArg = htmlArray[foobarrIndex];
+          const firstArg = foobarr[0];
+          if (htmlArray.includes(firstArg)) {
+              var foobarr0Index = htmlArray.findIndex(function (element) {
+                return element === firstArg;
+              });
+            htmlDosArg = htmlArray[foobarr0Index];
+          }
+    } 
+    else if (htmlArray.includes(foobarr)) {
+                  var foobarrIndex = htmlArray.findIndex(function (element) {
+                    return element === foobarr;
+                  });
+                  htmlDosArg = htmlArray[foobarrIndex];
     }
   }
   if (funcTres) {
     if (Array.isArray(funcTres)) {
-      const firstArg = funcTres[0];
-      if (htmlArray.includes(firstArg)) {
-        var funcTres0Index = htmlArray.findIndex(function (element) {
-          return element === firstArg;
-        });
-        htmlTresArg = htmlArray[funcTres0Index];
-      }
-    } else if (htmlArray.includes(funcTres)) {
-      var funcTresIndex = htmlArray.findIndex(function (element) {
-        return element === funcTres;
-      });
-      htmlTresArg = htmlArray[funcTresIndex];
+          const firstArg = funcTres[0];
+          if (htmlArray.includes(firstArg)) {
+              var funcTres0Index = htmlArray.findIndex(function (element) {
+                return element === firstArg;
+              });
+            htmlTresArg = htmlArray[funcTres0Index];
+          }
+    } 
+    else if (htmlArray.includes(funcTres)) {
+              var funcTresIndex = htmlArray.findIndex(function (element) {
+                return element === funcTres;
+              });
+              htmlTresArg = htmlArray[funcTresIndex];
     }
   }
   console.log("e {parameter: {func: " + libFunc + "}}");
   const vLen = [83, 94, 97, 99, 101, 103, 136, 132];
 
   // Final renderTemplate call
-  if (this[libName] && typeof this[libName][libFunc] === "function") {
+  if (
+    this[libName] &&
+    typeof this[libName][libFunc] === "function"
+  ) {
     try {
       if (libFunc === "renderFile") {
         console.log(
-          "returning ?func=" + libFunc + "&args=" + foobarr ||
-            (htmlArray[foobarr0Index] || htmlArray[foobarrIndex]) +
-              ", " +
-              {} +
-              ", " +
-              templateName ||
+          "returning ?func=" +
+            libFunc +
+            "&args=" +
+            foobarr ||
+            (htmlArray[foobarr0Index] || htmlArray[foobarrIndex]) + ", " + {} + ", " + templateName ||
             foobarr ||
             (htmlArray[foobarr0Index] || htmlArray[foobarrIndex]) + ",",
         );
         return this[libName].renderFile(
-          foobarr || htmlArray[foobarr0Index] || htmlArray[foobarrIndex],
+          foobarr || (htmlArray[foobarr0Index] || htmlArray[foobarrIndex]),
           {},
-          "returning ?func=" + libFunc + "&args=" + foobarr ||
-            (htmlArray[foobarr0Index] || htmlArray[foobarrIndex]) +
-              ", " +
-              {} +
-              ", " +
-              templateName ||
+          "returning ?func=" +
+            libFunc +
+            "&args=" +
+            foobarr ||
+            (htmlArray[foobarr0Index] || htmlArray[foobarrIndex]) + ", " + {} + ", " + templateName ||
             foobarr ||
             (htmlArray[foobarr0Index] || htmlArray[foobarrIndex]) + ",",
         );
@@ -392,8 +397,7 @@ var doGet = function (e) {
             JSON.stringify(e) +
             " " +
             foobarr ||
-          htmlArray[foobarr0Index] ||
-          htmlArray[foobarrIndex],
+          (htmlArray[foobarr0Index] || htmlArray[foobarrIndex]),
       );
       return this[libName].renderTemplate(
         `<!DOCTYPE html>
@@ -653,10 +657,27 @@ var doGet = function (e) {
               //   console.log("Client-side: Initial Object of WebApp:", JSON.stringify(<?= appL["app"] ?>));
               // }
               // else 
-              if (<?= typeof JSON.stringify(appL) ?> === "object") {
+              // Here, if payLoad.data is an object, you need to decide how to display it.
+              // It could contain sub-properties you want to render.
+              if (<?= typeof appL ?> === "object") {
                   console.log("Processing object", <?= typeof appL ?>)
-                  currentApp = JSON.stringify(<?= appL ?>);
+                  // currentApp = JSON.stringify(<?= appL ?>);
                   // console.log("Client-side: Initial Object of WebApp:", JSON.stringify(<?= appL ?>))
+                  if (<?= appL ?>.data.html || <?= appL ?>.data.app) {
+                    currentApp = <?= appL ?>.data.html || <?= appL ?>.data.app;
+                    // If the object itself contains a URL, use it for iframeSrc
+                    iframeSrc = <?= appL ?>.data.url || iframeSrc;
+                  } else if (<?= appL ?>.data.url) {
+                    // If the object explicitly has a 'url' property
+                    iframeSrc = <?= appL ?>.data.url;
+                    currentApp = 'URL provided: <a href="<?= appL ?>.data.index" target="_blank"><?= appL ?>.data.index</a>';
+                    finalFeedDivContent = 'URL provided: <a href="<?= appL ?>.data.link" target="_blank"><?= appL ?>.data.link</a>';
+                  } else {
+                    // Default way to display a generic object: stringify it
+                    iframeSrc = payLoad.data.index; // Assign iframeSrc
+                    currentApp = '<pre>' + JSON.stringify(<?= appL ?>.data.app, null, 2) + '</pre>';
+                    finalFeedDivContent = 'URL provided: <a href="<?= appL ?>.data.link" target="_blank"><?= appL ?>.data.link</a>';
+                  }
               }
               else {
                 // if (<?= appL["app"] ?>) {
@@ -831,8 +852,8 @@ var doGet = function (e) {
         </body>
       </html>`,
             {
-              appL: payLoad,
-              tupL: htmlArray[funcTres0Index] || htmlArray[funcTresIndex],
+              appL: JSON.stringify(payLoad),
+              tupL: (htmlArray[funcTres0Index] || htmlArray[funcTresIndex]),
               homePage: this[libName].getScriptUrl(),
             },
           ),
@@ -843,16 +864,19 @@ var doGet = function (e) {
         "returning renderTemplate contentApp [" +
           libFunc +
           "].apply(this, [" +
-          (foobarr || htmlArray[foobarr0Index] || htmlArray[foobarrIndex]) +
+          (foobarr || (htmlArray[foobarr0Index] || htmlArray[foobarrIndex])) +
           "]), tupL " +
           (htmlArray[funcTres0Index] || htmlArray[funcTresIndex]) +
           ", e " +
           JSON.stringify(e) +
           " " +
-          (foobarr || htmlArray[foobarr0Index] || htmlArray[foobarrIndex]),
+          (foobarr || (htmlArray[foobarr0Index] || htmlArray[foobarrIndex])),
       );
     } catch (error) {
-      console.error(`Error executing function "${libFunc}":`, error);
+      console.error(
+        `Error executing function "${libFunc}":`,
+        error,
+      );
       throw new Error(
         "Error executing function: " + error.toString() + "\n" + error.stack,
       );
