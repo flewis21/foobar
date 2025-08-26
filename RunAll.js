@@ -244,9 +244,21 @@ var doGet = function (e) {
           // Only add if payLoad doesn't already have it
           payLoad.link = rawFuncResult.link;
         }
-        if (rawFuncResult.index && !payLoad.index) {
+        // if (rawFuncResult.index && !payLoad.index) {
+        //   // Only add if payLoad doesn't already have it
+        //   payLoad.index = rawFuncResult.index;
+        // }
+        if (rawFuncResult.index && rawFuncResult.index.funcStr) {
           // Only add if payLoad doesn't already have it
-          payLoad.index = rawFuncResult.index;
+          payLoad.fStr = rawFuncResult.index.funcStr;
+        }
+        else if (rawFuncResult.index && rawFuncResult.index.dataStr) {
+          // Only add if payLoad doesn't already have it
+          payLoad.dStr = rawFuncResult.index.dataStr;
+        }
+        if (rawFuncResult.index && rawFuncResult.index.url) {
+          // Only add if payLoad doesn't already have it
+          payLoad.index = rawFuncResult.index.url;
         }
       }
     }
@@ -634,6 +646,9 @@ var doGet = function (e) {
             // Allow direct strings or JSON arrays/objects
             let initialArgs
             let currentApp
+            let iframeSrc =
+              "https://www.clubhouse.com/@fabianlewis?utm_medium=ch_profile&utm_campaign=lhTUtHb2bYqPN3w8EEB7FQ-247242"; // Default iframe src
+            let finalFeedDivContent = "";
             try {
               console.log("Processing", <?= appL ?>)
               // if (<?= appL["app"] ?>) {
@@ -655,38 +670,59 @@ var doGet = function (e) {
               // else 
               // Here, if payLoad.data is an object, you need to decide how to display it.
               // It could contain sub-properties you want to render.
-              if (<?= typeof appL ?> === "object") {
+              // if (<?= typeof appL ?> === "object") {
                   console.log("Processing object", <?= typeof appL ?>)
                   // currentApp = JSON.stringify(<?= appL ?>);
                   // console.log("Client-side: Initial Object of WebApp:", JSON.stringify(<?= appL ?>))
-                  if (<?= appL ?>.data.html || <?= appL ?>.data.app) {
-                    currentApp = <?= appL ?>.data.html || <?= appL ?>.data.app;
-                    // If the object itself contains a URL, use it for iframeSrc
-                    iframeSrc = <?= appL ?>.data.url || iframeSrc;
-                  } else if (<?= appL ?>.data.url) {
-                    // If the object explicitly has a 'url' property
-                    iframeSrc = <?= appL ?>.data.url;
-                    currentApp = 'URL provided: <a href="<?= appL ?>.data.index" target="_blank"><?= appL ?>.data.index</a>';
-                    finalFeedDivContent = 'URL provided: <a href="<?= appL ?>.data.link" target="_blank"><?= appL ?>.data.link</a>';
-                  } else {
-                    // Default way to display a generic object: stringify it
-                    iframeSrc = payLoad.data.index; // Assign iframeSrc
-                    currentApp = '<pre>' + JSON.stringify(<?= appL ?>.data.app, null, 2) + '</pre>';
-                    finalFeedDivContent = 'URL provided: <a href="<?= appL ?>.data.link" target="_blank"><?= appL ?>.data.link</a>';
-                  }
-              }
-              else {
+                  try {
+                      var thisApp = <?= appL["data"] ?>
+                      currentApp = thisApp["app"] || thisApp["html"] || thisApp["myVar"]
+                    }
+                  catch (error) {
+                    console.error("Error", error.toString())
+                  // try {
+                  //   if (<?= appL["data"] && appL["data"]["html"] ?>) {
+                  //     var thisHtml = <?= appL["data"] ?>;
+                  //   }
+                  // }
+                  // catch (error) {
+                  //   console.error("Error", error.toString())
+                  // }
+                  // try {
+                  //   if (<?= appL["data"] && appL["data"]["url"] ?>) {
+                  //     var thisUrl = <?= appL["data"] ?>
+                  //   }
+                  // }
+                  // catch (error) {
+                  //   console.error("Error", error.toString())
+                  // }
+                  // if (thisApp) {
+                  //   currentApp = thisApp;
+                  // } else if (thisUrl) {
+                  //   // If the object explicitly has a 'url' property
+                  //   iframeSrc = thisUrl;
+                  //   currentApp = <?= appL["index"] ?>;
+                  //   finalFeedDivContent = <?= appL["link"] ?>;
+                  // } else {
+                  //   // Default way to display a generic object: stringify it
+                  //   iframeSrc = <?= appL["index"] ?>; // Assign iframeSrc
+                  //   currentApp = '<pre>' + JSON.stringify(<?= appL["data"] ?>, null, 2) + '</pre>';
+                  //   finalFeedDivContent = <?= appL["link"] ?>;
+                  // }
+              // }
+              // else {
                 // if (<?= appL["app"] ?>) {
                 //   currentApp = <?= appL["app"] ?>
                 //   console.log("Client-side: Initial String of WebApp:", <?= appL["app"] ?>);
                 // }
                 // else 
-                if (<?= appL ?>) {
-                  console.log("Processing this", <?= appL ?>)
-                  currentApp = <?= appL ?>
+                // if (<?= appL ?>) {
+                //   console.log("Processing this", <?= appL ?>)
+                //   currentApp = <?= appL ?>
                   // console.log("Client-side: Initial String of WebApp:", <?= appL ?>);
-                }
-              }
+                // }
+                  }
+              // }
             }
             document.addEventListener("DOMContentLoaded", runStack)
                     function runStack() {
