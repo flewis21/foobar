@@ -251,7 +251,8 @@ var doGet = function (e) {
         if (rawFuncResult.index && rawFuncResult.index.funcStr) {
           // Only add if payLoad doesn't already have it
           payLoad.fStr = rawFuncResult.index.funcStr;
-        } else if (rawFuncResult.index && rawFuncResult.index.dataStr) {
+        }
+        else if (rawFuncResult.index && rawFuncResult.index.dataStr) {
           // Only add if payLoad doesn't already have it
           payLoad.dStr = rawFuncResult.index.dataStr;
         }
@@ -649,14 +650,30 @@ var doGet = function (e) {
               "https://www.clubhouse.com/@fabianlewis?utm_medium=ch_profile&utm_campaign=lhTUtHb2bYqPN3w8EEB7FQ-247242"; // Default iframe src
             let finalFeedDivContent = "";
             try {
-              console.log("Processing", <?= appL ?>)
-              // if (<?= appL["app"] ?>) {
-              //   currentApp = JSON.parse(<?= appL["app"] ?>);
-              //   console.log("Client-side: Initial WebApp:", <?= appL["app"] ?>);
-              // }
-              // else if (<?= appL ?>) {
-                currentApp = JSON.parse(<?= appL ?>);
-                // console.log("Client-side: Initial WebApp:", <?= appL ?>);
+              currentApp = JSON.parse(<?= appL ?>);
+              console.log("Processing appL", currentApp);
+              let appRes = currentApp["app"]
+              if (appRes) {
+                try {
+                  currentApp = JSON.parse(appRes);
+                  console.log("Processing appL[app]", appRes)
+                  // console.log("Client-side: Initial WebApp:", <?= appL["app"] ?>);
+                }
+                catch (jsonError) {
+                  // console.log("Error try JSON.parse(appL[app]) = ", typeof <?= appL["app"] ?>)
+                  currentApp = appRes;
+                }
+              }
+              // else {
+                // try {
+                  // currentApp = JSON.parse(<?= appL ?>);
+                  console.log("Error: try currentApp = ", typeof currentApp)
+                  // console.log("Client-side: Initial WebApp:", <?= appL ?>);
+                // }
+                // catch (jsonError) {
+                  // console.log("Error try JSON.parse(appL) = ", typeof <?= appL ?>)
+                  // currentApp = <?= appL ?>;
+                // }
               // }
             } 
             catch (error) {
@@ -728,11 +745,25 @@ var doGet = function (e) {
                       // console.log("line 660 Inside _renBlob block of serverside Runall doGet _runStack(" + currentApp + ")");
                       initialArgs = currentApp
                       if (initialArgs !== undefined && initialArgs !== null) {
+                      // if (currentApp !== undefined && currentApp !== null) {
 
                         // If trying to parse JSON on appL["app"] succeeds
                         if (typeof initialArgs === 'object') {
-                          console.log("Processing object", typeof initialArgs);
-                          chUrl.value = JSON.stringify(initialArgs, null, 2);
+                          let appType = currentApp.type || "";
+                          let appData = typeof currentApp.data === "object"? JSON.stringify(currentApp.data):currentApp.data;
+                          let appLink = currentApp.link || "";
+                          let appFStr = currentApp.fStr || "";
+                          let appDStr = currentApp.dStr || "";
+                          let appIndex = currentApp.index || "";
+                          let mainRen = appType + (appFStr || appDStr) + appData;
+                          // chUrl.value = JSON.stringify(appFStr, null, 2) || JSON.stringify(appDStr, null, 2);
+                          if (mainRen !== "undefined" || (typeof mainRen !== "undefined" && typeof mainRen !== null)) {
+                            chUrl.value = mainRen;
+                          }
+                          else {
+                            chUrl.value = currentApp;
+                          }
+                          console.log("Processing initialArgs = ", typeof initialArgs);
                         } 
 
                         // --- 3. if json error, handle String content (URL, JSON, HTML, or plain text)
