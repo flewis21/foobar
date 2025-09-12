@@ -251,8 +251,7 @@ var doGet = function (e) {
         if (rawFuncResult.index && rawFuncResult.index.funcStr) {
           // Only add if payLoad doesn't already have it
           payLoad.fStr = rawFuncResult.index.funcStr;
-        }
-        else if (rawFuncResult.index && rawFuncResult.index.dataStr) {
+        } else if (rawFuncResult.index && rawFuncResult.index.dataStr) {
           // Only add if payLoad doesn't already have it
           payLoad.dStr = rawFuncResult.index.dataStr;
         }
