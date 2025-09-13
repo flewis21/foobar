@@ -251,8 +251,7 @@ var doGet = function (e) {
         if (rawFuncResult.index && rawFuncResult.index.funcStr) {
           // Only add if payLoad doesn't already have it
           payLoad.fStr = rawFuncResult.index.funcStr;
-        }
-        else if (rawFuncResult.index && rawFuncResult.index.dataStr) {
+        } else if (rawFuncResult.index && rawFuncResult.index.dataStr) {
           // Only add if payLoad doesn't already have it
           payLoad.dStr = rawFuncResult.index.dataStr;
         }
@@ -288,7 +287,7 @@ var doGet = function (e) {
     } else if (payLoad.type === "object") {
       // Here, if payLoad.data is an object, you need to decide how to display it.
       // It could contain sub-properties you want to render.
-      let notApp = payLoad.data
+      let notApp = payLoad.data;
       if (notApp?.html || notApp?.app) {
         finalAppLContent = notApp?.html || notApp?.app;
         // If the object itself contains a URL, use it for iframeSrc
@@ -1008,7 +1007,7 @@ var doGet = function (e) {
         </body>
       </html>`,
             {
-              appL: payLoad.length > 0? JSON.stringify(payLoad):iframeSrc,
+              appL: payLoad.length > 0 ? JSON.stringify(payLoad) : iframeSrc,
               tupL: htmlArray[funcTres0Index] || htmlArray[funcTresIndex],
               homePage: this[libName].getScriptUrl(),
             },
