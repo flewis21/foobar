@@ -113,7 +113,7 @@ var doGet = function (e) {
 
       // Check if foobarr is already an array (from internal re-assignment by objectOfS)
       if (Array.isArray(foobarr)) {
-        parsedFuncArgs = foobarr; // It's already the array we want
+        parsedFuncArgs = [foobarr]; // It's already the array we want
       } else if (typeof foobarr === "string" && foobarr) {
         try {
           parsedFuncArgs = JSON.parse(foobarr);
@@ -251,7 +251,8 @@ var doGet = function (e) {
         if (rawFuncResult.index && rawFuncResult.index.funcStr) {
           // Only add if payLoad doesn't already have it
           payLoad.fStr = rawFuncResult.index.funcStr;
-        } else if (rawFuncResult.index && rawFuncResult.index.dataStr) {
+        }
+        else if (rawFuncResult.index && rawFuncResult.index.dataStr) {
           // Only add if payLoad doesn't already have it
           payLoad.dStr = rawFuncResult.index.dataStr;
         }
@@ -287,7 +288,7 @@ var doGet = function (e) {
     } else if (payLoad.type === "object") {
       // Here, if payLoad.data is an object, you need to decide how to display it.
       // It could contain sub-properties you want to render.
-      let notApp = payLoad.data;
+      let notApp = payLoad.data
       if (notApp?.html || notApp?.app) {
         finalAppLContent = notApp?.html || notApp?.app;
         // If the object itself contains a URL, use it for iframeSrc
@@ -471,10 +472,10 @@ var doGet = function (e) {
             console.log("Client-side: Home Page URL:", homePageUrl);
 
             console.log("line 215");
+            console.log(<?= aplot ?>)
             document.addEventListener("DOMContentLoaded", eRun);
 
 
-            
             function eRun() {
               console.log("line 218");
               var objUrl = document.getElementById("pageObj");
@@ -654,41 +655,63 @@ var doGet = function (e) {
             let addr = URL.canParse(<?= appL ?>);
             try {
               currentApp = JSON.parse(<?= appL ?>);
-              console.log("Processing appL", currentApp);
-              let appRes = currentApp?.app
-              if (appRes) {
-                try {
-                  currentApp = JSON.parse(appRes);
-                  console.log("Processing", appRes)
+              if (Object.keys(currentApp).length > 0) {
+                console.log("Processing appL", currentApp);
+                let appRes = currentApp?.app
+                if (appRes) {
+                  try {
+                    currentApp = JSON.parse(appRes);
+                    console.log("Processing", appRes)
 
-                  // console.log("Client-side: Initial WebApp:", appRes);
+                    // console.log("Client-side: Initial WebApp:", appRes);
 
+                  }
+                  catch (jsonError) {
+
+                    // console.log("Error try JSON.parse(appRes) = ", typeof appRes)
+
+                    currentApp = appRes;
+                  }
                 }
-                catch (jsonError) {
 
-                  // console.log("Error try JSON.parse(appRes) = ", typeof appRes)
+                else {
+                  // try {
+                    // currentApp = JSON.parse(<?= appL ?>);
 
-                  currentApp = appRes;
+                    console.log("Error: try currentApp = ", typeof currentApp)
+
+                    // console.log("Client-side: Initial WebApp:", <?= appL ?>);
+                  // }
+                  // catch (jsonError) {
+                    // console.log("Error try JSON.parse(appL) = ", typeof <?= appL ?>)
+                    // currentApp = <?= appL ?>;
+                  // }
                 }
               }
+              else {
+                try { 
+                    currentApp = JSON.parse(<?= etop ?>)
+                    console.log("Error try JSON.parse(e) = ", typeof <?= etop ?>)
+                }
+                catch (err) { 
+                    currentApp = JSON.stringify(<?= etop ?>)
+                    console.log("Error catch JSON.stringify(e) = ", typeof <?= etop ?>)
 
-              // else {
-                // try {
-                  // currentApp = JSON.parse(<?= appL ?>);
-
-                  console.log("Error: try currentApp = ", typeof currentApp)
-
-                  // console.log("Client-side: Initial WebApp:", <?= appL ?>);
-                // }
-                // catch (jsonError) {
-                  // console.log("Error try JSON.parse(appL) = ", typeof <?= appL ?>)
-                  // currentApp = <?= appL ?>;
-                // }
-              // }
+                }
+                  console.log("Processing error: invalid JSON. currentApp = ", currentApp)
+              }
 
             } 
             catch (error) {
-              currentApp = JSON.stringify(<?= appL ?>)
+             try { 
+                currentApp = JSON.parse(<?= appL ?>)
+                console.log("Error try JSON.parse(appL) = ", typeof <?= appL ?>)
+             }
+             catch (err) { 
+                currentApp = JSON.stringify(<?= appL ?>)
+                console.log("Error catch JSON.stringify(appL) = ", typeof <?= appL ?>)
+
+             }
               console.log("Processing error: invalid JSON. currentApp = ", currentApp)
 
               // If it's not valid JSON, treat it as a plain string
@@ -734,16 +757,16 @@ var doGet = function (e) {
                     console.error("Error: processing currentApp.data = ", error.toString())
 
                   // try {
-                  //   if (<?= appL["data"] && appL["data"]["html"] ?>) {
-                  //     var thisHtml = <?= appL["data"] ?>;
+                  //   if (currentApp.data && currentApp.data.html) {
+                  //     var thisHtml = currentApp.data;
                   //   }
                   // }
                   // catch (error) {
                   //   console.error("Error", error.toString())
                   // }
                   // try {
-                  //   if (<?= appL["data"] && appL["data"]["url"] ?>) {
-                  //     var thisUrl = <?= appL["data"] ?>
+                  //   if (currentApp.data && currentApp.data.url) {
+                  //     var thisUrl = currentApp.data
                   //   }
                   // }
                   // catch (error) {
@@ -754,13 +777,13 @@ var doGet = function (e) {
                   // } else if (thisUrl) {
                   //   // If the object explicitly has a 'url' property
                   //   iframeSrc = thisUrl;
-                  //   currentApp = <?= appL["index"] ?>;
-                  //   finalFeedDivContent = <?= appL["link"] ?>;
+                  //   currentApp = currentApp.index;
+                  //   finalFeedDivContent = currentApp.link;
                   // } else {
                   //   // Default way to display a generic object: stringify it
-                  //   iframeSrc = <?= appL["index"] ?>; // Assign iframeSrc
-                  //   currentApp = '<pre>' + JSON.stringify(<?= appL["data"] ?>, null, 2) + '</pre>';
-                  //   finalFeedDivContent = <?= appL["link"] ?>;
+                  //   iframeSrc = currentApp.index; // Assign iframeSrc
+                  //   currentApp = '<pre>' + JSON.stringify(currentApp.data, null, 2) + '</pre>';
+                  //   finalFeedDivContent = currentApp.link;
                   // }
               // }
               // else {
@@ -944,8 +967,8 @@ var doGet = function (e) {
                                   appStr = JSON.stringify(initialArgs); 
                                 }
 
-                              // const fStr = JSON.stringify(<?= appL["index"]? appL["index"]["funcStr"]:"null" ?>);
-                              // const dStr = JSON.stringify(<?= appL["index"]? appL["index"]["dataStr"]:"null" ?>);
+                              // const fStr = JSON.stringify(currentApp.index? currentApp.index.funcStr:"null");
+                              // const dStr = JSON.stringify(currentApp.index? currentApp.index.dataStr:"null");
                               // const indStr = fStr? fStr:dStr;
                               // const combineStr = indStr + " " + appStr
                               // console.log("typeof initialArgs === ", typeof initialArgs);
@@ -1007,11 +1030,13 @@ var doGet = function (e) {
         </body>
       </html>`,
             {
-              appL: payLoad.length > 0 ? JSON.stringify(payLoad) : iframeSrc,
+              appL: payLoad.type === "text"? iframeSrc:JSON.stringify(payLoad),
+              etop: JSON.stringify(e),
               tupL: htmlArray[funcTres0Index] || htmlArray[funcTresIndex],
               homePage: this[libName].getScriptUrl(),
             },
           ),
+          aplot: JSON.stringify(payLoad),
           e: JSON.stringify(e),
           homePage: this[libName].getScriptUrl(),
         },
