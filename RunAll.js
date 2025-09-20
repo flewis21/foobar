@@ -193,8 +193,7 @@ var doGet = function (e) {
             foobarr ||
             (htmlArray[foobarr0Index] || htmlArray[foobarrIndex]) + ",",
         );
-      }
-      else {
+      } else {
         rawFuncResult = this[libName][libFunc].apply(this, parsedFuncArgs);
       }
     } else {
@@ -1366,9 +1365,13 @@ var doGet = function (e) {
       }
       if (rawResult.url) {
         if (rawResult.name) {
-          return { type: "url", data: rawResult.url, name: rawResult.name, url: rawResult.url };
-        }
-        else {
+          return {
+            type: "url",
+            data: rawResult.url,
+            name: rawResult.name,
+            url: rawResult.url,
+          };
+        } else {
           return { type: "url", data: rawResult.url };
         }
       }
