@@ -578,21 +578,55 @@ var doGet = function (e) {
                         // and it directly comes from updatedClientApp (which is the textarea value)
                         // If updatedClientApp contains HTML, it needs to be processed to be displayable.
                         const newHtmlContent = await serverSide(updatedClientE.parameter["func"], [updatedClientE.parameter["args"]]);
+                        alert(newHtmlContent.type)
+                        let mddr = URL.canParse(newHtmlContent.data);
                         if (newHtmlContent && newHtmlContent.type === "html" && newHtmlContent.data) {
                           document.open();
                           document.write(newHtmlContent.data); // Use the data property
                           document.close();
                           console.log("Client-side: Page re-rendered with new content from server.");
-                        } 
+                        }
                         else if (newHtmlContent && newHtmlContent.type === "object" && newHtmlContent.data) {
-                          document.open();
-                          document.write(newHtmlContent.data.index); // Use the data property
-                          document.close();
+                          if (newHtmlContent.data.app) {
+                            let nApp = newHtmlContent.data.app;
+                            let nddr = URL.canParse(nApp)
+                            if (nddr) {
+                              window.location.href = nApp; // New type "url" for strings
+                              console.log("Error: window.location.href = ", window.location.href)
+                            }
+                            else if (nApp.trim().startsWith("<") && nApp.trim().endsWith(">")) {
+
+                              // More robust HTML check
+                              // console.log(initialArgs.trim().startsWith("<") && initialArgs.trim().endsWith(">"));
+
+                              document.open();
+                              document.write('<pre class="z-depth-5 card-panel deep-purple darken-1 scale-transition scale-out scale-in btn-large" id="eventRes01" class="menu-img grey darken-4 z-depth-5" style="width: 100%; height: 100%; border: none;" allow="autoplay" allow="encrypted-media" title="Dontime Life Website" frameborder="0" allowfullscreen >' + nApp + '</pre>');
+                              document.close();
+
+                            }
+                          }
+                          else {
+                            document.open();
+                            document.write(newHtmlContent.data); // Use the data property
+                            document.close();
+                          }
+                          console.log("Client-side: Page re-rendered with new content from server.");
+                        }  
+                        else if (newHtmlContent && newHtmlContent.type === "text" && newHtmlContent.data) {
+                          if (mddr) {
+                            window.location.href = newHtmlContent.data; // New type "url" for strings
+                            console.log("Error: window.location.href = ", window.location.href)
+                          }
+                          else {
+                            document.open();
+                            document.write(newHtmlContent.data); // Use the data property
+                            document.close();
+                          }
                           console.log("Client-side: Page re-rendered with new content from server.");
                         } 
                         else {
                           document.open();
-                          document.write(newHtmlContent);
+                          document.write(newHtmlContent.data);
                           document.close();
                           console.log("Client-side: Page re-rendered with new content from server.");
                         }
@@ -1363,7 +1397,7 @@ var doGet = function (e) {
       if (rawResult.html) {
         return { type: "html", data: rawResult.html };
       }
-      if (rawResult.url) {
+      if (rawResult.url && Object.keys(rawResult).length === 1) {
         if (rawResult.name) {
           return {
             type: "url",
