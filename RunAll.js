@@ -6,11 +6,22 @@ var doGet = function (e) {
     return this[libName].handleRequest(e);
   }
 
+  // Early return for wwwDe action
+  else if (e && e.parameter && e.parameter.action === "getDe") {
+    return this[libName].wwwDe(e.parameter.url);
+  }
+
+//   else {
+//     return this[libName].doGet(e)
+//   }
+// }
+
+// var notAFunction = function(){  
   // Determine funcTres
   var funcTres = e?.parameter["file"];
 
   // Logging
-  if (e && (e.parameter["func"] || e.parameter["file"])) {
+  if (e && (e.parameter["func"] || e.parameter["args"] || e.parameter["file"])) {
     Logger.log(">>> [MAIN] MAIN WEB APP CLIENT REQUEST: " + JSON.stringify(e));
   } else {
     Logger.log(
@@ -26,8 +37,8 @@ var doGet = function (e) {
           ["parameter"],
           [
             [
-              ["func", "mis"],
-              ["args", argsEd],
+              ["func", argsEd],
+              // ["args", argsEd],
             ],
           ],
           functionRegistry.time,
@@ -38,8 +49,8 @@ var doGet = function (e) {
             ["parameter"],
             [
               [
-                ["func", "mis"],
-                ["args", [argsEd.name, ...argsEd.parameters]],
+                ["func", argsEd.name],
+                ["args", [...argsEd.parameters]],
               ],
             ],
             functionRegistry.time,
@@ -49,8 +60,8 @@ var doGet = function (e) {
             ["parameter"],
             [
               [
-                ["func", "mis"],
-                ["args", argsEd.name],
+                ["func", argsEd.name],
+                // ["args", argsEd.name],
               ],
             ],
             functionRegistry.time,
@@ -84,7 +95,7 @@ var doGet = function (e) {
   );
 
   // Determine templateName (not directly used in the provided template, but good for context)
-  let templateName = e.parameter["func"];
+  let templateName // = e.parameter["func"];
   if (e.parameter["func"] === "crmGWI") {
     templateName = "General Work Invoice";
   } else if (e.parameter["func"] === "crmEBI") {
@@ -96,7 +107,17 @@ var doGet = function (e) {
   var funcDos = e.parameter["args"];
   console.log("e.parameter['args'] after funcDos:", e.parameter["args"]);
   // console.log("funcDos:", funcDos);
-  var libFunc = funcUno || "renderFile";
+  if (funcUno || funcDos) {
+    if (funcUno) {
+      var libFunc = funcUno;
+    }
+    else {
+      let libFunc;
+    }
+  }
+  else {
+    var libFunc = "renderFile";
+  }
   var foobarr = funcDos || funcTres || ""; // Redundant variable
 
   var htmlArray = [
@@ -151,7 +172,7 @@ var doGet = function (e) {
 
   try {
     let rawFuncResult = null;
-    if (this[libName] && typeof this[libName][libFunc] === "function") {
+    if ((this[libName] && typeof this[libName][libFunc] === "function") || (this[libName] && !libFunc && foobarr)) {
       let parsedFuncArgs = [];
 
       // Check if foobarr is already an array (from internal re-assignment by objectOfS)
@@ -194,7 +215,13 @@ var doGet = function (e) {
             (htmlArray[foobarr0Index] || htmlArray[foobarrIndex]) + ",",
         );
       } else {
-        rawFuncResult = this[libName][libFunc].apply(this, parsedFuncArgs);
+        try{
+          rawFunc = libFunc? this[libName]["misSt"].apply(this, [[libFunc, ...parsedFuncArgs]]):this[libName]["misSt"].apply(this, [[...parsedFuncArgs]]);
+          rawFuncResult = rawFunc.res 
+        }
+        catch {
+          rawFuncResult = libFunc? this[libName][libFunc].apply(this, parsedFuncArgs):this[libName]["misSt"].apply(this, parsedFuncArgs);
+        }
       }
     } else {
       console.error(
@@ -222,8 +249,8 @@ var doGet = function (e) {
         typeof content.getResponseCode === "function" &&
         typeof content.getContentText === "function"
       ) {
-        const contentType = content.getHeaders()["Content-Type"] || "";
-        const responseText = content.getContentText();
+        const contentType = content?.getHeaders()["Content-Type"] || "";
+        const responseText = content?.getContentText();
 
         if (contentType.includes("application/json")) {
           try {
@@ -332,6 +359,9 @@ var doGet = function (e) {
 
     console.log("payLoad.type === ", payLoad.type);
     console.log("payLoad.data === ", payLoad.data);
+    if (typeof payLoad.data === "object") {
+      console.log("payLoad.data", JSON.stringify(payLoad.data))
+    }
 
     // Now, use the structured 'payLoad' to set the final content variables
     // (This part needs adjustments to handle the new "url" type)
@@ -429,11 +459,11 @@ var doGet = function (e) {
   //     htmlTresArg = htmlArray[funcTresIndex];
   //   }
   // }
-  console.log("e {parameter: {func: " + libFunc + "}}");
+  // console.log("e {parameter: {func: " + libFunc + "}}");
   const vLen = [83, 94, 97, 99, 101, 103, 136, 132];
 
   // Final renderTemplate call
-  if (this[libName] && typeof this[libName][libFunc] === "function") {
+  // if (this[libName] && typeof this[libName][libFunc] === "function") {
     try {
       // if (libFunc === "renderFile") {
       //   console.log(
@@ -1109,7 +1139,7 @@ var doGet = function (e) {
               homePage: this[libName].getScriptUrl(),
             },
           ),
-          aplot: JSON.stringify(payLoad),
+          aplot: payLoad.type === "text" ? iframeSrc : JSON.stringify(payLoad),
           e: JSON.stringify(e),
           homePage: this[libName].getScriptUrl(),
         },
@@ -1131,9 +1161,9 @@ var doGet = function (e) {
         "Error executing function: " + error.toString() + "\n" + error.stack,
       );
     }
-  } else {
-    return;
-  }
+  // } else {
+  //   return;
+  // }
 };
 // const accessGranted
 // = this[libName].validateFiles();const youNeedAccess
