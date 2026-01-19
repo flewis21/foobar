@@ -11,17 +11,20 @@ var doGet = function (e) {
     return this[libName].wwwDe(e.parameter.url);
   }
 
-//   else {
-//     return this[libName].doGet(e)
-//   }
-// }
+  //   else {
+  //     return this[libName].doGet(e)
+  //   }
+  // }
 
-// var notAFunction = function(){  
+  // var notAFunction = function(){
   // Determine funcTres
   var funcTres = e?.parameter["file"];
 
   // Logging
-  if (e && (e.parameter["func"] || e.parameter["args"] || e.parameter["file"])) {
+  if (
+    e &&
+    (e.parameter["func"] || e.parameter["args"] || e.parameter["file"])
+  ) {
     Logger.log(">>> [MAIN] MAIN WEB APP CLIENT REQUEST: " + JSON.stringify(e));
   } else {
     Logger.log(
@@ -95,7 +98,7 @@ var doGet = function (e) {
   );
 
   // Determine templateName (not directly used in the provided template, but good for context)
-  let templateName // = e.parameter["func"];
+  let templateName; // = e.parameter["func"];
   if (e.parameter["func"] === "crmGWI") {
     templateName = "General Work Invoice";
   } else if (e.parameter["func"] === "crmEBI") {
@@ -110,12 +113,10 @@ var doGet = function (e) {
   if (funcUno || funcDos) {
     if (funcUno) {
       var libFunc = funcUno;
-    }
-    else {
+    } else {
       let libFunc;
     }
-  }
-  else {
+  } else {
     var libFunc = "renderFile";
   }
   var foobarr = funcDos || funcTres || ""; // Redundant variable
@@ -172,7 +173,10 @@ var doGet = function (e) {
 
   try {
     let rawFuncResult = null;
-    if ((this[libName] && typeof this[libName][libFunc] === "function") || (this[libName] && !libFunc && foobarr)) {
+    if (
+      (this[libName] && typeof this[libName][libFunc] === "function") ||
+      (this[libName] && !libFunc && foobarr)
+    ) {
       let parsedFuncArgs = [];
 
       // Check if foobarr is already an array (from internal re-assignment by objectOfS)
@@ -215,12 +219,15 @@ var doGet = function (e) {
             (htmlArray[foobarr0Index] || htmlArray[foobarrIndex]) + ",",
         );
       } else {
-        try{
-          rawFunc = libFunc? this[libName]["misSt"].apply(this, [[libFunc, ...parsedFuncArgs]]):this[libName]["misSt"].apply(this, [[...parsedFuncArgs]]);
-          rawFuncResult = rawFunc.res 
-        }
-        catch {
-          rawFuncResult = libFunc? this[libName][libFunc].apply(this, parsedFuncArgs):this[libName]["misSt"].apply(this, parsedFuncArgs);
+        try {
+          rawFunc = libFunc
+            ? this[libName]["misSt"].apply(this, [[libFunc, ...parsedFuncArgs]])
+            : this[libName]["misSt"].apply(this, [[...parsedFuncArgs]]);
+          rawFuncResult = rawFunc.res;
+        } catch {
+          rawFuncResult = libFunc
+            ? this[libName][libFunc].apply(this, parsedFuncArgs)
+            : this[libName]["misSt"].apply(this, parsedFuncArgs);
         }
       }
     } else {
@@ -360,7 +367,7 @@ var doGet = function (e) {
     console.log("payLoad.type === ", payLoad.type);
     console.log("payLoad.data === ", payLoad.data);
     if (typeof payLoad.data === "object") {
-      console.log("payLoad.data", JSON.stringify(payLoad.data))
+      console.log("payLoad.data", JSON.stringify(payLoad.data));
     }
 
     // Now, use the structured 'payLoad' to set the final content variables
@@ -464,49 +471,49 @@ var doGet = function (e) {
 
   // Final renderTemplate call
   // if (this[libName] && typeof this[libName][libFunc] === "function") {
-    try {
-      // if (libFunc === "renderFile") {
-      //   console.log(
-      //     "returning ?func=" + libFunc + "&args=" + foobarr ||
-      //       (htmlArray[foobarr0Index] || htmlArray[foobarrIndex]) +
-      //         ", " +
-      //         {} +
-      //         ", " +
-      //         templateName ||
-      //       foobarr ||
-      //       (htmlArray[foobarr0Index] || htmlArray[foobarrIndex]) + ",",
-      //   );
-      //   return this[libName].renderFile(
-      //     foobarr || htmlArray[foobarr0Index] || htmlArray[foobarrIndex],
-      //     {},
-      //     "returning ?func=" + libFunc + "&args=" + foobarr ||
-      //       (htmlArray[foobarr0Index] || htmlArray[foobarrIndex]) +
-      //         ", " +
-      //         {} +
-      //         ", " +
-      //         templateName ||
-      //       foobarr ||
-      //       (htmlArray[foobarr0Index] || htmlArray[foobarrIndex]) + ",",
-      //   );
-      // }
-      // const result = this[libName][libFunc](foobarr);
-      console.log(
-        "returning renderTemplate contentApp [" +
-          libFunc +
-          "].apply(this, [" +
+  try {
+    // if (libFunc === "renderFile") {
+    //   console.log(
+    //     "returning ?func=" + libFunc + "&args=" + foobarr ||
+    //       (htmlArray[foobarr0Index] || htmlArray[foobarrIndex]) +
+    //         ", " +
+    //         {} +
+    //         ", " +
+    //         templateName ||
+    //       foobarr ||
+    //       (htmlArray[foobarr0Index] || htmlArray[foobarrIndex]) + ",",
+    //   );
+    //   return this[libName].renderFile(
+    //     foobarr || htmlArray[foobarr0Index] || htmlArray[foobarrIndex],
+    //     {},
+    //     "returning ?func=" + libFunc + "&args=" + foobarr ||
+    //       (htmlArray[foobarr0Index] || htmlArray[foobarrIndex]) +
+    //         ", " +
+    //         {} +
+    //         ", " +
+    //         templateName ||
+    //       foobarr ||
+    //       (htmlArray[foobarr0Index] || htmlArray[foobarrIndex]) + ",",
+    //   );
+    // }
+    // const result = this[libName][libFunc](foobarr);
+    console.log(
+      "returning renderTemplate contentApp [" +
+        libFunc +
+        "].apply(this, [" +
+        foobarr ||
+        (htmlArray[foobarr0Index] || htmlArray[foobarrIndex]) +
+          "]), tupL " +
+          (htmlArray[funcTres0Index] || htmlArray[funcTresIndex]) +
+          ", e " +
+          JSON.stringify(e) +
+          " " +
           foobarr ||
-          (htmlArray[foobarr0Index] || htmlArray[foobarrIndex]) +
-            "]), tupL " +
-            (htmlArray[funcTres0Index] || htmlArray[funcTresIndex]) +
-            ", e " +
-            JSON.stringify(e) +
-            " " +
-            foobarr ||
-          htmlArray[foobarr0Index] ||
-          htmlArray[foobarrIndex],
-      );
-      return this[libName].renderTemplate(
-        `<!DOCTYPE html>
+        htmlArray[foobarr0Index] ||
+        htmlArray[foobarrIndex],
+    );
+    return this[libName].renderTemplate(
+      `<!DOCTYPE html>
           <html lang="en">
             <head><base target="_top">
               <meta charset="utf-8">
@@ -674,9 +681,9 @@ var doGet = function (e) {
                 });
             }
           </script>`,
-        {
-          renBlob: this[libName].contentApp(
-            `<!DOCTYPE html>
+      {
+        renBlob: this[libName].contentApp(
+          `<!DOCTYPE html>
             <html lang="en">
               <head>
                 <base target="_top">
@@ -1131,36 +1138,35 @@ var doGet = function (e) {
                 </script>
               </body>
             </html>`,
-            {
-              appL:
-                payLoad.type === "text" ? iframeSrc : JSON.stringify(payLoad),
-              etop: JSON.stringify(e),
-              tupL: htmlArray[funcTres0Index] || htmlArray[funcTresIndex],
-              homePage: this[libName].getScriptUrl(),
-            },
-          ),
-          aplot: payLoad.type === "text" ? iframeSrc : JSON.stringify(payLoad),
-          e: JSON.stringify(e),
-          homePage: this[libName].getScriptUrl(),
-        },
+          {
+            appL: payLoad.type === "text" ? iframeSrc : JSON.stringify(payLoad),
+            etop: JSON.stringify(e),
+            tupL: htmlArray[funcTres0Index] || htmlArray[funcTresIndex],
+            homePage: this[libName].getScriptUrl(),
+          },
+        ),
+        aplot: payLoad.type === "text" ? iframeSrc : JSON.stringify(payLoad),
+        e: JSON.stringify(e),
+        homePage: this[libName].getScriptUrl(),
+      },
 
-        "returning renderTemplate contentApp [" +
-          libFunc +
-          "].apply(this, [" +
-          (foobarr || htmlArray[foobarr0Index] || htmlArray[foobarrIndex]) +
-          "]), tupL " +
-          (htmlArray[funcTres0Index] || htmlArray[funcTresIndex]) +
-          ", e " +
-          JSON.stringify(e) +
-          " " +
-          (foobarr || htmlArray[foobarr0Index] || htmlArray[foobarrIndex]),
-      );
-    } catch (error) {
-      console.error(`Error executing function "${libFunc}":`, error);
-      throw new Error(
-        "Error executing function: " + error.toString() + "\n" + error.stack,
-      );
-    }
+      "returning renderTemplate contentApp [" +
+        libFunc +
+        "].apply(this, [" +
+        (foobarr || htmlArray[foobarr0Index] || htmlArray[foobarrIndex]) +
+        "]), tupL " +
+        (htmlArray[funcTres0Index] || htmlArray[funcTresIndex]) +
+        ", e " +
+        JSON.stringify(e) +
+        " " +
+        (foobarr || htmlArray[foobarr0Index] || htmlArray[foobarrIndex]),
+    );
+  } catch (error) {
+    console.error(`Error executing function "${libFunc}":`, error);
+    throw new Error(
+      "Error executing function: " + error.toString() + "\n" + error.stack,
+    );
+  }
   // } else {
   //   return;
   // }
