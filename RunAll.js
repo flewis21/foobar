@@ -140,7 +140,8 @@ var doGet = function (e) {
         });
         htmlDosArg = htmlArray[foobarr0Index];
       }
-    } else if (htmlArray.includes(foobarr)) {
+    } 
+    else if (htmlArray.includes(foobarr)) {
       var foobarrIndex = htmlArray.findIndex(function (element) {
         return element === foobarr;
       });
@@ -156,7 +157,8 @@ var doGet = function (e) {
         });
         htmlTresArg = htmlArray[funcTres0Index];
       }
-    } else if (htmlArray.includes(funcTres)) {
+    } 
+    else if (htmlArray.includes(funcTres)) {
       var funcTresIndex = htmlArray.findIndex(function (element) {
         return element === funcTres;
       });
@@ -182,7 +184,8 @@ var doGet = function (e) {
       // Check if foobarr is already an array (from internal re-assignment by objectOfS)
       if (Array.isArray(foobarr)) {
         parsedFuncArgs = [foobarr]; // It's already the array we want
-      } else if (typeof foobarr === "string" && foobarr) {
+      } 
+      else if (typeof foobarr === "string" && foobarr) {
         try {
           parsedFuncArgs = JSON.parse(foobarr);
           if (!Array.isArray(parsedFuncArgs)) {
@@ -191,7 +194,8 @@ var doGet = function (e) {
         } catch (jsonError) {
           parsedFuncArgs = [foobarr]; // Treat as a single string argument if not valid JSON
         }
-      } else {
+      } 
+      else {
         // Handle other cases for foobarr, or it might be null/undefined
         finalArgsForFunction = [];
       }
@@ -218,19 +222,22 @@ var doGet = function (e) {
             foobarr ||
             (htmlArray[foobarr0Index] || htmlArray[foobarrIndex]) + ",",
         );
-      } else {
+      } 
+      else {
         try {
           rawFunc = libFunc
             ? this[libName]["misSt"].apply(this, [[libFunc, ...parsedFuncArgs]])
             : this[libName]["misSt"].apply(this, [[...parsedFuncArgs]]);
           rawFuncResult = rawFunc.res;
-        } catch {
+        } 
+        catch {
           rawFuncResult = libFunc
             ? this[libName][libFunc].apply(this, parsedFuncArgs)
             : this[libName]["misSt"].apply(this, parsedFuncArgs);
         }
       }
-    } else {
+    } 
+    else {
       console.error(
         `Error: Function "${libFunc}" not found or not callable in "${libName}".`,
       );
@@ -262,15 +269,18 @@ var doGet = function (e) {
         if (contentType.includes("application/json")) {
           try {
             return { type: "jsonData", data: JSON.parse(responseText) };
-          } catch (e) {
+          } 
+          catch (e) {
             return {
               type: "text",
               data: `Error parsing JSON from URL fetch: ${responseText}`,
             };
           }
-        } else if (contentType.includes("text/html")) {
+        } 
+        else if (contentType.includes("text/html")) {
           return { type: "html", data: responseText };
-        } else {
+        } 
+        else {
           return { type: "text", data: responseText };
         }
       }
@@ -289,12 +299,14 @@ var doGet = function (e) {
         try {
           const parsedJson = JSON.parse(content);
           return { type: "jsonData", data: parsedJson };
-        } catch (jsonError) {
+        } 
+        catch (jsonError) {
           // Not JSON, treat as HTML or plain text
           if (content.trim().startsWith("<") && content.trim().endsWith(">")) {
             // More robust HTML check
             return { type: "html", data: content };
-          } else {
+          } 
+          else {
             return { type: "text", data: content };
           }
         }
@@ -353,7 +365,8 @@ var doGet = function (e) {
         if (rawFuncResult.index && rawFuncResult.index.funcStr) {
           // Only add if payLoad doesn't already have it
           payLoad.fStr = rawFuncResult.index.funcStr;
-        } else if (rawFuncResult.index && rawFuncResult.index.dataStr) {
+        } 
+        else if (rawFuncResult.index && rawFuncResult.index.dataStr) {
           // Only add if payLoad doesn't already have it
           payLoad.dStr = rawFuncResult.index.dataStr;
         }
@@ -376,20 +389,24 @@ var doGet = function (e) {
       iframeSrc = payLoad.index; // Assign iframeSrc
       finalAppLContent = payLoad.data;
       finalFeedDivContent = `URL provided: <a href="${payLoad.link}" target="_blank">${payLoad.link}</a>`;
-    } else if (payLoad.type === "url") {
+    } 
+    else if (payLoad.type === "url") {
       // --- NEW: Handle "url" type directly ---
       iframeSrc = payLoad.data; // Assign the URL to iframeSrc
       finalAppLContent = `URL provided: <a href="${payLoad.index}" target="_blank">${payLoad.index}</a>`;
       finalFeedDivContent = `URL provided: <a href="${payLoad.link}" target="_blank">${payLoad.link}</a>`;
-    } else if (payLoad.type === "jsonData") {
+    } 
+    else if (payLoad.type === "jsonData") {
       iframeSrc = payLoad.index; // Assign iframeSrc
       finalAppLContent = `<pre>${JSON.stringify(payLoad.data, null, 2)}</pre>`;
       finalFeedDivContent = `URL provided: <a href="${payLoad.link}" target="_blank">${payLoad.link}</a>`;
-    } else if (payLoad.type === "text") {
+    } 
+    else if (payLoad.type === "text") {
       iframeSrc = payLoad.index; // Assign iframeSrc
       finalAppLContent = payLoad.data;
       finalFeedDivContent = `URL provided: <a href="${payLoad.link}" target="_blank">${payLoad.link}</a>`;
-    } else if (payLoad.type === "object") {
+    } 
+    else if (payLoad.type === "object") {
       // Here, if payLoad.data is an object, you need to decide how to display it.
       // It could contain sub-properties you want to render.
       let notApp = payLoad.data;
@@ -397,22 +414,26 @@ var doGet = function (e) {
         finalAppLContent = notApp?.html || notApp?.app;
         // If the object itself contains a URL, use it for iframeSrc
         iframeSrc = notApp?.url || iframeSrc;
-      } else if (notApp?.url) {
+      } 
+      else if (notApp?.url) {
         // If the object explicitly has a 'url' property
         iframeSrc = notApp?.url;
         finalAppLContent = `URL provided: <a href="${notApp?.index}" target="_blank">${notApp?.index}</a>`;
         finalFeedDivContent = `URL provided: <a href="${notApp?.link}" target="_blank">${notApp?.link}</a>`;
-      } else {
+      } 
+      else {
         // Default way to display a generic object: stringify it
         iframeSrc = notApp?.index; // Assign iframeSrc
         finalAppLContent = `<pre>${JSON.stringify(notApp?.app, null, 2)}</pre>`;
         finalFeedDivContent = `URL provided: <a href="${notApp?.link}" target="_blank">${notApp?.link}</a>`;
       }
-    } else if (payLoad.type === "unknown" || payLoad.type === "error") {
+    } 
+    else if (payLoad.type === "unknown" || payLoad.type === "error") {
       finalAppLContent = `<div>Error: ${payLoad.message || payLoad.data || "Unknown error."}</div>`;
       finalFeedDivContent = `Error: ${payLoad.message || payLoad.data || "Unknown error."}`;
     }
-  } catch (error) {
+  } 
+  catch (error) {
     console.error(`Error during payload processing:`, error);
     finalAppLContent = `<div>Critical Error: ${error.message}</div>`;
     finalFeedDivContent = `Critical Error: ${error.message}`;
@@ -1161,7 +1182,8 @@ var doGet = function (e) {
         " " +
         (foobarr || htmlArray[foobarr0Index] || htmlArray[foobarrIndex]),
     );
-  } catch (error) {
+  } 
+  catch (error) {
     console.error(`Error executing function "${libFunc}":`, error);
     throw new Error(
       "Error executing function: " + error.toString() + "\n" + error.stack,
@@ -1380,7 +1402,8 @@ var doGet = function (e) {
     let rawResult;
     if (typeof this[libName][func] === "function") {
       rawResult = this[libName][func].apply(this, args); // Call the global function
-    } else {
+    } 
+    else {
       // Fallback or error if func is not found in globalThis
       throw new Error(
         `Function '${this[libName][func]}' not found in global scope.`,
@@ -1394,7 +1417,8 @@ var doGet = function (e) {
       typeof rawResult.setXFrameOptionsMode === "function"
     ) {
       return { type: "html", data: rawResult.getContent() };
-    } else if (
+    } 
+    else if (
       rawResult &&
       typeof rawResult.getResponseCode === "function" &&
       typeof rawResult.getContentText === "function"
@@ -1404,32 +1428,39 @@ var doGet = function (e) {
       if (contentType.includes("application/json")) {
         try {
           return { type: "jsonData", data: JSON.parse(responseText) };
-        } catch (e) {
+        } 
+        catch (e) {
           return {
             type: "text",
             data: `Error parsing JSON from URL fetch: ${responseText}`,
           };
         }
-      } else if (contentType.includes("text/html")) {
+      } 
+      else if (contentType.includes("text/html")) {
         return { type: "html", data: responseText };
-      } else {
+      } 
+      else {
         return { type: "text", data: responseText };
       }
-    } else if (typeof rawResult === "string") {
+    } 
+    else if (typeof rawResult === "string") {
       try {
         const parsedJson = JSON.parse(rawResult);
         return { type: "jsonData", data: parsedJson };
-      } catch (jsonError) {
+      } 
+      catch (jsonError) {
         if (
           rawResult.trim().startsWith("<") &&
           rawResult.trim().endsWith(">")
         ) {
           return { type: "html", data: rawResult };
-        } else {
+        } 
+        else {
           return { type: "text", data: rawResult };
         }
       }
-    } else if (typeof rawResult === "object" && rawResult !== null) {
+    } 
+    else if (typeof rawResult === "object" && rawResult !== null) {
       if (rawResult.html) {
         return { type: "html", data: rawResult.html };
       }
@@ -1441,15 +1472,18 @@ var doGet = function (e) {
             name: rawResult.name,
             url: rawResult.url,
           };
-        } else {
+        } 
+        else {
           return { type: "url", data: rawResult.url };
         }
       }
       return { type: "object", data: rawResult };
-    } else {
+    } 
+    else {
       return { type: "unknown", data: rawResult };
     }
-  } catch (error) {
+  } 
+  catch (error) {
     Logger.log("Error in " + func + ": " + error.message);
     throw new Error(`Server error in ${func}: ${error.message}`);
   }
