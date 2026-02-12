@@ -1,200 +1,206 @@
-<!DOCTYPE html>
-  <html lang="en">
-    <head><base target="_top">
-      <meta charset="utf-8">
-      <meta name="Subscribe" content="ATL Budget Studio">
-      <meta name=viewport content="width=device-width, initial-scale=1">
-      <link href="https://fonts.googleapis.com/css?family=Acme" rel="stylesheet">
-      <style>
-        body {
-          flex-grow: 1;
-          color:blue;
-          text-decoration:bold;
-          flex-flow: row wrap;
-          grid-column: 1;
-          grid-row: 1;
-          text-align: center;
-          align-content: flex-start;
-          overflow: auto;
-        }
-      </style>
-    </head>
-    <body id="JavaScriptDoGet">
-      <div id="eObject"><input type="text" id="pageObj" value=""></div>
-      <div><?!= HtmlService.createHtmlOutputFromFile("Untitled3").getContent() ?></div>
-    </body>
-  </html>
-  <script>
-    function serverSide(func, args) {
-      return new Promise((resolve, reject) => {
-        google.script.run
-          .withSuccessHandler((result) => {
-            resolve(result); // result will be { type: "...", data: "..." }
-            // You would then process 'result' here to update specific parts of your current page
-            // For example, update a div with result.data if result.type is "text" or "html"
-            console.log("Server side call success:", result);
-          })
-          .withFailureHandler((error) => {
-            reject(error);
-            console.error("Server-side call error:", error);
-            alert("Error during server call: " + error.message);
-          })
-          .runBoilerplate(func, args);
-      });
-    }
-    console.log("line 209");
-    const currentE = JSON.parse(<?= e ?>);
-    console.log("line 210");
-    const homePageUrl = <?= homePage ?>;
-    console.log("line 213");
-    console.log("Client-side: Initial doGet event object:",  currentE);
-    console.log("Client-side: Home Page URL:", homePageUrl);
-    console.log("line 215");
-    console.log(<?= appL ?>)
-    document.addEventListener("DOMContentLoaded", eRun);
-    function eRun() {
-      console.log("line 218");
-      var objUrl = document.getElementById("pageObj");
-      console.log("line 220");
-      var objDiv = document.getElementById("eObject");
-      console.log("line 222");
-      let initialArgs = currentE.parameter["args"];
-      if (initialArgs !== undefined && initialArgs !== null) {
-        if (typeof initialArgs === 'object') {
-          console.log("line 234: creating pretty-printed initialArgs object");
-          objUrl.value = JSON.stringify(initialArgs, null, 0);
-        } else {
-          console.log("line 237: falling back to initialArgs string");
-          objUrl.value = initialArgs; // If it's a string directly
-        }
-      } else {
-        console.log("line 241: falling back to empty string");
-        objUrl.value = '[""]'; // Default if args is missing
+<!doctype html>
+<html lang="en">
+  <head>
+    <base target="_top" />
+    <meta charset="utf-8" />
+    <meta name="Subscribe" content="ATL Budget Studio" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Acme"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        flex-grow: 1;
+        color: blue;
+        text-decoration: bold;
+        flex-flow: row wrap;
+        grid-column: 1;
+        grid-row: 1;
+        text-align: center;
+        align-content: flex-start;
+        overflow: auto;
       }
-        objUrl.addEventListener("change", function () {
+    </style>
+  </head>
+  <body id="JavaScriptDoGet">
+    <div id="eObject"><input type="text" id="pageObj" value="" /></div>
+    <div>
+      <?!= HtmlService.createHtmlOutputFromFile("Untitled3").getContent() ?>
+    </div>
+  </body>
+</html>
+<script>
+  function serverSide(func, args) {
+    return new Promise((resolve, reject) => {
+      google.script.run
+        .withSuccessHandler((result) => {
+          resolve(result); // result will be { type: "...", data: "..." }
+          // You would then process 'result' here to update specific parts of your current page
+          // For example, update a div with result.data if result.type is "text" or "html"
+          console.log("Server side call success:", result);
+        })
+        .withFailureHandler((error) => {
+          reject(error);
+          console.error("Server-side call error:", error);
+          alert("Error during server call: " + error.message);
+        })
+        .runBoilerplate(func, args);
+    });
+  }
+  console.log("line 209");
+  const currentE = JSON.parse(<?= e ?>);
+  console.log("line 210");
+  const homePageUrl = <?= homePage ?>;
+  console.log("line 213");
+  console.log("Client-side: Initial doGet event object:",  currentE);
+  console.log("Client-side: Home Page URL:", homePageUrl);
+  console.log("line 215");
+  console.log(<?= appL ?>)
+  document.addEventListener("DOMContentLoaded", eRun);
+  function eRun() {
+    console.log("line 218");
+    var objUrl = document.getElementById("pageObj");
+    console.log("line 220");
+    var objDiv = document.getElementById("eObject");
+    console.log("line 222");
+    let initialArgs = currentE.parameter["args"];
+    if (initialArgs !== undefined && initialArgs !== null) {
+      if (typeof initialArgs === 'object') {
+        console.log("line 234: creating pretty-printed initialArgs object");
+        objUrl.value = JSON.stringify(initialArgs, null, 0);
+      } else {
+        console.log("line 237: falling back to initialArgs string");
+        objUrl.value = initialArgs; // If it's a string directly
+      }
+    } else {
+      console.log("line 241: falling back to empty string");
+      objUrl.value = '[""]'; // Default if args is missing
+    }
+      objUrl.addEventListener("change", function () {
+        try {
+          // Parse the user's input as the new 'args' value
+          // Allow direct strings or JSON arrays/objects
+          let parsedE;
           try {
-            // Parse the user's input as the new 'args' value
-            // Allow direct strings or JSON arrays/objects
-            let parsedE;
-            try {
-              parsedE = JSON.parse(this.value);
-            } catch (jsonError) {
-              // If it's not valid JSON, treat it as a plain string
-              parsedE = this.value;
-            }
+            parsedE = JSON.parse(this.value);
+          } catch (jsonError) {
+            // If it's not valid JSON, treat it as a plain string
+            parsedE = this.value;
+          }
 
-            // --- MODIFICATION STARTS HERE ---
-            // Create a *new*, reduced e object containing only func and args
-            const updatedClientE = {
-              parameter: {
-                func: currentE.parameter.func, // Keep the original func
-                args: parsedE                 // Use the new parsed args
+          // --- MODIFICATION STARTS HERE ---
+          // Create a *new*, reduced e object containing only func and args
+          const updatedClientE = {
+            parameter: {
+              func: currentE.parameter.func, // Keep the original func
+              args: parsedE                 // Use the new parsed args
+            }
+          };
+          // --- MODIFICATION ENDS HERE ---
+          alert("e.parameter['args'] updated. Sending back to server for re-render.");
+          console.log("Client-side: Updated e object to send:", updatedClientE);
+          async function handlePageUpdate() {
+            try {
+              // This part is still problematic if newStackContent is meant to be HTML
+              // and it directly comes from updatedClientApp (which is the textarea value)
+              // If updatedClientApp contains HTML, it needs to be processed to be displayable.
+              const newHtmlContent = await serverSide(updatedClientE.parameter["func"], [updatedClientE.parameter["args"]]);
+              alert(newHtmlContent.type)
+              let mddr = new URL(newHtmlContent.data);
+              if (newHtmlContent && newHtmlContent.type === "html" && newHtmlContent.data) {
+                document.open();
+                document.write(newHtmlContent.data); // Use the data property
+                document.close();
+                console.log("Client-side: Page re-rendered with new content from server.");
               }
-            };
-            // --- MODIFICATION ENDS HERE ---
-            alert("e.parameter['args'] updated. Sending back to server for re-render.");
-            console.log("Client-side: Updated e object to send:", updatedClientE);
-            async function handlePageUpdate() {
-              try {
-                // This part is still problematic if newStackContent is meant to be HTML
-                // and it directly comes from updatedClientApp (which is the textarea value)
-                // If updatedClientApp contains HTML, it needs to be processed to be displayable.
-                const newHtmlContent = await serverSide(updatedClientE.parameter["func"], [updatedClientE.parameter["args"]]);
-                alert(newHtmlContent.type)
-                let mddr = new URL(newHtmlContent.data);
-                if (newHtmlContent && newHtmlContent.type === "html" && newHtmlContent.data) {
+              else if (newHtmlContent && newHtmlContent.type === "object" && newHtmlContent.data) {
+                if (newHtmlContent.data.app) {
+                  let allProperty = Object.keys(newHtmlContent);
+                  alert("newHtmlContent keys: " + allProperty);
+                  console.log("newHtmlContent keys:", allProperty);
+                  let allValue = Object.values(newHtmlContent);
+                  alert("newHtmlContent values: " + allValue);
+                  console.log("newHtmlContent values:", allValue);
+                  let nApp = newHtmlContent.data.app;
+                  alert("newHtmlContent data app value: " + nApp);
+                  console.log("newHtmlContent data app value:", nApp);
+                  let nIndex = newHtmlContent.data.index;
+                  alert("newHtmlContent data index value: " + nIndex);
+                  console.log("newHtmlContent data index value:", nIndex);
+                  let nLink = newHtmlContent.data.link;
+                  alert("newHtmlContent data link value: " + nLink);
+                  console.log("newHtmlContent data link value:", nLink);
+                  let nType = newHtmlContent.type;
+                  alert("newHtmlContent type: " + nType);
+                  console.log("newHtmlContent type:", nType);
+                  let nddr = new URL(nApp);
+                  alert("newHtmlContent is data app value a url? " + nddr);
+                  console.log("newHtmlContent is data app value a url?", nddr);
+                  let ndln = new URL(nLink);
+                  alert("newHtmlContent data link value: " + ndln);
+                  console.log("newHtmlContent data link value:", ndln);
+                  let ndInUrl = new Url(nIndex.url);
+                  alert("newHtmlContent data index url value: " + ndInUrl);
+                  console.log("newHtmlContent data index url value:", ndInUrl);
+                  if (nApp.myVar) {
+                  }
+                  else if (typeof nApp === "object") {
+                  }
+                  else {
+
+                    if (nddr) {
+                      window.location.href = nApp; // New type "url" for strings
+                      console.log("Error: window.location.href = ", window.location.href)
+                    }
+                    else if (nApp.trim().startsWith("<") && nApp.trim().endsWith(">")) {
+
+                      // More robust HTML check
+                      // console.log(initialArgs.trim().startsWith("<") && initialArgs.trim().endsWith(">"));
+
+                      document.open();
+                      document.write('<pre class="z-depth-5 card-panel deep-purple darken-1 scale-transition scale-out scale-in btn-large" id="eventRes01" class="menu-img grey darken-4 z-depth-5" style="width: 100%; height: 100%; border: none;" allow="autoplay" allow="encrypted-media" title="Dontime Life Website" frameborder="0" allowfullscreen >' + nApp + '</pre>');
+                      document.close();
+
+                    }
+                  }
+                }
+                else {
                   document.open();
                   document.write(newHtmlContent.data); // Use the data property
                   document.close();
-                  console.log("Client-side: Page re-rendered with new content from server.");
                 }
-                else if (newHtmlContent && newHtmlContent.type === "object" && newHtmlContent.data) {
-                  if (newHtmlContent.data.app) {
-                    let allProperty = Object.keys(newHtmlContent);
-                    alert("newHtmlContent keys: " + allProperty);
-                    console.log("newHtmlContent keys:", allProperty);
-                    let allValue = Object.values(newHtmlContent);
-                    alert("newHtmlContent values: " + allValue);
-                    console.log("newHtmlContent values:", allValue);
-                    let nApp = newHtmlContent.data.app;
-                    alert("newHtmlContent data app value: " + nApp);
-                    console.log("newHtmlContent data app value:", nApp);
-                    let nIndex = newHtmlContent.data.index;
-                    alert("newHtmlContent data index value: " + nIndex);
-                    console.log("newHtmlContent data index value:", nIndex);
-                    let nLink = newHtmlContent.data.link;
-                    alert("newHtmlContent data link value: " + nLink);
-                    console.log("newHtmlContent data link value:", nLink);
-                    let nType = newHtmlContent.type;
-                    alert("newHtmlContent type: " + nType);
-                    console.log("newHtmlContent type:", nType);
-                    let nddr = new URL(nApp);
-                    alert("newHtmlContent is data app value a url? " + nddr);
-                    console.log("newHtmlContent is data app value a url?", nddr);
-                    let ndln = new URL(nLink);
-                    alert("newHtmlContent data link value: " + ndln);
-                    console.log("newHtmlContent data link value:", ndln);
-                    let ndInUrl = new Url(nIndex.url);
-                    alert("newHtmlContent data index url value: " + ndInUrl);
-                    console.log("newHtmlContent data index url value:", ndInUrl);
-                    if (nApp.myVar) {
-                    }
-                    else if (typeof nApp === "object") {
-                    }
-                    else {
-
-                      if (nddr) {
-                        window.location.href = nApp; // New type "url" for strings
-                        console.log("Error: window.location.href = ", window.location.href)
-                      }
-                      else if (nApp.trim().startsWith("<") && nApp.trim().endsWith(">")) {
-
-                        // More robust HTML check
-                        // console.log(initialArgs.trim().startsWith("<") && initialArgs.trim().endsWith(">"));
-
-                        document.open();
-                        document.write('<pre class="z-depth-5 card-panel deep-purple darken-1 scale-transition scale-out scale-in btn-large" id="eventRes01" class="menu-img grey darken-4 z-depth-5" style="width: 100%; height: 100%; border: none;" allow="autoplay" allow="encrypted-media" title="Dontime Life Website" frameborder="0" allowfullscreen >' + nApp + '</pre>');
-                        document.close();
-
-                      }
-                    }
-                  }
-                  else {
-                    document.open();
-                    document.write(newHtmlContent.data); // Use the data property
-                    document.close();
-                  }
-                  console.log("Client-side: Page re-rendered with new content from server.");
-                }  
-                else if (newHtmlContent && newHtmlContent.type === "text" && newHtmlContent.data) {
-                  if (mddr) {
-                    window.location.href = newHtmlContent.data; // New type "url" for strings
-                    console.log("Error: window.location.href = ", window.location.href)
-                  }
-                  else {
-                    document.open();
-                    document.write(newHtmlContent.data); // Use the data property
-                    document.close();
-                  }
-                  console.log("Client-side: Page re-rendered with new content from server.");
-                } 
+                console.log("Client-side: Page re-rendered with new content from server.");
+              }
+              else if (newHtmlContent && newHtmlContent.type === "text" && newHtmlContent.data) {
+                if (mddr) {
+                  window.location.href = newHtmlContent.data; // New type "url" for strings
+                  console.log("Error: window.location.href = ", window.location.href)
+                }
                 else {
                   document.open();
-                  document.write(newHtmlContent.data);
+                  document.write(newHtmlContent.data); // Use the data property
                   document.close();
-                  console.log("Client-side: Page re-rendered with new content from server.");
                 }
-              } 
-              catch (error) {
-                console.error("Client-side Error during full re-render:", error);
-                alert("Error re-rendering: " + error.message);
+                console.log("Client-side: Page re-rendered with new content from server.");
+              }
+              else {
+                document.open();
+                document.write(newHtmlContent.data);
+                document.close();
+                console.log("Client-side: Page re-rendered with new content from server.");
               }
             }
-            handlePageUpdate()
-          } catch (error) {
-            alert("Error processing input. Please ensure it's valid JSON or a plain string.");
-            console.error("Input processing error:", error);
+            catch (error) {
+              console.error("Client-side Error during full re-render:", error);
+              alert("Error re-rendering: " + error.message);
+            }
           }
-        });
-    }
-  </script>
+          handlePageUpdate()
+        } catch (error) {
+          alert("Error processing input. Please ensure it's valid JSON or a plain string.");
+          console.error("Input processing error:", error);
+        }
+      });
+  }
+</script>

@@ -66,14 +66,13 @@ function doGet(e) {
           ["parameter"],
           [
             [
-              ["func", "createRandomFunction"]//argsEd],
+              ["func", "createRandomFunction"], //argsEd],
               // ["args", argsEd],
             ],
           ],
           functionRegistry.time,
         );
-      } 
-      else if (typeof argsEd === "object" && argsEd !== null && argsEd.name) {
+      } else if (typeof argsEd === "object" && argsEd !== null && argsEd.name) {
         if (argsEd.parameters && argsEd.parameters.length > 0) {
           e = this[libName].objectOfS(
             ["parameter"],
@@ -85,28 +84,25 @@ function doGet(e) {
             ],
             functionRegistry.time,
           );
-        } 
-        else {
+        } else {
           e = this[libName].objectOfS(
             ["parameter"],
             [
               [
-                ["func", "createRandomFunction"]//argsEd.name],
+                ["func", "createRandomFunction"], //argsEd.name],
                 // ["args", argsEd.name],
               ],
             ],
             functionRegistry.time,
           );
         }
-      } 
-      else {
+      } else {
         console.log("Unexpected argsEd type: ", argsEd);
         e = this[libName].objectOfS(
           ["parameter"],
           [
             [
-              ["func", "createRandomFunction"]//""mis"],
-              ["args", "Invalid Entry"],
+              ["func", "createRandomFunction"][("args", "Invalid Entry")], //""mis"],
             ],
           ],
           functionRegistry.time,
@@ -259,8 +255,7 @@ function doGet(e) {
             : this[libName]["misSt"].apply(this, parsedFuncArgs);
         }
       }
-    } 
-    else {
+    } else {
       console.error(
         `Error: Function "${libFunc}" not found or not callable in "${libName}".`,
       );
@@ -334,15 +329,14 @@ function doGet(e) {
         // If the object itself contains structured data you want to directly use
         let cKeys = Object.keys(content);
         let cVals = Object.values(content);
-        var contentObject = cKeys.map((ctScan, ckIndex) =>{
+        var contentObject = cKeys.map((ctScan, ckIndex) => {
           if (Array.isArray(cVals[ckIndex])) {
-            var cValsIndex = cVals[ckIndex]
+            var cValsIndex = cVals[ckIndex];
           }
           if (ctScan === "html") {
             // If there's an explicit 'html' property
             return { type: "html", data: content[ctScan] };
-          }
-          else if (ctScan === "url" && urlRegex.test(content[ctScan])) {
+          } else if (ctScan === "url" && urlRegex.test(content[ctScan])) {
             // Use regex for object.url as well
             return { type: "url", data: content[ctScan] };
           }
@@ -357,12 +351,11 @@ function doGet(e) {
           else if (urlRegex.test(cValsIndex)) {
             // Use regex for object.url as well
             return { type: "url", data: cValsIndex };
-          }
-          else {
+          } else {
             // Add other specific object property checks here if needed
             return { type: "object", data: content }; // Default for other objects
           }
-        })
+        });
         return contentObject[0];
       }
       // 5. Default unknown
@@ -453,14 +446,12 @@ function doGet(e) {
         finalAppLContent = payLoad?.data?.html || payLoad?.data?.app;
         // If the object itself contains a URL, use it for iframeSrc
         iframeSrc = payLoad?.data?.url || iframeSrc;
-      } 
-      else if (pdKeys?.indexOf("url") > -1) {
+      } else if (pdKeys?.indexOf("url") > -1) {
         // If the object explicitly has a 'url' property
         iframeSrc = payLoad?.data?.url;
         finalAppLContent = `URL provided: <a href="${payLoad?.data?.index}" target="_blank">${payLoad?.data?.index}</a>`;
         finalFeedDivContent = `URL provided: <a href="${payLoad?.data?.link}" target="_blank">${payLoad?.data?.link}</a>`;
-      } 
-      else {
+      } else {
         // Default way to display a generic object: stringify it
         iframeSrc = payLoad?.data?.index; // Assign iframeSrc
         finalAppLContent = `<pre>${JSON.stringify(payLoad?.data?.app, null, 2)}</pre>`;
@@ -1230,7 +1221,10 @@ function doGet(e) {
               </body>
             </html>`,
           {
-            appL: payLoad.type === "text" || payLoad.type === "url" ? iframeSrc : JSON.stringify(payLoad),
+            appL:
+              payLoad.type === "text" || payLoad.type === "url"
+                ? iframeSrc
+                : JSON.stringify(payLoad),
             etop: JSON.stringify(e),
             tupL: htmlArray[funcTres0Index] || htmlArray[funcTresIndex],
             homePage: this[libName].getScriptUrl(),
@@ -1261,7 +1255,7 @@ function doGet(e) {
   // } else {
   //   return;
   // }
-};
+}
 // const accessGranted
 // = this[libName].validateFiles();const youNeedAccess
 // = this[libName].scriptQuit();
@@ -1442,7 +1436,7 @@ function doGet(e) {
  * and re-render the entire page based on it.
  * @param {GoogleAppsScript.Events.AppsScriptHttpRequestEvent} clientEObject The 'e' object sent from the client, with updated parameters.
  * @returns {GoogleAppsScript.HTML.HtmlOutput} The complete new HTML content wrapped in HtmlOutput.
- */ 
+ */
 function runBoilerplate(func, args) {
   Logger.log(
     "Server-side: runBoilerplate called with clientEObject: " +
@@ -1553,4 +1547,4 @@ function runAll(func, args) {
   var libFunc = arr[1];
   args = args || [];
   return this[libName][libFunc].apply(this, args);
-};
+}
