@@ -1,5 +1,31 @@
-var doGet = function (e) {
+function doGet(e) {
   var libName = "foo";
+  // if (e && e.parameter) {
+  //   var data = Object.keys(e.parameter);
+  // }
+  // let content;
+  // // console.log("data value", data);
+  // if (data?.length > 0) {
+  //   data.forEach((key) =>{
+  //     Array(content).push(e.parameter[key])
+  //   })
+  // }
+  // else {
+  //   let genFuction = this[libName].createRandomFunction()
+  //   var data = Object.keys(genFuction);
+  //   data.forEach((key) =>{
+  //     data.push(genFuction[key])
+  //   })
+  // }
+  // // console.log("content value", content);
+  // return renderFile("Untitled2.html",
+  // {
+  //   appL: Object.values(this[libName].mis(content || data))[0],
+  //   etop: JSON.stringify(e),
+  //   tupL: functionRegistry.getHtmlList[0],
+  //   homePage: this[libName].getScriptUrl(),
+  //   e: JSON.stringify(e),
+  // })
 
   // Early return for getData action
   if (e && e.parameter && e.parameter.action === "getData") {
@@ -40,13 +66,14 @@ var doGet = function (e) {
           ["parameter"],
           [
             [
-              ["func", argsEd],
+              ["func", "createRandomFunction"]//argsEd],
               // ["args", argsEd],
             ],
           ],
           functionRegistry.time,
         );
-      } else if (typeof argsEd === "object" && argsEd !== null && argsEd.name) {
+      } 
+      else if (typeof argsEd === "object" && argsEd !== null && argsEd.name) {
         if (argsEd.parameters && argsEd.parameters.length > 0) {
           e = this[libName].objectOfS(
             ["parameter"],
@@ -58,25 +85,27 @@ var doGet = function (e) {
             ],
             functionRegistry.time,
           );
-        } else {
+        } 
+        else {
           e = this[libName].objectOfS(
             ["parameter"],
             [
               [
-                ["func", argsEd.name],
+                ["func", "createRandomFunction"]//argsEd.name],
                 // ["args", argsEd.name],
               ],
             ],
             functionRegistry.time,
           );
         }
-      } else {
+      } 
+      else {
         console.log("Unexpected argsEd type: ", argsEd);
         e = this[libName].objectOfS(
           ["parameter"],
           [
             [
-              ["func", "mis"],
+              ["func", "createRandomFunction"]//""mis"],
               ["args", "Invalid Entry"],
             ],
           ],
@@ -230,7 +259,8 @@ var doGet = function (e) {
             : this[libName]["misSt"].apply(this, parsedFuncArgs);
         }
       }
-    } else {
+    } 
+    else {
       console.error(
         `Error: Function "${libFunc}" not found or not callable in "${libName}".`,
       );
@@ -302,16 +332,38 @@ var doGet = function (e) {
       // 4. Handle Generic Objects
       else if (typeof content === "object" && content !== null) {
         // If the object itself contains structured data you want to directly use
-        if (content.html) {
-          // If there's an explicit 'html' property
-          return { type: "html", data: content.html };
-        }
-        if (content.url && urlRegex.test(content.url)) {
-          // Use regex for object.url as well
-          return { type: "url", data: content.url };
-        }
-        // Add other specific object property checks here if needed
-        return { type: "object", data: content }; // Default for other objects
+        let cKeys = Object.keys(content);
+        let cVals = Object.values(content);
+        var contentObject = cKeys.map((ctScan, ckIndex) =>{
+          if (Array.isArray(cVals[ckIndex])) {
+            var cValsIndex = cVals[ckIndex]
+          }
+          if (ctScan === "html") {
+            // If there's an explicit 'html' property
+            return { type: "html", data: content[ctScan] };
+          }
+          else if (ctScan === "url" && urlRegex.test(content[ctScan])) {
+            // Use regex for object.url as well
+            return { type: "url", data: content[ctScan] };
+          }
+          // else if (Array.isArray(cVals[ckIndex])) {
+          //   cVals[ckIndex].map((aaVals, aaIndex) =>{
+          //     if (urlRegex.test(aaVals)) {
+          //       // Use regex for object.url as well
+          //       return { type: "url", data: aaVals };
+          //     }
+          //   })
+          // }
+          else if (urlRegex.test(cValsIndex)) {
+            // Use regex for object.url as well
+            return { type: "url", data: cValsIndex };
+          }
+          else {
+            // Add other specific object property checks here if needed
+            return { type: "object", data: content }; // Default for other objects
+          }
+        })
+        return contentObject[0];
       }
       // 5. Default unknown
       else {
@@ -368,6 +420,8 @@ var doGet = function (e) {
     console.log("payLoad.data === ", payLoad.data);
     if (typeof payLoad.data === "object") {
       console.log("payLoad.data", JSON.stringify(payLoad.data));
+      console.log("payLoad.data keys", Object.keys(payLoad.data));
+      console.log("payLoad.data values", Object.values(payLoad.data));
     }
 
     // Now, use the structured 'payLoad' to set the final content variables
@@ -392,21 +446,25 @@ var doGet = function (e) {
     } else if (payLoad.type === "object") {
       // Here, if payLoad.data is an object, you need to decide how to display it.
       // It could contain sub-properties you want to render.
+      let pdKeys = Object.keys(payLoad.data);
+      let pdVals = Object.values(payLoad.data);
       let notApp = payLoad.data;
-      if (notApp?.html || notApp?.app) {
-        finalAppLContent = notApp?.html || notApp?.app;
+      if (pdKeys?.indexOf("html") > -1 || pdKeys?.indexOf("app") > -1) {
+        finalAppLContent = payLoad?.data?.html || payLoad?.data?.app;
         // If the object itself contains a URL, use it for iframeSrc
-        iframeSrc = notApp?.url || iframeSrc;
-      } else if (notApp?.url) {
+        iframeSrc = payLoad?.data?.url || iframeSrc;
+      } 
+      else if (pdKeys?.indexOf("url") > -1) {
         // If the object explicitly has a 'url' property
-        iframeSrc = notApp?.url;
-        finalAppLContent = `URL provided: <a href="${notApp?.index}" target="_blank">${notApp?.index}</a>`;
-        finalFeedDivContent = `URL provided: <a href="${notApp?.link}" target="_blank">${notApp?.link}</a>`;
-      } else {
+        iframeSrc = payLoad?.data?.url;
+        finalAppLContent = `URL provided: <a href="${payLoad?.data?.index}" target="_blank">${payLoad?.data?.index}</a>`;
+        finalFeedDivContent = `URL provided: <a href="${payLoad?.data?.link}" target="_blank">${payLoad?.data?.link}</a>`;
+      } 
+      else {
         // Default way to display a generic object: stringify it
-        iframeSrc = notApp?.index; // Assign iframeSrc
-        finalAppLContent = `<pre>${JSON.stringify(notApp?.app, null, 2)}</pre>`;
-        finalFeedDivContent = `URL provided: <a href="${notApp?.link}" target="_blank">${notApp?.link}</a>`;
+        iframeSrc = payLoad?.data?.index; // Assign iframeSrc
+        finalAppLContent = `<pre>${JSON.stringify(payLoad?.data?.app, null, 2)}</pre>`;
+        finalFeedDivContent = `URL provided: <a href="${payLoad?.data?.link}" target="_blank">${payLoad?.data?.link}</a>`;
       }
     } else if (payLoad.type === "unknown" || payLoad.type === "error") {
       finalAppLContent = `<div>Error: ${payLoad.message || payLoad.data || "Unknown error."}</div>`;
@@ -616,7 +674,7 @@ var doGet = function (e) {
                         // If updatedClientApp contains HTML, it needs to be processed to be displayable.
                         const newHtmlContent = await serverSide(updatedClientE.parameter["func"], [updatedClientE.parameter["args"]]);
                         alert(newHtmlContent.type)
-                        let mddr = URL.canParse(newHtmlContent.data);
+                        let mddr = new URL(newHtmlContent.data);
                         if (newHtmlContent && newHtmlContent.type === "html" && newHtmlContent.data) {
                           document.open();
                           document.write(newHtmlContent.data); // Use the data property
@@ -625,21 +683,53 @@ var doGet = function (e) {
                         }
                         else if (newHtmlContent && newHtmlContent.type === "object" && newHtmlContent.data) {
                           if (newHtmlContent.data.app) {
+                            let allProperty = Object.keys(newHtmlContent);
+                            alert("newHtmlContent keys: " + allProperty);
+                            console.log("newHtmlContent keys:", allProperty);
+                            let allValue = Object.values(newHtmlContent);
+                            alert("newHtmlContent values: " + allValue);
+                            console.log("newHtmlContent values:", allValue);
                             let nApp = newHtmlContent.data.app;
-                            let nddr = URL.canParse(nApp)
-                            if (nddr) {
-                              window.location.href = nApp; // New type "url" for strings
-                              console.log("Error: window.location.href = ", window.location.href)
+                            alert("newHtmlContent data app value: " + nApp);
+                            console.log("newHtmlContent data app value:", nApp);
+                            let nIndex = newHtmlContent.data.index;
+                            alert("newHtmlContent data index value: " + nIndex);
+                            console.log("newHtmlContent data index value:", nIndex);
+                            let nLink = newHtmlContent.data.link;
+                            alert("newHtmlContent data link value: " + nLink);
+                            console.log("newHtmlContent data link value:", nLink);
+                            let nType = newHtmlContent.type;
+                            alert("newHtmlContent type: " + nType);
+                            console.log("newHtmlContent type:", nType);
+                            let nddr = new URL(nApp);
+                            alert("newHtmlContent is data app value a url? " + nddr);
+                            console.log("newHtmlContent is data app value a url?", nddr);
+                            let ndln = new URL(nLink);
+                            alert("newHtmlContent data link value: " + ndln);
+                            console.log("newHtmlContent data link value:", ndln);
+                            let ndInUrl = new Url(nIndex.url);
+                            alert("newHtmlContent data index url value: " + ndInUrl);
+                            console.log("newHtmlContent data index url value:", ndInUrl);
+                            if (nApp.myVar) {
                             }
-                            else if (nApp.trim().startsWith("<") && nApp.trim().endsWith(">")) {
+                            else if (typeof nApp === "object") {
+                            }
+                            else {
 
-                              // More robust HTML check
-                              // console.log(initialArgs.trim().startsWith("<") && initialArgs.trim().endsWith(">"));
+                              if (nddr) {
+                                window.location.href = nApp; // New type "url" for strings
+                                console.log("Error: window.location.href = ", window.location.href)
+                              }
+                              else if (nApp.trim().startsWith("<") && nApp.trim().endsWith(">")) {
 
-                              document.open();
-                              document.write('<pre class="z-depth-5 card-panel deep-purple darken-1 scale-transition scale-out scale-in btn-large" id="eventRes01" class="menu-img grey darken-4 z-depth-5" style="width: 100%; height: 100%; border: none;" allow="autoplay" allow="encrypted-media" title="Dontime Life Website" frameborder="0" allowfullscreen >' + nApp + '</pre>');
-                              document.close();
+                                // More robust HTML check
+                                // console.log(initialArgs.trim().startsWith("<") && initialArgs.trim().endsWith(">"));
 
+                                document.open();
+                                document.write('<pre class="z-depth-5 card-panel deep-purple darken-1 scale-transition scale-out scale-in btn-large" id="eventRes01" class="menu-img grey darken-4 z-depth-5" style="width: 100%; height: 100%; border: none;" allow="autoplay" allow="encrypted-media" title="Dontime Life Website" frameborder="0" allowfullscreen >' + nApp + '</pre>');
+                                document.close();
+
+                              }
                             }
                           }
                           else {
@@ -746,6 +836,7 @@ var doGet = function (e) {
                   }
                   console.log("line 367: Beginning evaluation");
                   const homeStackUrl = JSON.stringify(<?= homePage ?>);
+                  const applications = JSON.stringify(<?= appL ?>);
                   const chUrl = document.getElementById("indexBeta");
 
                   // alert("line 653 Inside renBlob block of serverside Runall doGet");
@@ -761,7 +852,7 @@ var doGet = function (e) {
                   let iframeSrc =
                     "https://www.clubhouse.com/@fabianlewis?utm_medium=ch_profile&utm_campaign=lhTUtHb2bYqPN3w8EEB7FQ-247242"; // Default iframe src
                   let finalFeedDivContent = "";
-                  let addr = URL.canParse(<?= appL ?>);
+                  let addr = new URL(<?= appL ?>);
                   try {
                     currentApp = JSON.parse(<?= appL ?>);
                     if (Object.keys(currentApp).length > 0) {
@@ -963,9 +1054,9 @@ var doGet = function (e) {
                           // const urlRegExString = "^https?://(.+?)."
                           // const urlRegEx = new RegExp(urlRegExString);
                           // if (currentApp.app) {
-                          //   let addr = URL.canParse(currentApp.app);
+                          //   let addr = new URL(currentApp.app);
                           //   console.log(addr);
-                          //   console.log("line 431 inside _runStack _URL.canParse(" + currentApp.app + ")");
+                          //   console.log("line 431 inside _runStack _new URL(" + currentApp.app + ")");
                             // if (addr) {
                           //     console.log('appL["app"] is a URL, navigating to: ' + addr);
                           //     window.location.href = addr; // New type "url" for strings
@@ -979,7 +1070,7 @@ var doGet = function (e) {
                             console.log("Error: let addr = ", addr)
 
                             // console.log(addr);
-                            // console.log("line 431 inside _runStack _URL.canParse(" + initialArgs + ")");
+                            // console.log("line 431 inside _runStack _new URL(" + initialArgs + ")");
 
                             if (addr) {
 
@@ -1139,7 +1230,7 @@ var doGet = function (e) {
               </body>
             </html>`,
           {
-            appL: payLoad.type === "text" ? iframeSrc : JSON.stringify(payLoad),
+            appL: payLoad.type === "text" || payLoad.type === "url" ? iframeSrc : JSON.stringify(payLoad),
             etop: JSON.stringify(e),
             tupL: htmlArray[funcTres0Index] || htmlArray[funcTresIndex],
             homePage: this[libName].getScriptUrl(),
@@ -1351,7 +1442,8 @@ var doGet = function (e) {
  * and re-render the entire page based on it.
  * @param {GoogleAppsScript.Events.AppsScriptHttpRequestEvent} clientEObject The 'e' object sent from the client, with updated parameters.
  * @returns {GoogleAppsScript.HTML.HtmlOutput} The complete new HTML content wrapped in HtmlOutput.
- */ function runBoilerplate(func, args) {
+ */ 
+function runBoilerplate(func, args) {
   Logger.log(
     "Server-side: runBoilerplate called with clientEObject: " +
       JSON.stringify(func, ...args),
@@ -1455,7 +1547,7 @@ var doGet = function (e) {
   }
 }
 
-var runAll = function (func, args) {
+function runAll(func, args) {
   var arr = func.split(".");
   var libName = arr[0];
   var libFunc = arr[1];
