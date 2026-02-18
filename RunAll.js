@@ -59,20 +59,38 @@ function doGet(e) {
         "] " +
         JSON.stringify(e),
     );
-    var argsEd = this[libName].testlt();
+    let funcCallParams;
+    var argsEd;
+    if (e && e.parameter) {
+      var eData = Object.keys(e.parameter);
+    }
+    console.log("e parameter(s)", eData);
+    if (eData?.length > 0) {
+      eData.forEach((key) =>{
+        console.log("e.parameter(s) value(s)", e.parameter[key]);
+        argsEd = this[libName].createRandomFunction(e.parameter[key]);
+        Array(funcCallParams).push(e.parameter[key]);
+        console.log("function call parameters inside forEach loop", funcCallParams)
+      })
+    }
+    else {
+      // console.log("function call parameters", funcCallParams);
+      argsEd = this[libName].createRandomFunction();
+    }
     if (typeof this[libName].mis === "function") {
       if (typeof argsEd === "string") {
         e = this[libName].objectOfS(
           ["parameter"],
           [
             [
-              ["func", "createRandomFunction"], //argsEd],
+              ["func", argsEd],
               // ["args", argsEd],
             ],
           ],
           functionRegistry.time,
         );
-      } else if (typeof argsEd === "object" && argsEd !== null && argsEd.name) {
+      } 
+      else if (typeof argsEd === "object" && argsEd !== null && argsEd.name) {
         if (argsEd.parameters && argsEd.parameters.length > 0) {
           e = this[libName].objectOfS(
             ["parameter"],
@@ -84,29 +102,55 @@ function doGet(e) {
             ],
             functionRegistry.time,
           );
-        } else {
+        } 
+        else {
           e = this[libName].objectOfS(
             ["parameter"],
             [
-              [
-                ["func", "createRandomFunction"], //argsEd.name],
+              [,
+                ["func", argsEd.name],
                 // ["args", argsEd.name],
               ],
             ],
             functionRegistry.time,
           );
         }
-      } else {
+      } 
+      else {
         console.log("Unexpected argsEd type: ", argsEd);
-        e = this[libName].objectOfS(
-          ["parameter"],
-          [
+        let argsedObj = Object.values(argsEd);
+        let aOKeys = Object.keys(argsedObj);
+        if (aOKeys.length > 0) {
+          aOKeys.forEach((key) =>{
+            aOKeys.push(argsedObj[key])
+          });
+          e = this[libName].objectOfS(
+            ["parameter"],
             [
-              ["func", "createRandomFunction"][("args", "Invalid Entry")], //""mis"],
+              [
+                ["func", Object.keys(argsEd)],
+                ["args", argsedObj[0]],
+                // ["func", "mis"],
+                // ["args", "Invalid Entry"],
+              ],
             ],
-          ],
-          functionRegistry.time,
-        );
+            functionRegistry.time,
+          );
+        } 
+        else {
+          e = this[libName].objectOfS(
+            ["parameter"],
+            [
+              [
+                ["func", Object.keys(argsEd)],
+                ["args", argsedObj[0]],
+                // ["func", "mis"],
+                // ["args", "Invalid Entry"],
+              ],
+            ],
+            functionRegistry.time,
+          );
+        }
       }
       Logger.log(">>> [MAIN] MAIN WEB APP's FINAL e: " + JSON.stringify(e));
     }
@@ -255,7 +299,8 @@ function doGet(e) {
             : this[libName]["misSt"].apply(this, parsedFuncArgs);
         }
       }
-    } else {
+    } 
+    else {
       console.error(
         `Error: Function "${libFunc}" not found or not callable in "${libName}".`,
       );
@@ -329,14 +374,15 @@ function doGet(e) {
         // If the object itself contains structured data you want to directly use
         let cKeys = Object.keys(content);
         let cVals = Object.values(content);
-        var contentObject = cKeys.map((ctScan, ckIndex) => {
+        var contentObject = cKeys.map((ctScan, ckIndex) =>{
           if (Array.isArray(cVals[ckIndex])) {
-            var cValsIndex = cVals[ckIndex];
+            var cValsIndex = cVals[ckIndex]
           }
           if (ctScan === "html") {
             // If there's an explicit 'html' property
             return { type: "html", data: content[ctScan] };
-          } else if (ctScan === "url" && urlRegex.test(content[ctScan])) {
+          }
+          else if (ctScan === "url" && urlRegex.test(content[ctScan])) {
             // Use regex for object.url as well
             return { type: "url", data: content[ctScan] };
           }
@@ -351,11 +397,12 @@ function doGet(e) {
           else if (urlRegex.test(cValsIndex)) {
             // Use regex for object.url as well
             return { type: "url", data: cValsIndex };
-          } else {
+          }
+          else {
             // Add other specific object property checks here if needed
             return { type: "object", data: content }; // Default for other objects
           }
-        });
+        })
         return contentObject[0];
       }
       // 5. Default unknown
@@ -446,12 +493,14 @@ function doGet(e) {
         finalAppLContent = payLoad?.data?.html || payLoad?.data?.app;
         // If the object itself contains a URL, use it for iframeSrc
         iframeSrc = payLoad?.data?.url || iframeSrc;
-      } else if (pdKeys?.indexOf("url") > -1) {
+      } 
+      else if (pdKeys?.indexOf("url") > -1) {
         // If the object explicitly has a 'url' property
         iframeSrc = payLoad?.data?.url;
         finalAppLContent = `URL provided: <a href="${payLoad?.data?.index}" target="_blank">${payLoad?.data?.index}</a>`;
         finalFeedDivContent = `URL provided: <a href="${payLoad?.data?.link}" target="_blank">${payLoad?.data?.link}</a>`;
-      } else {
+      } 
+      else {
         // Default way to display a generic object: stringify it
         iframeSrc = payLoad?.data?.index; // Assign iframeSrc
         finalAppLContent = `<pre>${JSON.stringify(payLoad?.data?.app, null, 2)}</pre>`;
@@ -665,7 +714,6 @@ function doGet(e) {
                         // If updatedClientApp contains HTML, it needs to be processed to be displayable.
                         const newHtmlContent = await serverSide(updatedClientE.parameter["func"], [updatedClientE.parameter["args"]]);
                         alert(newHtmlContent.type)
-                        let mddr = new URL(newHtmlContent.data);
                         if (newHtmlContent && newHtmlContent.type === "html" && newHtmlContent.data) {
                           document.open();
                           document.write(newHtmlContent.data); // Use the data property
@@ -731,6 +779,7 @@ function doGet(e) {
                           console.log("Client-side: Page re-rendered with new content from server.");
                         }  
                         else if (newHtmlContent && newHtmlContent.type === "text" && newHtmlContent.data) {
+                          let mddr = new URL(newHtmlContent.data);
                           if (mddr) {
                             window.location.href = newHtmlContent.data; // New type "url" for strings
                             console.log("Error: window.location.href = ", window.location.href)
@@ -843,7 +892,6 @@ function doGet(e) {
                   let iframeSrc =
                     "https://www.clubhouse.com/@fabianlewis?utm_medium=ch_profile&utm_campaign=lhTUtHb2bYqPN3w8EEB7FQ-247242"; // Default iframe src
                   let finalFeedDivContent = "";
-                  let addr = new URL(<?= appL ?>);
                   try {
                     currentApp = JSON.parse(<?= appL ?>);
                     if (Object.keys(currentApp).length > 0) {
@@ -1057,6 +1105,7 @@ function doGet(e) {
                           // else 
 
                           if (typeof initialArgs === 'string') {
+                            let addr = new URL(<?= appL ?>);
                             console.log("Initial args = " + initialArgs + ": : string")
                             console.log("Error: let addr = ", addr)
 
@@ -1221,10 +1270,7 @@ function doGet(e) {
               </body>
             </html>`,
           {
-            appL:
-              payLoad.type === "text" || payLoad.type === "url"
-                ? iframeSrc
-                : JSON.stringify(payLoad),
+            appL: payLoad.type === "text" || payLoad.type === "url" ? iframeSrc : JSON.stringify(payLoad),
             etop: JSON.stringify(e),
             tupL: htmlArray[funcTres0Index] || htmlArray[funcTresIndex],
             homePage: this[libName].getScriptUrl(),
@@ -1255,7 +1301,7 @@ function doGet(e) {
   // } else {
   //   return;
   // }
-}
+};
 // const accessGranted
 // = this[libName].validateFiles();const youNeedAccess
 // = this[libName].scriptQuit();
@@ -1436,7 +1482,7 @@ function doGet(e) {
  * and re-render the entire page based on it.
  * @param {GoogleAppsScript.Events.AppsScriptHttpRequestEvent} clientEObject The 'e' object sent from the client, with updated parameters.
  * @returns {GoogleAppsScript.HTML.HtmlOutput} The complete new HTML content wrapped in HtmlOutput.
- */
+ */ 
 function runBoilerplate(func, args) {
   Logger.log(
     "Server-side: runBoilerplate called with clientEObject: " +
@@ -1547,4 +1593,4 @@ function runAll(func, args) {
   var libFunc = arr[1];
   args = args || [];
   return this[libName][libFunc].apply(this, args);
-}
+};
