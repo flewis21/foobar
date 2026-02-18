@@ -42,10 +42,10 @@
           } else {
             responseData = await response.text();
           }
-          if (responseData.message.link) {
-            document.location.href = responseData.message.link;
-          } else if (responseData.message.content) {
+          if (responseData.message.content) {
             document.location.href = responseData.message.content;
+          } else if (responseData.message.link) {
+            document.location.href = responseData.message.link;
           } else {
             document.getElementById("data-display").textContent =
               JSON.stringify(responseData, null, 2);
