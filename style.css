@@ -11,11 +11,11 @@
   height: 100%;
   border: 0;
 }
-#myProgress {
+.progress-bar {
   width: 100%;
   background-color: grey;
 }
-#myBar {
+.progress {
   width: 1%;
   height: 30px;
   background-color: green;
