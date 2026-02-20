@@ -13,10 +13,10 @@
 }
 .progress-bar {
   width: 100%;
-  background-color: grey;
+  background-color: rgb(128, 128, 128);
 }
 .progress {
   width: 1%;
   height: 30px;
-  background-color: green;
+  background-color: rgb(128, 0, 21);
 }
