@@ -2,11 +2,15 @@
 <html>
   <head>
     <base target="_self" />
+    <link rel="stylesheet" href="./style.css" />
     <title>GitHub Pages with Apps Script</title>
   </head>
   <body>
     <h1>Data from Apps Script:</h1>
-    <div id="data-display">Loading...</div>
+    <div class="progress-bar" id="data-display">
+      Loading...
+      <div id="myBar" class="progress"></div>
+    </div>
 
     <h2>Contact Form</h2>
     <form id="myForm">
@@ -22,9 +26,26 @@
       const scriptURL =
         "https://script.google.com/macros/s/AKfycbzhrxdXzM08AAwA5ualRXdnDtV6C_xQ7bcq4v6H0HNdBqPr2C8A1URyWN0FLLccQuoA/exec";
 
+      // var i = 0;
+
       async function fetchData() {
         try {
           const response = await fetch(scriptURL + "?action=getData");
+          // if (i == 0) {
+          //   i = 1;
+          //   var elem = document.getElementById("myBar");
+          //   var width = 1;
+          //   var id = setInterval(frame, 10);
+          //   function frame() {
+          //     if (width >= 100) {
+          //       clearInterval(id);
+          //       i = 0;
+          //     } else {
+          //       width++;
+          //       elem.style.width = width + "%";
+          //     }
+          //   }
+          // }
           if (!response.ok) {
             const errorText = await response.text();
             throw new Error(
@@ -101,6 +122,27 @@
       }
 
       fetchData(); // Call on page load
+
+      var i = 0;
+      function move() {
+        if (i == 0) {
+          i = 1;
+          var elem = document.getElementById("myBar");
+          var width = 1;
+          var id = setInterval(frame, 10);
+          function frame() {
+            if (width >= 100) {
+              clearInterval(id);
+              i = 0;
+            } else {
+              width++;
+              elem.style.width = width + "%";
+            }
+          }
+        }
+      }
+
+      move(); // Call on page load
     </script>
   </body>
 </html>
