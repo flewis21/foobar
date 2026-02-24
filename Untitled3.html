@@ -1,513 +1,458 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <base target="_top" />
-    <meta charset="utf-8" />
-    <meta name="Subscribe" content="JavaScript webapp" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link
-      href="https://fonts.googleapis.com/css?family=Acme"
-      rel="stylesheet"
-    />
-    <style>
-      body {
-        flex-grow: 1;
-        color: blue;
-        text-decoration: bold;
-        flex-flow: row wrap;
-        grid-column: 1;
-        grid-row: 1;
-        text-align: center;
-        align-content: flex-start;
-        overflow: auto;
-      }
-    </style>
-  </head>
-  <body id="JavaScript">
-    <div class="row">
-      <div id="zeroSize"></div>
-    </div>
-    <div class="row">
-      <div class="responsive-section">
-        <div class="container">
-          <label id="labSEOC"> <strong></strong></label>
-          <div class="row">
-            <div class="col s12 card-panel amber">
-              <div class="responsive-section">
-                <div class="container">
-                  <div class="col s12 receipt red">
-                    <table
-                      class="striped centered highlight responsive-table grey z-depth-5"
-                      style="width: 100%"
-                    >
-                      <thead></thead>
-                      <tbody>
-                        <tr
-                          style="
-                            justify-content: space-around;
-                            overflow: auto;
-                            border-radius: 3%;
-                            max-width: 100%;
-                            height: auto;
-                            display: block;
-                            margin: auto;
-                          "
-                        >
-                          <td
-                            style="
-                              vertical-align: top;
-                              text-align: left;
-                              flex-flow: row wrap;
-                              grid-column: 1;
-                              grid-row: 1;
-                              align-content: flex-start;
-                              z-index: 0;
-                              height: 100%;
-                              overflow: auto;
-                            "
-                          >
-                            <table
-                              class="striped centered highlight responsive-table grey z-depth-5"
-                              style="width: 100%"
-                            >
-                              <tbody>
-                                <td>
-                                  <div>
-                                    <textarea
-                                      id="indexBeta"
-                                      spellcheck="false"
-                                      rows="10"
-                                      cols="50"
-                                    ></textarea>
-                                  </div>
-                                  <br />
-                                </td>
-                              </tbody>
-                            </table>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <script>
-      function clientSide(func, args) {
-        return new Promise((resolve, reject) => {
-          google.script.run
-            .withSuccessHandler((result) => {
-              resolve(result); // result will be { type: "...", data: "..." }
-              // You would then process 'result' here to update specific parts of your current page
-              // For example, update a div with result.data if result.type is "text" or "html"
-              console.log("Server side call success:", result);
-            })
-            .withFailureHandler((error) => {
-              reject(error);
-              console.error("Server-side call error:", error);
-              alert("Error during server call: " + error.message);
-            })
-            .runBoilerplate(func, args);
-        });
-      }
-      console.log("line 367: Beginning evaluation");
-      const homeStackUrl = JSON.stringify(<?= homePage ?>);
-      const applications = JSON.stringify(<?= appL ?>);
-      const chUrl = document.getElementById("indexBeta");
-
-      // alert("line 653 Inside renBlob block of serverside Runall doGet");
-
-      console.log("Client-side: Home Page URL:", homeStackUrl);
-      console.log("Client-side: Applications", applications);
-
-      // console.log("line 657 Inside renBlob block of serverside Runall doGet");
-      // Parse the input as the new value
-      // Allow direct strings or JSON arrays/objects
-
-      let initialArgs;
-      let currentApp;
-      let addr;
-      let iframeSrc =
-        "https://www.clubhouse.com/@fabianlewis?utm_medium=ch_profile&utm_campaign=lhTUtHb2bYqPN3w8EEB7FQ-247242"; // Default iframe src
-      let finalFeedDivContent = "";
-      try {
-        addr = new URL(<?= appL ?>);
-        currentApp = JSON.parse(<?= appL ?>);
-        if (Object.keys(currentApp).length > 0) {
-          console.log("Processing appL", currentApp);
-          let appRes = currentApp?.app
-          if (appRes) {
-            try {
-              currentApp = JSON.parse(appRes);
-              console.log("Processing", appRes)
-
-              // console.log("Client-side: Initial WebApp:", appRes);
-
-            }
-            catch (jsonError) {
-
-              // console.log("Error try JSON.parse(appRes) = ", typeof appRes)
-
-              currentApp = appRes;
-            }
-          }
-
-          else {
-            // try {
-              // currentApp = JSON.parse(<?= appL ?>);
-
-              console.log("Error: try currentApp = ", typeof currentApp)
-
-              // console.log("Client-side: Initial WebApp:", <?= appL ?>);
-            // }
-            // catch (jsonError) {
-              // console.log("Error try JSON.parse(appL) = ", typeof <?= appL ?>)
-              // currentApp = <?= appL ?>;
-            // }
-          }
+<!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <base target="_top">
+      <meta charset="utf-8">
+      <meta name="Subscribe" content="JavaScript webapp">
+      <meta name=viewport content="width=device-width, initial-scale=1">
+      <link href="https://fonts.googleapis.com/css?family=Acme" rel="stylesheet">
+      <style>
+        body 
+          {
+            flex-grow: 1;color:blue;text-decoration:bold;
+            flex-flow: row wrap;
+            grid-column: 1;grid-row: 1;
+            text-align: center;
+            align-content: flex-start;
+            overflow: auto;
+          };
+      </style>
+    </head>
+    <body id="JavaScript">
+      <div class="row">
+        <div id="zeroSize"></div></div>
+      <div class="row">
+        <div class="responsive-section">
+          <div class="container">
+            <label id="labSEOC">
+              <strong></strong></label>
+            <div class="row">
+              <div class="col s12 card-panel amber">
+                <div class="responsive-section">
+                  <div class="container">
+                    <div class="col s12 receipt red">
+                      <table class="striped centered highlight responsive-table grey z-depth-5" style="width:100%">
+                        <thead></thead>
+                        <tbody>
+                          <tr style="justify-content: space-around;overflow: auto;border-radius: 3%;max-width: 100%;height: auto;display: block;margin: auto;">
+                            <td style="vertical-align: top;text-align: left;flex-flow: row wrap;grid-column: 1;grid-row: 1;align-content: flex-start;z-index: 0;height: 100%;overflow: auto;">
+                              <table class="striped centered highlight responsive-table grey z-depth-5" style="width:100%">
+                                <tbody>
+                                  <td>
+                                    <div>
+                                      <textarea id="indexBeta" spellcheck="false" rows="10" cols="50"></textarea></div><br /></td></tbody></table></td></tr></tbody></table></div></div></div></div></div></div></div></div>
+      <script>
+        function clientSide(func, args) {
+          return new Promise((resolve, reject) => {
+            google.script.run
+              .withSuccessHandler((result) => {
+                resolve(result); // result will be { type: "...", data: "..." }
+                // You would then process 'result' here to update specific parts of your current page
+                // For example, update a div with result.data if result.type is "text" or "html"
+                console.log("Server side call success:", result);
+              })
+              .withFailureHandler((error) => {
+                reject(error);
+                console.error("Server-side call error:", error);
+                alert("Error during server call: " + error.message);
+              })
+              .runBoilerplate(func, args);
+          });
         }
-        else {
-          try {
-              currentApp = JSON.parse(<?= etop ?>)
-              console.log("Error try JSON.parse(e) = ", typeof <?= etop ?>)
-          }
-          catch (err) {
-              currentApp = JSON.stringify(<?= etop ?>)
-              console.log("Error catch JSON.stringify(e) = ", typeof <?= etop ?>)
+        console.log("line 367: Beginning evaluation");
+        const homeStackUrl = JSON.stringify(<?= homePage ?>);
+        const applications = JSON.stringify(<?= appL ?>);
+        const chUrl = document.getElementById("indexBeta");
 
-          }
-            console.log("Processing error: invalid JSON. currentApp = ", currentApp)
-        }
+        // alert("line 653 Inside renBlob block of serverside Runall doGet");
 
-      }
-      catch (error) {
-      try {
-          currentApp = JSON.parse(<?= appL ?>)
-          console.log("Error try JSON.parse(appL) = ", typeof <?= appL ?>)
-      }
-      catch (err) {
-          currentApp = JSON.stringify(<?= appL ?>)
-          console.log("Error catch JSON.stringify(appL) = ", typeof <?= appL ?>)
+        console.log("Client-side: Home Page URL:", homeStackUrl);
+        console.log("Client-side: Applications", applications);
 
-      }
-        console.log("Processing error: invalid JSON. currentApp = ", currentApp)
+        // console.log("line 657 Inside renBlob block of serverside Runall doGet");
+        // Parse the input as the new value
+        // Allow direct strings or JSON arrays/objects
 
-        // If it's not valid JSON, treat it as a plain string
-        // if (typeof currentApp.app === "object") {
-        //   currentApp = JSON.stringify(currentApp.app);
-        //   console.log("Client-side: Initial Object of WebApp:", JSON.stringify(currentApp.app));
-        // }
-        // else
-        // Here, if payLoad.data is an object, you need to decide how to display it.
-        // It could contain sub-properties you want to render.
-        // if (<?= typeof appL ?> === "object") {
+        let initialArgs;
+        let currentApp;
+        let addr;
+        let iframeSrc =
+          "https://www.clubhouse.com/@fabianlewis?utm_medium=ch_profile&utm_campaign=lhTUtHb2bYqPN3w8EEB7FQ-247242"; // Default iframe src
+        let finalFeedDivContent = "";
+        try {
+          addr = new URL(<?= appL ?>);
+          currentApp = JSON.parse(<?= appL ?>);
+          if (Object.keys(currentApp).length > 0) {
+            console.log("Processing appL", currentApp);
+            let appRes = currentApp?.app
+            if (appRes) {
+              try {
+                currentApp = JSON.parse(appRes);
+                console.log("Processing", appRes)
 
-            console.log("Processing object", typeof currentApp)
+                // console.log("Client-side: Initial WebApp:", appRes);
 
-            // currentApp = JSON.stringify(<?= appL ?>);
-            // console.log("Client-side: Initial Object of WebApp:", JSON.stringify(<?= appL ?>))
-
-            try {
-                if (currentApp?.data) {
-                  var thisApp = currentApp?.data
-                  console.log("Error: thisApp =", typeof thisApp);
-                  if (thisApp?.html || thisApp?.app || thisApp?.myVar || thisApp?.url) {
-                    currentApp = thisApp?.app || thisApp?.html || thisApp?.myVar || thisApp?.url;
-                    console.log("Error: currentApp = ", typeof currentApp);
-                  }
-                  else {
-                    currentApp = thisApp
-                  }
-                }
-                else if (currentApp?.app) {
-                  currentApp = currentApp?.app
-                }
-                else if (currentApp?.index) {
-                  currentApp = currentApp?.index
-                }
-
-                // else {
-                //   currentApp = '<pre>' + currentApp + '</pre>';
-                // }
-
-            }
-            catch (error) {
-              console.error("Error: processing currentApp.data = ", error.toString())
-
-            // try {
-            //   if (currentApp.data && currentApp.data.html) {
-            //     var thisHtml = currentApp.data;
-            //   }
-            // }
-            // catch (error) {
-            //   console.error("Error", error.toString())
-            // }
-            // try {
-            //   if (currentApp.data && currentApp.data.url) {
-            //     var thisUrl = currentApp.data
-            //   }
-            // }
-            // catch (error) {
-            //   console.error("Error", error.toString())
-            // }
-            // if (thisApp) {
-            //   currentApp = thisApp;
-            // } else if (thisUrl) {
-            //   // If the object explicitly has a 'url' property
-            //   iframeSrc = thisUrl;
-            //   currentApp = currentApp.index;
-            //   finalFeedDivContent = currentApp.link;
-            // } else {
-            //   // Default way to display a generic object: stringify it
-            //   iframeSrc = currentApp.index; // Assign iframeSrc
-            //   currentApp = '<pre>' + JSON.stringify(currentApp.data, null, 2) + '</pre>';
-            //   finalFeedDivContent = currentApp.link;
-            // }
-        // }
-        // else {
-          // if (currentApp.app) {
-          //   currentApp = currentApp.app
-          //   console.log("Client-side: Initial String of WebApp:", currentApp.app);
-          // }
-          // else
-          // if (<?= appL ?>) {
-          //   console.log("Processing this", <?= appL ?>)
-          //   currentApp = <?= appL ?>
-            // console.log("Client-side: Initial String of WebApp:", <?= appL ?>);
-          // }
-            }
-        // }
-
-      }
-      document.addEventListener("DOMContentLoaded", runStack)
-        function runStack() {
-
-          // console.log("line 660 Inside _renBlob block of serverside Runall doGet _runStack(" + currentApp + ")");
-
-          initialArgs = currentApp
-          if (initialArgs !== undefined && initialArgs !== null) {
-
-          // if (currentApp !== undefined && currentApp !== null) {
-            // If trying to parse JSON on appL["app"] succeeds
-
-            if (typeof initialArgs === 'object') {
-              let appType = currentApp?.type || "";
-              if (typeof currentApp?.data === "object") {
-                var appData = JSON.stringify(currentApp?.data) || "";
               }
-              else {
-                var appData = currentApp?.data || "";
-              }
-              let appLink = currentApp?.link || "";
-              let appFStr = currentApp?.fStr || "";
-              let appDStr = currentApp?.dStr || "";
-              let appIndex = currentApp?.index || "";
-              let mainRen = appType + (appFStr || appDStr) + appData;
+              catch (jsonError) {
 
-              // chUrl.value = JSON.stringify(appFStr, null, 2) || JSON.stringify(appDStr, null, 2);
+                // console.log("Error try JSON.parse(appRes) = ", typeof appRes)
 
-              if (mainRen !== "undefined" && typeof mainRen !== "undefined" && typeof mainRen !== null && mainRen.length > 0) {
-                chUrl.value = mainRen;
+                currentApp = appRes;
               }
-              else {
-                if (typeof currentApp === "object") {
-                  chUrl.value = JSON.stringify(currentApp);
-                }
-                else {
-                  chUrl.value = currentApp;
-                }
-              }
-              console.log("Processing initialArgs = ", typeof initialArgs);
             }
 
-            // --- 3. if json error, handle String content (URL, JSON, HTML, or plain text)
+            else {
+              // try {
+                // currentApp = JSON.parse(<?= appL ?>);
 
-            else if (typeof initialArgs === 'object' || typeof initialArgs === 'string') {
-              console.log("Processing object or string", typeof initialArgs);
+                console.log("Error: try currentApp = ", typeof currentApp)
 
-              // --- MODIFIED: Use Regex for URL check ---
-              // Regex for a basic HTTP/HTTPS URL validation
-              // This regex is fairly comprehensive for common URLs but can be refined if needed.
-              // "^https?://(?:www\\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}(?:[-a-zA-Z0-9()@:%_+.~#?&//=]*)$"
-              // const urlRegExString = "^https?://(.+?)."
-              // const urlRegEx = new RegExp(urlRegExString);
-              // if (currentApp.app) {
-              //   let addr = URL.canParse(currentApp.app);
-              //   console.log(addr);
-              //   console.log("line 431 inside _runStack _URL.canParse(" + currentApp.app + ")");
-                // if (addr) {
-              //     console.log('appL["app"] is a URL, navigating to: ' + addr);
-              //     window.location.href = addr; // New type "url" for strings
-              //     return
-                // }
+                // console.log("Client-side: Initial WebApp:", <?= appL ?>);
               // }
-              // else
+              // catch (jsonError) {
+                // console.log("Error try JSON.parse(appL) = ", typeof <?= appL ?>)
+                // currentApp = <?= appL ?>;
+              // }
+            }
+          }
+          else {
+            try { 
+                currentApp = JSON.parse(<?= etop ?>)
+                console.log("Error try JSON.parse(e) = ", typeof <?= etop ?>)
+            }
+            catch (err) { 
+                currentApp = JSON.stringify(<?= etop ?>)
+                console.log("Error catch JSON.stringify(e) = ", typeof <?= etop ?>)
 
-              if (typeof initialArgs === 'string') {
-                console.log("Initial args = " + initialArgs + ": : string")
-                console.log("Error: let addr = ", addr)
+            }
+              console.log("Processing error: invalid JSON. currentApp = ", currentApp)
+          }
 
-                // console.log(addr);
-                // console.log("line 431 inside _runStack _URL.canParse(" + initialArgs + ")");
+        } 
+        catch (error) {
+        try { 
+            currentApp = JSON.parse(<?= appL ?>)
+            console.log("Error try JSON.parse(appL) = ", typeof <?= appL ?>)
+        }
+        catch (err) { 
+            currentApp = JSON.stringify(<?= appL ?>)
+            console.log("Error catch JSON.stringify(appL) = ", typeof <?= appL ?>)
 
-                if (addr) {
+        }
+          console.log("Processing error: invalid JSON. currentApp = ", currentApp)
 
-                  // console.log('appL is a URL, navigating to: ' + addr);
+          // If it's not valid JSON, treat it as a plain string
+          // if (typeof currentApp.app === "object") {
+          //   currentApp = JSON.stringify(currentApp.app);
+          //   console.log("Client-side: Initial Object of WebApp:", JSON.stringify(currentApp.app));
+          // }
+          // else 
+          // Here, if payLoad.data is an object, you need to decide how to display it.
+          // It could contain sub-properties you want to render.
+          // if (<?= typeof appL ?> === "object") {
 
-                  window.location.href = <?= appL ?>; // New type "url" for strings
+              console.log("Processing object", typeof currentApp)
 
-                  // window.open(JSON.stringify(initialArgs), "_top")
-                  // const confirmation = window.confirm(
-                  //   "Click OK to continue to the destination.",
-                  // );
-                  // if (confirmation) {
-                  //   var linkFollow = document.createElement("a");
-                  //   linkFollow.href = <?= appL ?>;
-                  //   linkFollow.id = "linkFOLLOW";
-                  //   linkFollow.target = "_self";
-                  //   linkFollow.rel = "noopener noreferrer";
-                  //   document.body.appendChild(linkFollow);
-                  //   document.getElementById("linkFOLLOW").click();
-                  //   document.getElementById("linkFOLLOW").remove();
+              // currentApp = JSON.stringify(<?= appL ?>);
+              // console.log("Client-side: Initial Object of WebApp:", JSON.stringify(<?= appL ?>))
+
+              try {
+                  if (currentApp?.data) {
+                    var thisApp = currentApp?.data
+                    console.log("Error: thisApp =", typeof thisApp);
+                    if (thisApp?.html || thisApp?.app || thisApp?.myVar || thisApp?.url) {
+                      currentApp = thisApp?.app || thisApp?.html || thisApp?.myVar || thisApp?.url;
+                      console.log("Error: currentApp = ", typeof currentApp);
+                    }
+                    else {
+                      currentApp = thisApp
+                    }
+                  }
+                  else if (currentApp?.app) {
+                    currentApp = currentApp?.app
+                  }
+                  else if (currentApp?.index) {
+                    currentApp = currentApp?.index
+                  }
+
+                  // else {
+                  //   currentApp = '<pre>' + currentApp + '</pre>';
                   // }
 
-                  console.log("Error: window.location.href = ", window.location.href)
-                  return
-
-                }
-
               }
+              catch (error) {
+                console.error("Error: processing currentApp.data = ", error.toString())
 
-              // --- END MODIFIED ---
+              // try {
+              //   if (currentApp.data && currentApp.data.html) {
+              //     var thisHtml = currentApp.data;
+              //   }
+              // }
+              // catch (error) {
+              //   console.error("Error", error.toString())
+              // }
+              // try {
+              //   if (currentApp.data && currentApp.data.url) {
+              //     var thisUrl = currentApp.data
+              //   }
+              // }
+              // catch (error) {
+              //   console.error("Error", error.toString())
+              // }
+              // if (thisApp) {
+              //   currentApp = thisApp;
+              // } else if (thisUrl) {
+              //   // If the object explicitly has a 'url' property
+              //   iframeSrc = thisUrl;
+              //   currentApp = currentApp.index;
+              //   finalFeedDivContent = currentApp.link;
+              // } else {
+              //   // Default way to display a generic object: stringify it
+              //   iframeSrc = currentApp.index; // Assign iframeSrc
+              //   currentApp = '<pre>' + JSON.stringify(currentApp.data, null, 2) + '</pre>';
+              //   finalFeedDivContent = currentApp.link;
+              // }
+          // }
+          // else {
+            // if (currentApp.app) {
+            //   currentApp = currentApp.app
+            //   console.log("Client-side: Initial String of WebApp:", currentApp.app);
+            // }
+            // else 
+            // if (<?= appL ?>) {
+            //   console.log("Processing this", <?= appL ?>)
+            //   currentApp = <?= appL ?>
+              // console.log("Client-side: Initial String of WebApp:", <?= appL ?>);
+            // }
+              }
+          // }
 
-              try {
-                console.log("Processing Json object", typeof initialArgs);
+        }
+        document.addEventListener("DOMContentLoaded", runStack)
+          function runStack() {
 
-                // console.log(initialArgs.trim().startsWith("<") && initialArgs.trim().endsWith(">"));
-                // console.log("line 444 _runStack JSON.parse(" + initialArgs + ")");
+            // console.log("line 660 Inside _renBlob block of serverside Runall doGet _runStack(" + currentApp + ")");
 
-                const parsedJson = JSON.parse(initialArgs);
-                if (parsedJson) {
+            initialArgs = currentApp
+            if (initialArgs !== undefined && initialArgs !== null) {
 
-                  // Convert the JavaScript object into a formatted JSON string
+            // if (currentApp !== undefined && currentApp !== null) {
+              // If trying to parse JSON on appL["app"] succeeds
 
-                  console.log("initialArgs is a JSON object, navigating to", initialArgs);
-
-                  // const jsonString = JSON.stringify(parsedJson, null, 2);
-
-                  document.open();
-                  document.write("<pre>" + jsonString + "</pre>"); // Wrap in <pre> for formatting
-                  document.close();
-
-                }
-              } catch (jsonError) {
-                console.log("Processing error invalid Json", typeof initialArgs);
-
-                // Not JSON, treat as HTML or plain text
-
-                console.log("Processing HTML", typeof initialArgs);
-                if (initialArgs.trim().startsWith("<") && initialArgs.trim().endsWith(">")) {
-
-                  // More robust HTML check
-                  // console.log(initialArgs.trim().startsWith("<") && initialArgs.trim().endsWith(">"));
-
-                  document.open();
-                  document.write('<pre class="z-depth-5 card-panel deep-purple darken-1 scale-transition scale-out scale-in btn-large" id="eventRes01" class="menu-img grey darken-4 z-depth-5" style="width: 100%; height: 100%; border: none;" allow="autoplay" allow="encrypted-media" title="Dontime Life Website" frameborder="0" allowfullscreen >' + initialArgs + '</pre>');
-                  document.close();
-
-                  // const iframe = document.createElement("iframe");
-                  // iframe.id = "eventRes01";
-                  // iframe.title = "Dontime Life Website";
-                  // iframe.allow = "autoplay; encrypted-media";
-                  // iframe.allowFullscreen = true;
-                  // iframe.style.width = "100%";
-                  // iframe.style.height = "100%";
-                  // iframe.style.border = "none";
-                  // iframe.className = "z-depth-5 card-panel deep-purple darken-1 scale-transition scale-out scale-in btn-large menu-img grey darken-4 z-depth-5";
-                  // document.getElementById("iframeContainer").appendChild(iframe);
-                  // const iframeDoc = iframe.contentWindow.document;
-                  // iframeDoc.open();
-                  // document.open();
-                  // document.write('<div id="iframeContainer">' + iframeDoc.write(initialArgs) + '</div>');
-                  // document.close();
-                  // iframeDoc.close();
-
+              if (typeof initialArgs === 'object') {
+                let appType = currentApp?.type || "";
+                if (typeof currentApp?.data === "object") {
+                  var appData = JSON.stringify(currentApp?.data) || "";
                 }
                 else {
-                  console.log("Processing this", typeof initialArgs);
-                  let appStr = null;
-                    if (typeof initialArgs === "object") {
-                      appStr = JSON.stringify(initialArgs);
-                    } else {
-
-                      // Escape special characters and wrap in quotes for the HTML template
-
-                      appStr = JSON.stringify(initialArgs);
-                    }
-
-                  // const fStr = JSON.stringify(currentApp.index? currentApp.index.funcStr:"null");
-                  // const dStr = JSON.stringify(currentApp.index? currentApp.index.dataStr:"null");
-                  // const indStr = fStr? fStr:dStr;
-                  // const combineStr = indStr + " " + appStr
-                  // console.log("typeof initialArgs === ", typeof initialArgs);
-
-                  chUrl.value = JSON.stringify(appStr, null, 2);
+                  var appData = currentApp?.data || "";
                 }
-              }
-            }
-          } else {
-            chUrl.value = '[""]'; // Default if args is missing
-          }
-            chUrl.addEventListener("change", function() {
-              try {
+                let appLink = currentApp?.link || "";
+                let appFStr = currentApp?.fStr || "";
+                let appDStr = currentApp?.dStr || "";
+                let appIndex = currentApp?.index || "";
+                let mainRen = appType + (appFStr || appDStr) + appData;
 
-                // Parse the user's input as the new value
-                // Allow direct strings or JSON arrays/objects
+                // chUrl.value = JSON.stringify(appFStr, null, 2) || JSON.stringify(appDStr, null, 2);
 
-                let htmlApp
+                if (mainRen !== "undefined" && typeof mainRen !== "undefined" && typeof mainRen !== null && mainRen.length > 0) {
+                  chUrl.value = mainRen;
+                }
+                else {
+                  if (typeof currentApp === "object") {
+                    chUrl.value = JSON.stringify(currentApp);
+                  }
+                  else {
+                    chUrl.value = currentApp;
+                  }
+                }
+                console.log("Processing initialArgs = ", typeof initialArgs);
+              } 
+
+              // --- 3. if json error, handle String content (URL, JSON, HTML, or plain text)
+
+              else if (typeof initialArgs === 'object' || typeof initialArgs === 'string') {
+                console.log("Processing object or string", typeof initialArgs);
+
+                // --- MODIFIED: Use Regex for URL check ---
+                // Regex for a basic HTTP/HTTPS URL validation
+                // This regex is fairly comprehensive for common URLs but can be refined if needed.
+                // "^https?://(?:www\\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}(?:[-a-zA-Z0-9()@:%_+.~#?&//=]*)$"
+                // const urlRegExString = "^https?://(.+?)."
+                // const urlRegEx = new RegExp(urlRegExString);
+                // if (currentApp.app) {
+                //   let addr = URL.canParse(currentApp.app);
+                //   console.log(addr);
+                //   console.log("line 431 inside _runStack _URL.canParse(" + currentApp.app + ")");
+                  // if (addr) {
+                //     console.log('appL["app"] is a URL, navigating to: ' + addr);
+                //     window.location.href = addr; // New type "url" for strings
+                //     return
+                  // }
+                // }
+                // else 
+
+                if (typeof initialArgs === 'string') {
+                  console.log("Initial args = " + initialArgs + ": : string")
+                  console.log("Error: let addr = ", addr)
+
+                  // console.log(addr);
+                  // console.log("line 431 inside _runStack _URL.canParse(" + initialArgs + ")");
+
+                  if (addr) {
+
+                    // console.log('appL is a URL, navigating to: ' + addr);
+
+                    window.location.href = <?= appL ?>; // New type "url" for strings
+
+                    // window.open(JSON.stringify(initialArgs), "_top")
+                    // const confirmation = window.confirm(
+                    //   "Click OK to continue to the destination.",
+                    // );
+                    // if (confirmation) {
+                    //   var linkFollow = document.createElement("a");
+                    //   linkFollow.href = <?= appL ?>;
+                    //   linkFollow.id = "linkFOLLOW";
+                    //   linkFollow.target = "_self";
+                    //   linkFollow.rel = "noopener noreferrer";
+                    //   document.body.appendChild(linkFollow);
+                    //   document.getElementById("linkFOLLOW").click();
+                    //   document.getElementById("linkFOLLOW").remove();
+                    // }
+
+                    console.log("Error: window.location.href = ", window.location.href)
+                    return
+
+                  }
+
+                }
+
+                // --- END MODIFIED ---
+
                 try {
-                  htmlApp = JSON.parse(this.value);
+                  console.log("Processing Json object", typeof initialArgs);
+
+                  // console.log(initialArgs.trim().startsWith("<") && initialArgs.trim().endsWith(">"));
+                  // console.log("line 444 _runStack JSON.parse(" + initialArgs + ")");
+
+                  const parsedJson = JSON.parse(initialArgs);
+                  if (parsedJson) {
+                    
+                    // Convert the JavaScript object into a formatted JSON string
+
+                    console.log("initialArgs is a JSON object, navigating to", initialArgs);
+
+                    // const jsonString = JSON.stringify(parsedJson, null, 2); 
+
+                    document.open();
+                    document.write("<pre>" + jsonString + "</pre>"); // Wrap in <pre> for formatting
+                    document.close();
+                    
+                  }
+                } catch (jsonError) {
+                  console.log("Processing error invalid Json", typeof initialArgs);
+
+                  // Not JSON, treat as HTML or plain text
+
+                  console.log("Processing HTML", typeof initialArgs);
+                  if (initialArgs.trim().startsWith("<") && initialArgs.trim().endsWith(">")) {
+
+                    // More robust HTML check
+                    // console.log(initialArgs.trim().startsWith("<") && initialArgs.trim().endsWith(">"));
+
+                    document.open();
+                    document.write('<pre class="z-depth-5 card-panel deep-purple darken-1 scale-transition scale-out scale-in btn-large" id="eventRes01" class="menu-img grey darken-4 z-depth-5" style="width: 100%; height: 100%; border: none;" allow="autoplay" allow="encrypted-media" title="Dontime Life Website" frameborder="0" allowfullscreen >' + initialArgs + '</pre>');
+                    document.close();
+
+                    // const iframe = document.createElement("iframe");
+                    // iframe.id = "eventRes01";
+                    // iframe.title = "Dontime Life Website";
+                    // iframe.allow = "autoplay; encrypted-media";
+                    // iframe.allowFullscreen = true;
+                    // iframe.style.width = "100%";
+                    // iframe.style.height = "100%";
+                    // iframe.style.border = "none";
+                    // iframe.className = "z-depth-5 card-panel deep-purple darken-1 scale-transition scale-out scale-in btn-large menu-img grey darken-4 z-depth-5";
+                    // document.getElementById("iframeContainer").appendChild(iframe);
+                    // const iframeDoc = iframe.contentWindow.document;
+                    // iframeDoc.open();
+                    // document.open();
+                    // document.write('<div id="iframeContainer">' + iframeDoc.write(initialArgs) + '</div>');
+                    // document.close();
+                    // iframeDoc.close();
+
+                  } 
+                  else {
+                    console.log("Processing this", typeof initialArgs);
+                    let appStr = null;
+                      if (typeof initialArgs === "object") {
+                        appStr = JSON.stringify(initialArgs);
+                      } else {
+
+                        // Escape special characters and wrap in quotes for the HTML template
+
+                        appStr = JSON.stringify(initialArgs); 
+                      }
+
+                    // const fStr = JSON.stringify(currentApp.index? currentApp.index.funcStr:"null");
+                    // const dStr = JSON.stringify(currentApp.index? currentApp.index.dataStr:"null");
+                    // const indStr = fStr? fStr:dStr;
+                    // const combineStr = indStr + " " + appStr
+                    // console.log("typeof initialArgs === ", typeof initialArgs);
+
+                    chUrl.value = JSON.stringify(appStr, null, 2);
+                  }
                 }
-                catch (jsonError) {
-
-                  // If it's not valid JSON, treat it as a plain string
-
-                  htmlApp = this.value
-                }
-
-                // --- MODIFICATION STARTS HERE ---
-                // Create a *new*, reduced e object containing only func and args
-
-                const updatedClientApp = htmlApp
-
-                // --- MODIFICATION ENDS HERE ---
-
-                alert("WebApp updated. Sending back to server for re-render.");
-                console.log("Client-side: Updated WebApp to send:", updatedClientApp);
-                        async function handleStackUpdate() {
-                          try {
-                            const newStackContent = updatedClientApp
-                            document.open();
-                            document.write(newStackContent);
-                            document.close();
-                            console.log("Client-side: Page re-rendered with new content from server.");
-                          }
-                          catch (error) {
-                            console.error("Client-side Error during full re-render:", error);
-                            alert("Error re-rendering: " + error.message);
-                          }
-                        }
-                handleStackUpdate()
-              } catch (error) {
-                alert("Error processing input. Please ensure it's valid JSON or a plain string.");
-                console.error("Input processing error:", error);
               }
-            });
-        }
-    </script>
-  </body>
-</html>
+            } else {
+              chUrl.value = '[""]'; // Default if args is missing
+            }
+              chUrl.addEventListener("change", function() {
+                try {
+
+                  // Parse the user's input as the new value
+                  // Allow direct strings or JSON arrays/objects
+
+                  let htmlApp
+                  try {
+                    htmlApp = JSON.parse(this.value);
+                  } 
+                  catch (jsonError) {
+
+                    // If it's not valid JSON, treat it as a plain string
+
+                    htmlApp = this.value
+                  }
+
+                  // --- MODIFICATION STARTS HERE ---
+                  // Create a *new*, reduced e object containing only func and args
+
+                  const updatedClientApp = htmlApp
+
+                  // --- MODIFICATION ENDS HERE ---
+
+                  alert("WebApp updated. Sending back to server for re-render.");
+                  console.log("Client-side: Updated WebApp to send:", updatedClientApp);
+                          async function handleStackUpdate() {
+                            try {
+                              const newStackContent = updatedClientApp
+                              document.open();
+                              document.write(newStackContent);
+                              document.close();
+                              console.log("Client-side: Page re-rendered with new content from server.");
+                            } 
+                            catch (error) {
+                              console.error("Client-side Error during full re-render:", error);
+                              alert("Error re-rendering: " + error.message);
+                            }
+                          }
+                  handleStackUpdate()
+                } catch (error) {
+                  alert("Error processing input. Please ensure it's valid JSON or a plain string.");
+                  console.error("Input processing error:", error);
+                }
+              });
+          }
+      </script>
+    </body>
+  </html>
