@@ -1,11 +1,7 @@
 const functionRegistry = {
   fileList: [],
   paramsList: [],
-  htmlArray: [
-    "Untitled",
-    "Untitled2",
-    "Untitled3",
-  ],
+  htmlArray: ["Untitled", "Untitled2", "Untitled3"],
 
   initialize: function () {
     for (const key in globalThis) {
@@ -329,14 +325,11 @@ globalThis.searchString = function () {
       var elaspeTime = new Date() - functionRegistry.time;
       // console.log("that function: " + arguments.callee.caller.name + "\nthis function: " + arguments.callee.name + "\ntypeof arrDRnd: " +  typeof arrDRnd + "\nelaspeTime: " + elaspeTime)
       if (typeof arrDRnd !== "undefined" && typeof arrDRnd !== "string") {
-        var myImportData = arrDRnd
-          .sort((a, b) => {
-            let pA = freqPriority.get(a);
-            let pB = freqPriority.get(b)
-            return pA - pB
-          })[
-          Math.floor(Math.random() * arrDRnd.length)
-        ];
+        var myImportData = arrDRnd.sort((a, b) => {
+          let pA = freqPriority.get(a);
+          let pB = freqPriority.get(b);
+          return pA - pB;
+        })[Math.floor(Math.random() * arrDRnd.length)];
         newArr.push(myImportData);
         var elaspeTime = functionRegistry.time;
         // console.log("that function: " + arguments.callee.caller.name + "\nthis function: " + arguments.callee.name + "\nmyImportData: " +  myImportData + "\nelaspeTime: " + elaspeTime)
@@ -344,30 +337,23 @@ globalThis.searchString = function () {
         typeof arrDRnd !== "undefined" &&
         typeof arrDRnd === "string"
       ) {
-        var myImportData = [arrDRnd]
-          .sort((a, b) => {
-            let pA = freqPriority.get(a);
-            let pB = freqPriority.get(b)
-            return pA - pB
-          })[
-          Math.floor(Math.random() * [arrDRnd].length)
-        ];
+        var myImportData = [arrDRnd].sort((a, b) => {
+          let pA = freqPriority.get(a);
+          let pB = freqPriority.get(b);
+          return pA - pB;
+        })[Math.floor(Math.random() * [arrDRnd].length)];
         newArr.push(myImportData);
         var elaspeTime = functionRegistry.time;
         // console.log("that function: " + arguments.callee.caller.name + "\nthis function: " + arguments.callee.name + "\nmyImportData: " +  myImportData + "\nelaspeTime: " + elaspeTime)
       }
     }
-  } 
-  else if (typeof arrD !== "undefined") {
+  } else if (typeof arrD !== "undefined") {
     for (i, l; i < l; i++) {
-      var myArrData = arrD
-        .sort((a, b) => {
-          let pA = freqPriority.get(a);
-          let pB = freqPriority.get(b)
-          return pA - pB
-        })[
-        Math.floor(Math.random() * arrD.length)
-      ];
+      var myArrData = arrD.sort((a, b) => {
+        let pA = freqPriority.get(a);
+        let pB = freqPriority.get(b);
+        return pA - pB;
+      })[Math.floor(Math.random() * arrD.length)];
       newArr.push(myArrData);
       var elaspeTime = functionRegistry.time;
       // console.log("that function: " + arguments.callee.caller.name + "\nthis function: " + arguments.callee.name + "\nmyArrData: " + myArrData + "\nelaspeTime: " + elaspeTime)
@@ -388,16 +374,13 @@ globalThis.searchString = function () {
   //     " )",
   // );
   if (newArr) {
-    var sortNewArr = newArr
-      .sort((a, b) => {
-          let pA = freqPriority.get(a);
-          let pB = freqPriority.get(b)
-          return pA - pB
-        })[
-      Math.floor(Math.random() * newArr.length)
-    ];
+    var sortNewArr = newArr.sort((a, b) => {
+      let pA = freqPriority.get(a);
+      let pB = freqPriority.get(b);
+      return pA - pB;
+    })[Math.floor(Math.random() * newArr.length)];
     // return console.log({myNewArr: sortNewArr});
     return { myNewArr: sortNewArr };
     console.log();
   }
-}
+};
