@@ -123,6 +123,7 @@
 
       console.log("Client-side: Home Page URL:", homeStackUrl);
       console.log("Client-side: Applications", applications);
+                  console.log(<?= etop ?>)
 
       // console.log("line 657 Inside renBlob block of serverside Runall doGet");
       // Parse the input as the new value
@@ -134,154 +135,166 @@
       let iframeSrc =
         "https://www.clubhouse.com/@fabianlewis?utm_medium=ch_profile&utm_campaign=lhTUtHb2bYqPN3w8EEB7FQ-247242"; // Default iframe src
       let finalFeedDivContent = "";
-      try {
-        addr = new URL(<?= appL ?>);
-        currentApp = JSON.parse(<?= appL ?>);
-        if (Object.keys(currentApp).length > 0) {
-          console.log("Processing appL", currentApp);
-          let appRes = currentApp?.app
-          if (appRes) {
-            try {
-              currentApp = JSON.parse(appRes);
-              console.log("Processing", appRes)
-
-              // console.log("Client-side: Initial WebApp:", appRes);
-
-            }
-            catch (jsonError) {
-
-              // console.log("Error try JSON.parse(appRes) = ", typeof appRes)
-
-              currentApp = appRes;
-            }
-          }
-
-          else {
-            // try {
-              // currentApp = JSON.parse(<?= appL ?>);
-
-              console.log("Error: try currentApp = ", typeof currentApp)
-
-              // console.log("Client-side: Initial WebApp:", <?= appL ?>);
-            // }
-            // catch (jsonError) {
-              // console.log("Error try JSON.parse(appL) = ", typeof <?= appL ?>)
-              // currentApp = <?= appL ?>;
-            // }
-          }
-        }
-        else {
+      if (typeof applications !== "string") {
+        var reUpObject = Object.keys(applications);
+      }
+      else {
+        addr = encodeURI(applications);
+        window.location.href = addr; // New type "url" for strings
+        console.log("Error: window.location.href = ", window.location.href);
+      }
+      if (reUpObject && reUpObject.length > 0) {
+        if (reUpObject.indexOf("type") !== -1) {
           try {
-              currentApp = JSON.parse(<?= etop ?>)
-              console.log("Error try JSON.parse(e) = ", typeof <?= etop ?>)
+            // addr = new URL(<?= appL ?>);
+            currentApp = JSON.parse(<?= appL ?>);
+            if (Object.keys(currentApp).length > 0) {
+              console.log("Processing appL", currentApp);
+              let appRes = currentApp?.app
+              if (appRes) {
+                try {
+                  currentApp = JSON.parse(appRes);
+                  console.log("Processing", appRes)
+
+                  // console.log("Client-side: Initial WebApp:", appRes);
+
+                }
+                catch (jsonError) {
+
+                  // console.log("Error try JSON.parse(appRes) = ", typeof appRes)
+
+                  currentApp = appRes;
+                }
+              }
+
+              else {
+                // try {
+                  // currentApp = JSON.parse(<?= appL ?>);
+
+                  console.log("Error: try currentApp = ", typeof currentApp)
+
+                  // console.log("Client-side: Initial WebApp:", <?= appL ?>);
+                // }
+                // catch (jsonError) {
+                  // console.log("Error try JSON.parse(appL) = ", typeof <?= appL ?>)
+                  // currentApp = <?= appL ?>;
+                // }
+              }
+            }
+            else {
+              try {
+                  currentApp = JSON.parse(<?= etop ?>)
+                  console.log("Error try JSON.parse(e) = ", typeof <?= etop ?>)
+              }
+              catch (err) {
+                  currentApp = JSON.stringify(<?= etop ?>)
+                  console.log("Error catch JSON.stringify(e) = ", typeof <?= etop ?>)
+
+              }
+                console.log("Processing error: invalid JSON. currentApp = ", currentApp)
+            }
+
+          }
+          catch (error) {
+          try {
+              currentApp = JSON.parse(<?= appL ?>)
+              console.log("Error try JSON.parse(appL) = ", typeof <?= appL ?>)
           }
           catch (err) {
-              currentApp = JSON.stringify(<?= etop ?>)
-              console.log("Error catch JSON.stringify(e) = ", typeof <?= etop ?>)
+              currentApp = JSON.stringify(<?= appL ?>)
+              console.log("Error catch JSON.stringify(appL) = ", typeof <?= appL ?>)
 
           }
             console.log("Processing error: invalid JSON. currentApp = ", currentApp)
-        }
 
-      }
-      catch (error) {
-      try {
-          currentApp = JSON.parse(<?= appL ?>)
-          console.log("Error try JSON.parse(appL) = ", typeof <?= appL ?>)
-      }
-      catch (err) {
-          currentApp = JSON.stringify(<?= appL ?>)
-          console.log("Error catch JSON.stringify(appL) = ", typeof <?= appL ?>)
+            // If it's not valid JSON, treat it as a plain string
+            // if (typeof currentApp.app === "object") {
+            //   currentApp = JSON.stringify(currentApp.app);
+            //   console.log("Client-side: Initial Object of WebApp:", JSON.stringify(currentApp.app));
+            // }
+            // else
+            // Here, if payLoad.data is an object, you need to decide how to display it.
+            // It could contain sub-properties you want to render.
+            // if (<?= typeof appL ?> === "object") {
 
-      }
-        console.log("Processing error: invalid JSON. currentApp = ", currentApp)
+                console.log("Processing object", typeof currentApp)
 
-        // If it's not valid JSON, treat it as a plain string
-        // if (typeof currentApp.app === "object") {
-        //   currentApp = JSON.stringify(currentApp.app);
-        //   console.log("Client-side: Initial Object of WebApp:", JSON.stringify(currentApp.app));
-        // }
-        // else
-        // Here, if payLoad.data is an object, you need to decide how to display it.
-        // It could contain sub-properties you want to render.
-        // if (<?= typeof appL ?> === "object") {
+                // currentApp = JSON.stringify(<?= appL ?>);
+                // console.log("Client-side: Initial Object of WebApp:", JSON.stringify(<?= appL ?>))
 
-            console.log("Processing object", typeof currentApp)
+                try {
+                    if (currentApp?.data) {
+                      var thisApp = currentApp?.data
+                      console.log("Error: thisApp =", typeof thisApp);
+                      if (thisApp?.html || thisApp?.app || thisApp?.myVar || thisApp?.url) {
+                        currentApp = thisApp?.app || thisApp?.html || thisApp?.myVar || thisApp?.url;
+                        console.log("Error: currentApp = ", typeof currentApp);
+                      }
+                      else {
+                        currentApp = thisApp
+                      }
+                    }
+                    else if (currentApp?.app) {
+                      currentApp = currentApp?.app
+                    }
+                    else if (currentApp?.index) {
+                      currentApp = currentApp?.index
+                    }
 
-            // currentApp = JSON.stringify(<?= appL ?>);
-            // console.log("Client-side: Initial Object of WebApp:", JSON.stringify(<?= appL ?>))
+                    // else {
+                    //   currentApp = '<pre>' + currentApp + '</pre>';
+                    // }
 
-            try {
-                if (currentApp?.data) {
-                  var thisApp = currentApp?.data
-                  console.log("Error: thisApp =", typeof thisApp);
-                  if (thisApp?.html || thisApp?.app || thisApp?.myVar || thisApp?.url) {
-                    currentApp = thisApp?.app || thisApp?.html || thisApp?.myVar || thisApp?.url;
-                    console.log("Error: currentApp = ", typeof currentApp);
-                  }
-                  else {
-                    currentApp = thisApp
-                  }
                 }
-                else if (currentApp?.app) {
-                  currentApp = currentApp?.app
-                }
-                else if (currentApp?.index) {
-                  currentApp = currentApp?.index
-                }
+                catch (error) {
+                  console.error("Error: processing currentApp.data = ", error.toString())
 
-                // else {
-                //   currentApp = '<pre>' + currentApp + '</pre>';
+                // try {
+                //   if (currentApp.data && currentApp.data.html) {
+                //     var thisHtml = currentApp.data;
+                //   }
                 // }
+                // catch (error) {
+                //   console.error("Error", error.toString())
+                // }
+                // try {
+                //   if (currentApp.data && currentApp.data.url) {
+                //     var thisUrl = currentApp.data
+                //   }
+                // }
+                // catch (error) {
+                //   console.error("Error", error.toString())
+                // }
+                // if (thisApp) {
+                //   currentApp = thisApp;
+                // } else if (thisUrl) {
+                //   // If the object explicitly has a 'url' property
+                //   iframeSrc = thisUrl;
+                //   currentApp = currentApp.index;
+                //   finalFeedDivContent = currentApp.link;
+                // } else {
+                //   // Default way to display a generic object: stringify it
+                //   iframeSrc = currentApp.index; // Assign iframeSrc
+                //   currentApp = '<pre>' + JSON.stringify(currentApp.data, null, 2) + '</pre>';
+                //   finalFeedDivContent = currentApp.link;
+                // }
+            // }
+            // else {
+              // if (currentApp.app) {
+              //   currentApp = currentApp.app
+              //   console.log("Client-side: Initial String of WebApp:", currentApp.app);
+              // }
+              // else
+              // if (<?= appL ?>) {
+              //   console.log("Processing this", <?= appL ?>)
+              //   currentApp = <?= appL ?>
+                // console.log("Client-side: Initial String of WebApp:", <?= appL ?>);
+              // }
+                }
+            // }
 
-            }
-            catch (error) {
-              console.error("Error: processing currentApp.data = ", error.toString())
-
-            // try {
-            //   if (currentApp.data && currentApp.data.html) {
-            //     var thisHtml = currentApp.data;
-            //   }
-            // }
-            // catch (error) {
-            //   console.error("Error", error.toString())
-            // }
-            // try {
-            //   if (currentApp.data && currentApp.data.url) {
-            //     var thisUrl = currentApp.data
-            //   }
-            // }
-            // catch (error) {
-            //   console.error("Error", error.toString())
-            // }
-            // if (thisApp) {
-            //   currentApp = thisApp;
-            // } else if (thisUrl) {
-            //   // If the object explicitly has a 'url' property
-            //   iframeSrc = thisUrl;
-            //   currentApp = currentApp.index;
-            //   finalFeedDivContent = currentApp.link;
-            // } else {
-            //   // Default way to display a generic object: stringify it
-            //   iframeSrc = currentApp.index; // Assign iframeSrc
-            //   currentApp = '<pre>' + JSON.stringify(currentApp.data, null, 2) + '</pre>';
-            //   finalFeedDivContent = currentApp.link;
-            // }
-        // }
-        // else {
-          // if (currentApp.app) {
-          //   currentApp = currentApp.app
-          //   console.log("Client-side: Initial String of WebApp:", currentApp.app);
-          // }
-          // else
-          // if (<?= appL ?>) {
-          //   console.log("Processing this", <?= appL ?>)
-          //   currentApp = <?= appL ?>
-            // console.log("Client-side: Initial String of WebApp:", <?= appL ?>);
-          // }
-            }
-        // }
-
+          }
+        }
       }
       document.addEventListener("DOMContentLoaded", runStack)
         function runStack() {
