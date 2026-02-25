@@ -589,30 +589,37 @@ function doGet(e) {
     return renderFile(
       "Untitled4.html",
       {
-        appL: (
-              (payLoad.type === "text" || payLoad.type === "url") &&
-              this[libName].isValidUrl(payLoad.data).hostname &&
-              this[libName].isValidUrl(iframeSrc).hostname
-                ? iframeSrc
-                : JSON.stringify(payLoad)) || Object.values(this[libName].mis(content || data))[0],
+        appL:
+          ((payLoad.type === "text" || payLoad.type === "url") &&
+          this[libName].isValidUrl(payLoad.data).hostname &&
+          this[libName].isValidUrl(iframeSrc).hostname
+            ? iframeSrc
+            : JSON.stringify(payLoad)) ||
+          Object.values(this[libName].mis(content || data))[0],
         aplot:
           payLoad.type === "text" || payLoad.type === "url"
             ? iframeSrc
             : JSON.stringify(payLoad),
         etop: JSON.stringify(e.parameter),
-        tupL: htmlArray[funcTres0Index] || htmlArray[funcTresIndex] || functionRegistry.getHtmlList[0],
+        tupL:
+          htmlArray[funcTres0Index] ||
+          htmlArray[funcTresIndex] ||
+          functionRegistry.getHtmlList[0],
         homePage: this[libName].getScriptUrl(),
         e: JSON.stringify(e),
         stylist: htmlStyle,
       },
-      "GitHub Pages with Apps Script returning ?func=" + libFunc + "&args=" + foobarr ||
-          (htmlArray[foobarr0Index] || htmlArray[foobarrIndex]) +
-            ", " +
-            {} +
-            ", " +
-            templateName ||
-          foobarr ||
-          (htmlArray[foobarr0Index] || htmlArray[foobarrIndex]) + ",",
+      "GitHub Pages with Apps Script returning ?func=" +
+        libFunc +
+        "&args=" +
+        foobarr ||
+        (htmlArray[foobarr0Index] || htmlArray[foobarrIndex]) +
+          ", " +
+          {} +
+          ", " +
+          templateName ||
+        foobarr ||
+        (htmlArray[foobarr0Index] || htmlArray[foobarrIndex]) + ",",
     );
     console.log(
       "returning renderTemplate contentApp [" +
