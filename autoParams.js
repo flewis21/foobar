@@ -1,7 +1,11 @@
 const functionRegistry = {
   fileList: [],
   paramsList: [],
-  htmlArray: ["Untitled", "Untitled2", "Untitled3"],
+  htmlArray: [
+    "Untitled",
+    "Untitled2",
+    "Untitled3",
+  ],
 
   initialize: function () {
     for (const key in globalThis) {
@@ -16,7 +20,7 @@ const functionRegistry = {
             .filter((param) => param !== "");
           this.paramsList.push({ name: key, parameters: params });
         } catch (e) {
-          Logger.log(`Error processing function: ${key}. Error: ${e}`);
+          Logger.log(`Error processing function: ${key}. Error: ${e.stack}`);
           this.paramsList.push({
             name: key,
             parameters: ["(Unable to parse)"],
@@ -325,11 +329,14 @@ globalThis.searchString = function () {
       var elaspeTime = new Date() - functionRegistry.time;
       // console.log("that function: " + arguments.callee.caller.name + "\nthis function: " + arguments.callee.name + "\ntypeof arrDRnd: " +  typeof arrDRnd + "\nelaspeTime: " + elaspeTime)
       if (typeof arrDRnd !== "undefined" && typeof arrDRnd !== "string") {
-        var myImportData = arrDRnd.sort((a, b) => {
-          let pA = freqPriority.get(a);
-          let pB = freqPriority.get(b);
-          return pA - pB;
-        })[Math.floor(Math.random() * arrDRnd.length)];
+        var myImportData = arrDRnd
+          .sort((a, b) => {
+            let pA = freqPriority.get(a);
+            let pB = freqPriority.get(b)
+            return pA - pB
+          })[
+          Math.floor(Math.random() * arrDRnd.length)
+        ];
         newArr.push(myImportData);
         var elaspeTime = functionRegistry.time;
         // console.log("that function: " + arguments.callee.caller.name + "\nthis function: " + arguments.callee.name + "\nmyImportData: " +  myImportData + "\nelaspeTime: " + elaspeTime)
@@ -337,23 +344,30 @@ globalThis.searchString = function () {
         typeof arrDRnd !== "undefined" &&
         typeof arrDRnd === "string"
       ) {
-        var myImportData = [arrDRnd].sort((a, b) => {
-          let pA = freqPriority.get(a);
-          let pB = freqPriority.get(b);
-          return pA - pB;
-        })[Math.floor(Math.random() * [arrDRnd].length)];
+        var myImportData = [arrDRnd]
+          .sort((a, b) => {
+            let pA = freqPriority.get(a);
+            let pB = freqPriority.get(b)
+            return pA - pB
+          })[
+          Math.floor(Math.random() * [arrDRnd].length)
+        ];
         newArr.push(myImportData);
         var elaspeTime = functionRegistry.time;
         // console.log("that function: " + arguments.callee.caller.name + "\nthis function: " + arguments.callee.name + "\nmyImportData: " +  myImportData + "\nelaspeTime: " + elaspeTime)
       }
     }
-  } else if (typeof arrD !== "undefined") {
+  } 
+  else if (typeof arrD !== "undefined") {
     for (i, l; i < l; i++) {
-      var myArrData = arrD.sort((a, b) => {
-        let pA = freqPriority.get(a);
-        let pB = freqPriority.get(b);
-        return pA - pB;
-      })[Math.floor(Math.random() * arrD.length)];
+      var myArrData = arrD
+        .sort((a, b) => {
+          let pA = freqPriority.get(a);
+          let pB = freqPriority.get(b)
+          return pA - pB
+        })[
+        Math.floor(Math.random() * arrD.length)
+      ];
       newArr.push(myArrData);
       var elaspeTime = functionRegistry.time;
       // console.log("that function: " + arguments.callee.caller.name + "\nthis function: " + arguments.callee.name + "\nmyArrData: " + myArrData + "\nelaspeTime: " + elaspeTime)
@@ -374,13 +388,96 @@ globalThis.searchString = function () {
   //     " )",
   // );
   if (newArr) {
-    var sortNewArr = newArr.sort((a, b) => {
-      let pA = freqPriority.get(a);
-      let pB = freqPriority.get(b);
-      return pA - pB;
-    })[Math.floor(Math.random() * newArr.length)];
+    var sortNewArr = newArr
+      .sort((a, b) => {
+          let pA = freqPriority.get(a);
+          let pB = freqPriority.get(b)
+          return pA - pB
+        })[
+      Math.floor(Math.random() * newArr.length)
+    ];
     // return console.log({myNewArr: sortNewArr});
     return { myNewArr: sortNewArr };
     console.log();
   }
-};
+}
+
+const htmlStyle = {
+    renderBody: HtmlService
+      .createHtmlOutput(
+        `<style>
+          body 
+            {
+              flex-grow: 1;
+              color:blue;
+              text-decoration:bold;
+              flex-flow: row wrap;
+              grid-column: 1;
+              grid-row: 1;
+              text-align: center;
+              align-content: flex-start;
+              overflow: auto;
+            }
+        </style>`
+      ).getContent(),
+    contentBody: HtmlService
+      .createHtmlOutput(
+        `<style>
+           body
+            {
+              flex-grow: 1;color:blue;text-decoration:bold;
+              flex-flow: row wrap;
+              grid-column: 1;grid-row: 1;
+              text-align: center;
+              align-content: flex-start;
+              overflow: auto;
+            }
+        </style>`
+      ).getContent(),
+    wrapElement: HtmlService
+      .createHtmlOutput(
+        `<style>
+           .wrap-element
+            {
+              position: relative;
+              overflow: hidden;
+              padding-top: 100%;
+            }
+        </style>`
+      ).getContent(),
+    wrappedIframe: HtmlService
+      .createHtmlOutput(
+        `<style>
+           .wrapped-iframe
+            {
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+              border: 0;
+            }
+        </style>`
+      ).getContent(),
+    progressBar: HtmlService
+      .createHtmlOutput(
+        `<style>
+           .progress-bar
+            {
+              width: 100%;
+              background-color: rgb(128, 128, 128);
+            }
+        </style>`
+      ).getContent(),
+    progress: HtmlService
+      .createHtmlOutput(
+        `<style>
+           .progress
+            {
+              width: 1%;
+              height: 30px;
+              background-color: rgb(128, 0, 21);
+            }
+        </style>`
+      ).getContent(),
+}

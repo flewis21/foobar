@@ -17,7 +17,7 @@ function isValidKeys(v) {
       return isValueOfTypePassedIn;
     }
   }
-}
+};
 
 var isMapped = function (t, v) {
   var mapKeys = {};
@@ -115,20 +115,19 @@ var geneicType = function () {
   // var functionObjectType = resolveParams(["dtlsPro","bounty","portBing","hunter"]);
   let randonWord = [globalThis.searchString().myNewArr]
     .join("")
-    .split("")
-    .sort((a, b) => {
-      let priorityA = 0;
-      let priorityB = 0;
-      if (Math.random() < 0.5) {
-        priorityA = getZuluFreqPriority(a);
-      }
-      if (Math.random() < 0.5) {
-        priorityB = freqPriority.get(b);
-      }
-      return priorityA - priorityB;
-    })
-    .join("");
-  var functionObjectType = doGet({ parameter: { q: randonWord } });
+      .split("")
+        .sort((a,b) => {
+          let priorityA = 0;
+          let priorityB = 0;
+          if (Math.random() < 0.5) {
+            priorityA = getZuluFreqPriority(a);
+          }
+          if (Math.random() < 0.5) {
+            priorityB = freqPriority.get(b);
+          }
+          return priorityA - priorityB
+        }).join("")
+  var functionObjectType = doGet({parameter: {q: randonWord}});
   // var isExcludeValue = isOmit(functionObjectType["dtlsPro"], "c");
   // isExcludeValue = isOmit(isExcludeValue, "2");
   // isExcludeValue = isOmit(isExcludeValue, "3");

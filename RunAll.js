@@ -66,16 +66,14 @@ function doGet(e) {
     }
     console.log("e parameter(s)", eData);
     if (eData?.length > 0) {
-      eData.forEach((key) => {
+      eData.forEach((key) =>{
         console.log("e.parameter(s) value(s)", e.parameter[key]);
         argsEd = this[libName].createRandomFunction(e.parameter[key]);
         funcCallParams.push(e.parameter[key]);
-        console.log(
-          "function call parameters inside forEach loop",
-          funcCallParams,
-        );
-      });
-    } else {
+        console.log("function call parameters inside forEach loop", funcCallParams)
+      })
+    }
+    else {
       // console.log("function call parameters", funcCallParams);
       argsEd = this[libName].createRandomFunction();
     }
@@ -91,7 +89,8 @@ function doGet(e) {
           ],
           functionRegistry.time,
         );
-      } else if (typeof argsEd === "object" && argsEd !== null && argsEd.name) {
+      } 
+      else if (typeof argsEd === "object" && argsEd !== null && argsEd.name) {
         if (argsEd.parameters && argsEd.parameters.length > 0) {
           e = this[libName].objectOfS(
             ["parameter"],
@@ -103,12 +102,12 @@ function doGet(e) {
             ],
             functionRegistry.time,
           );
-        } else {
+        } 
+        else {
           e = this[libName].objectOfS(
             ["parameter"],
             [
-              [
-                ,
+              [,
                 ["func", argsEd.name],
                 // ["args", argsEd.name],
               ],
@@ -116,13 +115,14 @@ function doGet(e) {
             functionRegistry.time,
           );
         }
-      } else {
+      } 
+      else {
         console.log("Unexpected argsEd type: ", argsEd);
         let argsedObj = Object.values(argsEd);
         let aOKeys = Object.keys(argsedObj);
         if (aOKeys.length > 0) {
-          aOKeys.forEach((key) => {
-            aOKeys.push(argsedObj[key]);
+          aOKeys.forEach((key) =>{
+            aOKeys.push(argsedObj[key])
           });
           e = this[libName].objectOfS(
             ["parameter"],
@@ -136,7 +136,8 @@ function doGet(e) {
             ],
             functionRegistry.time,
           );
-        } else {
+        } 
+        else {
           e = this[libName].objectOfS(
             ["parameter"],
             [
@@ -298,12 +299,14 @@ function doGet(e) {
             : this[libName]["misSt"].apply(this, parsedFuncArgs);
         }
       }
-    } else if (
+    }
+    else if (
       (this[libName] && typeof this[libName][libFunc] !== "function") ||
       (this[libName] && !libFunc && foobarr)
     ) {
       rawFuncResult = funcDos.toString(); // The actual result of the function call(s);
-    } else {
+    }
+    else {
       console.error(
         `Error: Function "${libFunc}" not found or not callable in "${libName}".`,
       );
@@ -377,14 +380,15 @@ function doGet(e) {
         // If the object itself contains structured data you want to directly use
         let cKeys = Object.keys(content);
         let cVals = Object.values(content);
-        var contentObject = cKeys.map((ctScan, ckIndex) => {
+        var contentObject = cKeys.map((ctScan, ckIndex) =>{
           if (Array.isArray(cVals[ckIndex])) {
-            var cValsIndex = cVals[ckIndex];
+            var cValsIndex = cVals[ckIndex]
           }
           if (ctScan === "html") {
             // If there's an explicit 'html' property
             return { type: "html", data: content[ctScan] };
-          } else if (ctScan === "url" && urlRegex.test(content[ctScan])) {
+          }
+          else if (ctScan === "url" && urlRegex.test(content[ctScan])) {
             // Use regex for object.url as well
             return { type: "url", data: content[ctScan] };
           }
@@ -399,11 +403,12 @@ function doGet(e) {
           else if (urlRegex.test(cValsIndex)) {
             // Use regex for object.url as well
             return { type: "url", data: cValsIndex };
-          } else {
+          }
+          else {
             // Add other specific object property checks here if needed
             return { type: "object", data: content }; // Default for other objects
           }
-        });
+        })
         return contentObject[0];
       }
       // 5. Default unknown
@@ -494,12 +499,14 @@ function doGet(e) {
         finalAppLContent = payLoad?.data?.html || payLoad?.data?.app;
         // If the object itself contains a URL, use it for iframeSrc
         iframeSrc = payLoad?.data?.url || iframeSrc;
-      } else if (pdKeys?.indexOf("url") > -1) {
+      } 
+      else if (pdKeys?.indexOf("url") > -1) {
         // If the object explicitly has a 'url' property
         iframeSrc = payLoad?.data?.url;
         finalAppLContent = `URL provided: <a href="${payLoad?.data?.index}" target="_blank">${payLoad?.data?.index}</a>`;
         finalFeedDivContent = `URL provided: <a href="${payLoad?.data?.link}" target="_blank">${payLoad?.data?.link}</a>`;
-      } else {
+      } 
+      else {
         // Default way to display a generic object: stringify it
         iframeSrc = payLoad?.data?.index; // Assign iframeSrc
         finalAppLContent = `<pre>${JSON.stringify(payLoad?.data?.app, null, 2)}</pre>`;
@@ -510,7 +517,7 @@ function doGet(e) {
       finalFeedDivContent = `Error: ${payLoad.message || payLoad.data || "Unknown error."}`;
     }
   } catch (error) {
-    console.error(`Error during payload processing:`, error);
+    console.error(`Error during payload processing:`, error.stack);
     finalAppLContent = `<div>Critical Error: ${error.message}</div>`;
     finalFeedDivContent = `Critical Error: ${error.message}`;
     iframeSrc = ""; // Clear iframe on critical error
@@ -776,7 +783,7 @@ function doGet(e) {
       //                       document.close();
       //                     }
       //                     console.log("Client-side: Page re-rendered with new content from server.");
-      //                   }
+      //                   }  
       //                   else if (newHtmlContent && newHtmlContent.type === "text" && newHtmlContent.data) {
       //                     let mddr = new URL(newHtmlContent.data);
       //                     if (mddr) {
@@ -789,14 +796,14 @@ function doGet(e) {
       //                       document.close();
       //                     }
       //                     console.log("Client-side: Page re-rendered with new content from server.");
-      //                   }
+      //                   } 
       //                   else {
       //                     document.open();
       //                     document.write(newHtmlContent.data);
       //                     document.close();
       //                     console.log("Client-side: Page re-rendered with new content from server.");
       //                   }
-      //                 }
+      //                 } 
       //                 catch (error) {
       //                   console.error("Client-side Error during full re-render:", error);
       //                   alert("Error re-rendering: " + error.message);
@@ -814,11 +821,18 @@ function doGet(e) {
           <html>
             <head>
               <base target="_self" />
-              <title>GitHub Pages with Apps Script</title>
+              <?!= stylist.progress ?>
+              <?!= stylist.progressBar ?>
             </head>
             <body>
               <h1>Data from Apps Script:</h1>
-              <div id="data-display">Loading...</div>
+              <div class="progress-bar" id="data-display">
+                <div id="myBar" class="progress"></div>
+              </div>
+              <div>
+                <input type="text" id="pageObj" value="Loading...">
+                <?!= renBlob ?>
+              </div>
 
               <h2>Contact Form</h2>
               <form id="myForm">
@@ -831,88 +845,186 @@ function doGet(e) {
               </form>
 
               <script>
-                const scriptURL =
-                  "https://script.google.com/macros/s/AKfycbzhrxdXzM08AAwA5ualRXdnDtV6C_xQ7bcq4v6H0HNdBqPr2C8A1URyWN0FLLccQuoA/exec";
+                function serverSide(func, args) {
+                  return new Promise((resolve, reject) => {
+                    google.script.run
+                      .withSuccessHandler((result) => {
+                        resolve(result); // result will be { type: "...", data: "..." }
+                        // You would then process 'result' here to update specific parts of your current page
+                        // For example, update a div with result.data if result.type is "text" or "html"
+                        console.log("Server side call success:", result);
+                      })
+                      .withFailureHandler((error) => {
+                        reject(error);
+                        console.error("Server-side call error:", error.stack);
+                        alert("Error during server call: " + e + "\n" + error.message);
+                      })
+                      .runBoilerplate(func, args);
+                  })
+                };
+                // const currentE = JSON.parse(<?= e ?>);
+                // const scriptURL =
+                //   <?= homePage ?>;
 
-                async function fetchData() {
-                  try {
-                    const response = await fetch(scriptURL + "?action=getData");
-                    if (!response.ok) {
-                      const errorText = await response.text();
-                      throw new Error(
-                        HTTP error! status: response.status, errorText,
-                      );
-                    }
+                // async function fetchData() {
+                //   try {
+                //     const response = await serverSide("handleRequest") //fetch(scriptURL + "?action=getData");
+                //     try {
 
-                    let responseData;
-                    const contentType = response.headers.get("content-type");
+                //       let responseData;
+                      // const contentType = response.headers.get("content-type");
 
-                    if (contentType && contentType.includes("application/json")) {
-                      responseData = await response.json();
-                    } else if (contentType && contentType.includes("text/plain")) {
-                      responseData = await response.text();
-                    } else {
-                      responseData = await response.text();
-                    }
-                    if (responseData.message.content) {
-                      document.location.href = responseData.message.content;
-                    } else if (responseData.message.link) {
-                      document.location.href = responseData.message.link;
-                    } else {
-                      document.getElementById("data-display").textContent =
-                        JSON.stringify(responseData, null, 2);
-                    }
-                  } catch (error) {
-                    console.error("Error fetching data:", error);
-                    document.getElementById("data-display").textContent =
-                      "Error fetching data: " + error.message;
-                  }
-                }
+                      // if (contentType && contentType.includes("application/json")) {
+                      //   responseData = await response.json();
+                      // } else if (contentType && contentType.includes("text/plain")) {
+                      //   responseData = await response.text();
+                      // } else {
+                      //   responseData = await response.text();
+                      // }
+                //       if (responseData.message.content) {
+                //         document.location.href = responseData.message.content;
+                //       } else if (responseData.message.link) {
+                //         document.location.href = responseData.message.link;
+                //       } else {
+                //         document.getElementById("data-display").textContent =
+                //           JSON.stringify(responseData, null, 2);
+                //       }
+                //     }
+                //     catch (error) {
+                //       const errorText = error.stack;
+                //       throw new Error(
+                //         HTTP error! status: response.status, errorText,
+                //       );
+                //     }
+                //   } catch (error) {
+                //     console.error("Error fetching data:", error.stack);
+                //     document.getElementById("data-display").textContent =
+                //       "Error fetching data: " + error.message;
+                //   }
+                // }
 
-                async function submitForm() {
-                  const form = document.getElementById("myForm");
-                  const formData = new FormData(form);
-                  const data = {};
-                  formData.forEach((value, key) => (data[key] = value));
-                  if (!data.name) {
-                    document.getElementById("form-message").textContent =
-                      "Error: Name is required";
-                    return;
-                  }
-                  if (!data.email) {
-                    document.getElementById("form-message").textContent =
-                      "Error: Email is required";
-                    return;
-                  }
+                // async function submitForm() {
+                //   const form = document.getElementById("myForm");
+                //   const formData = new FormData(form);
+                //   const data = {};
+                //   formData.forEach((value, key) => (data[key] = value));
+                //   if (!data.name) {
+                //     document.getElementById("form-message").textContent =
+                //       "Error: Name is required";
+                //     return;
+                //   }
+                //   if (!data.email) {
+                //     document.getElementById("form-message").textContent =
+                //       "Error: Email is required";
+                //     return;
+                //   }
 
-                  try {
-                    const response = await fetch(scriptURL + "?action=submitForm", {
-                      method: "POST",
-                      headers: {
-                        "Content-Type": "application/json",
-                      },
-                      body: JSON.stringify(data),
-                    });
+                //   try {
+                //     const response = await fetch(scriptURL + "?action=submitForm", {
+                //       method: "POST",
+                //       headers: {
+                //         "Content-Type": "application/json",
+                //       },
+                //       body: JSON.stringify(data),
+                //     });
 
-                    if (!response.ok) {
-                      const errorText = await response.text();
-                      throw new Error(HTTP error response.status: errorText);
-                    }
-                    const responseData = await response.json();
-                    document.getElementById("form-message").textContent =
-                      responseData.message;
+                //     if (!response.ok) {
+                //       const errorText = await response.text();
+                //       throw new Error(HTTP error response.status: errorText);
+                //     }
+                //     const responseData = await response.json();
+                //     document.getElementById("form-message").textContent =
+                //       responseData.message;
 
-                    if (responseData.success) {
-                      form.reset();
-                    }
-                  } catch (error) {
-                    console.error("Error submitting form:", error);
-                    document.getElementById("form-message").textContent =
-                      Error: error.message;
-                  }
-                }
+                //     if (responseData.success) {
+                //       form.reset();
+                //     }
+                //   } catch (error) {
+                //     console.error("Error submitting form:", error.stack);
+                //     document.getElementById("form-message").textContent =
+                //       Error: error.message;
+                //   }
+                // }
 
-                fetchData(); // Call on page load
+                // var i = 0;
+                // function move() {
+                //   if (i = 0) {
+                //     i = 1;
+                //     var elem = document.getElementById("myBar");
+                //     var width = 1;
+                //     var id = setInterval(frame, 10);
+                //     function frame() {
+                //       if (width >= 100) {
+                //         clearInterval(id);
+                //         i = 0;
+                //       } else {
+                //         width++;
+                //         elem.style.width = width + "%";
+                //       }
+                //     }
+                //   }
+                // }
+                
+                // document.addEventListener("DOMContentLoaded", function runeRun() {
+                //   move(); // Call on page load
+                //   // fetchData(); // Call on page load
+                //   eRun();
+                // });
+
+                // function eRun() {
+                //   console.log("line 218");
+                //   var objUrl = document.getElementById("pageObj");
+                //   objUrl.addEventListener("change", function () {
+                //     try {
+                //       // Parse the user's input as the new 'args' value
+                //       // Allow direct strings or JSON arrays/objects
+                //       let parsedE;
+                //       try {
+                //         parsedE = JSON.parse(this.value);
+                //       } catch (jsonError) {
+                //         // If it's not valid JSON, treat it as a plain string
+                //         parsedE = this.value;
+                //       }
+                //       // --- MODIFICATION STARTS HERE ---
+                //       // Create a *new*, reduced e object containing only func and args
+                //       const updatedClientE = {
+                //         parameter: {
+                //           func: "driveManager" || "", // Keep the original func
+                //           args: parsedE                 // Use the new parsed args
+                //         }
+                //       };
+                //       // --- MODIFICATION ENDS HERE ---
+                //       alert("e.parameter['args'] updated. Sending back to server for re-render.");
+                //       console.log("Client-side: Updated e object to send:", updatedClientE);
+                //       async function handlePageUpdate() {
+                //         try {
+                //           // This part is still problematic if newStackContent is meant to be HTML
+                //           // and it directly comes from updatedClientApp (which is the textarea value)
+                //           // If updatedClientApp contains HTML, it needs to be processed to be displayable.
+                //           const newHtmlContent = await serverSide(updatedClientE.parameter["func"], [updatedClientE.parameter["args"]]);
+                //           alert(newHtmlContent.type); 
+                //           // else {
+                //             document.open();
+                //             document.write(newHtmlContent.data);
+                //             document.close();
+                //             console.log("Client-side: Page re-rendered with new content from server.");
+                //           // }
+                //         } 
+                //         catch (error) {
+                //           console.error("Client-side Error during full re-render:", error.stack);
+                //           alert("Error re-rendering: " + e + "\n" + error.message);
+                //         }
+                //       }
+                //       handlePageUpdate()
+                    // } catch (error) {
+                    //   alert("Error processing input. Please ensure it's valid JSON or a plain string." + e + "\n" + error.stack);
+                    //   console.error("Input processing error:", error.stack);
+                    // }
+                    //     }
+                    //   }
+                    // }
+                //   });
+                // }
               </script>
             </body>
           </html>`,
@@ -973,7 +1085,7 @@ function doGet(e) {
                         })
                         .withFailureHandler((error) => {
                           reject(error);
-                          console.error("Server-side call error:", error);
+                          console.error("Server-side call error:", error.stack);
                           alert("Error during server call: " + error.message);
                         })
                         .runBoilerplate(func, args);
@@ -988,6 +1100,7 @@ function doGet(e) {
 
                   console.log("Client-side: Home Page URL:", homeStackUrl);
                   console.log("Clients applications:", <?= appL ?>)
+                  console.log(<?= etop ?>)
 
                   // console.log("line 657 Inside renBlob block of serverside Runall doGet");
                   // Parse the input as the new value
@@ -998,338 +1111,350 @@ function doGet(e) {
                   let iframeSrc =
                     "https://www.clubhouse.com/@fabianlewis?utm_medium=ch_profile&utm_campaign=lhTUtHb2bYqPN3w8EEB7FQ-247242"; // Default iframe src
                   let finalFeedDivContent = "";
-                  // let addTest = new URL(applications);
-                  // if (typeof applications !== "string") {
-                  //   try {
-                  //     currentApp = JSON.parse(<?= appL ?>);
-                  //     if (Object.keys(<?= appL ?>).length > 0) {
-                  //       console.log("Processing appL", currentApp);
-                  //       let appRes = currentApp?.app
-                  //       if (appRes) {
-                  //         try {
-                  //           currentApp = JSON.parse(appRes);
-                  //           console.log("Processing", appRes)
+                  if (typeof applications !== "string") {
+                    var reUpObject = Object.keys(applications);
+                  }
+                  else {
+                    let addr = encodeURI(applications);
+                    window.location.href = addr; // New type "url" for strings
+                    console.log("Error: window.location.href = ", window.location.href);
+                  }
+                  if (reUpObject && reUpObject.length > 0) {
+                    if (reUpObject.indexOf("type") !== -1) {
+                      // let addTest = new URL(applications);
+                      // if (typeof applications !== "string") {
+                      //   try {
+                      //     currentApp = JSON.parse(<?= appL ?>);
+                      //     if (Object.keys(<?= appL ?>).length > 0) {
+                      //       console.log("Processing appL", currentApp);
+                      //       let appRes = currentApp?.app
+                      //       if (appRes) {
+                      //         try {
+                      //           currentApp = JSON.parse(appRes);
+                      //           console.log("Processing", appRes)
 
-                  //           // console.log("Client-side: Initial WebApp:", appRes);
+                      //           // console.log("Client-side: Initial WebApp:", appRes);
 
-                  //         }
-                  //         catch (jsonError) {
+                      //         }
+                      //         catch (jsonError) {
 
-                  //           // console.log("Error try JSON.parse(appRes) = ", typeof appRes)
+                      //           // console.log("Error try JSON.parse(appRes) = ", typeof appRes)
 
-                  //           currentApp = appRes;
-                  //         }
-                  //       }
+                      //           currentApp = appRes;
+                      //         }
+                      //       }
 
-                  //       else {
-                  //         // try {
-                  //           // currentApp = JSON.parse(<?= appL ?>);
+                      //       else {
+                      //         // try {
+                      //           // currentApp = JSON.parse(<?= appL ?>);
 
-                  //           console.log("Error: try currentApp = ", typeof currentApp)
+                      //           console.log("Error: try currentApp = ", typeof currentApp)
 
-                  //           // console.log("Client-side: Initial WebApp:", <?= appL ?>);
-                  //         // }
-                  //         // catch (jsonError) {
-                  //           // console.log("Error try JSON.parse(appL) = ", typeof <?= appL ?>)
-                  //           // currentApp = <?= appL ?>;
-                  //         // }
-                  //       }
-                  //     }
-                  //     else {
-                  //       try { 
-                  //           currentApp = JSON.parse(<?= etop ?>)
-                  //           console.log("Error try JSON.parse(e) = ", typeof <?= etop ?>)
-                  //       }
-                  //       catch (err) { 
-                  //           currentApp = JSON.stringify(<?= etop ?>)
-                  //           console.log("Error catch JSON.stringify(e) = ", typeof <?= etop ?>)
-
-                  //       }
-                  //         console.log("Processing error: invalid JSON. currentApp = ", currentApp)
-                  //     }
-
-                  //   } 
-                  //   catch (error) {
-                  //   try { 
-                  //       currentApp = JSON.parse(<?= appL ?>)
-                  //       console.log("Error try JSON.parse(appL) = ", typeof <?= appL ?>)
-                  //   }
-                  //   catch (err) { 
-                  //       currentApp = JSON.stringify(<?= appL ?>)
-                  //       console.log("Error catch JSON.stringify(appL) = ", typeof <?= appL ?>)
-
-                  //   }
-                  //     console.log("Processing error: invalid JSON. currentApp = ", currentApp)
-
-                  //     // If it's not valid JSON, treat it as a plain string
-                  //     // if (typeof currentApp.app === "object") {
-                  //     //   currentApp = JSON.stringify(currentApp.app);
-                  //     //   console.log("Client-side: Initial Object of WebApp:", JSON.stringify(currentApp.app));
-                  //     // }
-                  //     // else 
-                  //     // Here, if payLoad.data is an object, you need to decide how to display it.
-                  //     // It could contain sub-properties you want to render.
-                      if (<?= typeof appL ?> === "object") {
-
-                          console.log("Processing object", typeof currentApp)
-
-                          currentApp = JSON.stringify(<?= appL ?>);
-                          console.log("Client-side: Initial Object of WebApp:", JSON.stringify(<?= appL ?>))
-
-                  //         try {
-                              if (currentApp?.data) {
-                                var thisApp = currentApp?.data
-                                console.log("Error: thisApp =", typeof thisApp);
-                                if (thisApp?.html || thisApp?.app || thisApp?.myVar || thisApp?.url) {
-                                  currentApp = thisApp?.app || thisApp?.html || thisApp?.myVar || thisApp?.url;
-                                  console.log("Error: currentApp = ", typeof currentApp);
-                                }
-                                else {
-                                  currentApp = thisApp
-                                }
-                              }
-                  //             else if (currentApp?.app) {
-                  //               currentApp = currentApp?.app
-                  //             }
-                  //             else if (currentApp?.index) {
-                  //               currentApp = currentApp?.index
-                  //             }
-
-                  //             // else {
-                  //             //   currentApp = '<pre>' + currentApp + '</pre>';
-                  //             // }
-
-                  //         }
-                  //         catch (error) {
-                  //           console.error("Error: processing currentApp.data = ", error.toString())
-
-                          // try {
-                          //   if (currentApp.data && currentApp.data.html) {
-                          //     var thisHtml = currentApp.data;
-                          //   }
-                          // }
-                          // catch (error) {
-                          //   console.error("Error", error.toString())
-                          // }
-                          // try {
-                          //   if (currentApp.data && currentApp.data.url) {
-                          //     var thisUrl = currentApp.data
-                          //   }
-                          // }
-                          // catch (error) {
-                          //   console.error("Error", error.toString())
-                          // }
-                          // if (thisApp) {
-                          //   currentApp = thisApp;
-                          // } else if (thisUrl) {
-                          //   // If the object explicitly has a 'url' property
-                          //   iframeSrc = thisUrl;
-                          //   currentApp = currentApp.index;
-                          //   finalFeedDivContent = currentApp.link;
-                          // } else {
-                          //   // Default way to display a generic object: stringify it
-                          //   iframeSrc = currentApp.index; // Assign iframeSrc
-                          //   currentApp = '<pre>' + JSON.stringify(currentApp.data, null, 2) + '</pre>';
-                          //   finalFeedDivContent = currentApp.link;
-                          // }
-                      }
-                      // else {
-                      //   if (currentApp.app) {
-                      //     currentApp = currentApp.app
-                      //     console.log("Client-side: Initial String of WebApp:", currentApp.app);
-                      //   }
-                      //   else 
-                      //   if (<?= appL ?>) {
-                      //     console.log("Processing this", <?= appL ?>)
-                      //     currentApp = <?= appL ?>
-                      //     console.log("Client-side: Initial String of WebApp:", <?= appL ?>);
-                      //   }
-                      // }
-                  //     // }
-
-                  //   }
-                  // }
-                  document.addEventListener("DOMContentLoaded", runStack)
-                    function runStack() {
-
-                      // console.log("line 660 Inside _renBlob block of serverside Runall doGet _runStack(" + currentApp + ")");
-
-                      // initialArgs = currentApp
-                      if (initialArgs !== undefined && initialArgs !== null && typeof applications !== "string") {
-
-                      // if (currentApp !== undefined && currentApp !== null) {
-                        // If trying to parse JSON on appL["app"] succeeds
-
-                      //   if (typeof initialArgs === 'object') {
-                      //     let appType = currentApp?.type || "";
-                          // if (typeof currentApp?.data === "object") {
-                          //   var appData = JSON.stringify(currentApp?.data) || "";
-                          // }
-                          // else {
-                          //   var appData = currentApp?.data || "";
-                          // }
-                      //     let appLink = currentApp?.link || "";
-                      //     let appFStr = currentApp?.fStr || "";
-                      //     let appDStr = currentApp?.dStr || "";
-                      //     let appIndex = currentApp?.index || "";
-                      //     let mainRen = appType + (appFStr || appDStr) + appData;
-
-                      //     // chUrl.value = JSON.stringify(appFStr, null, 2) || JSON.stringify(appDStr, null, 2);
-
-                      //     if (mainRen !== "undefined" && typeof mainRen !== "undefined" && typeof mainRen !== null && mainRen.length > 0) {
-                      //       chUrl.value = mainRen;
+                      //           // console.log("Client-side: Initial WebApp:", <?= appL ?>);
+                      //         // }
+                      //         // catch (jsonError) {
+                      //           // console.log("Error try JSON.parse(appL) = ", typeof <?= appL ?>)
+                      //           // currentApp = <?= appL ?>;
+                      //         // }
+                      //       }
                       //     }
                       //     else {
-                            if (typeof currentApp === "object") {
-                              chUrl.value = JSON.stringify(currentApp);
-                            }
-                            else {
-                              chUrl.value = currentApp;
-                            }
-                          // }
-                      //     console.log("Processing initialArgs = ", typeof initialArgs);
+                      //       try { 
+                      //           currentApp = JSON.parse(<?= etop ?>)
+                      //           console.log("Error try JSON.parse(e) = ", typeof <?= etop ?>)
+                      //       }
+                      //       catch (err) { 
+                      //           currentApp = JSON.stringify(<?= etop ?>)
+                      //           console.log("Error catch JSON.stringify(e) = ", typeof <?= etop ?>)
+
+                      //       }
+                      //         console.log("Processing error: invalid JSON. currentApp = ", currentApp)
+                      //     }
+
                       //   } 
-
-                      //   // --- 3. if json error, handle String content (URL, JSON, HTML, or plain text)
-
-                      //   else if (typeof initialArgs === 'object' || typeof initialArgs === 'string') {
-                      //     console.log("Processing object or string", typeof initialArgs);
-
-                      //     // --- MODIFIED: Use Regex for URL check ---
-                      //     // Regex for a basic HTTP/HTTPS URL validation
-                      //     // This regex is fairly comprehensive for common URLs but can be refined if needed.
-                      //     // "^https?://(?:www\\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}(?:[-a-zA-Z0-9()@:%_+.~#?&//=]*)$"
-                      //     // const urlRegExString = "^https?://(.+?)."
-                      //     // const urlRegEx = new RegExp(urlRegExString);
-                      //     // if (currentApp.app) {
-                      //     //   let addr = new URL(currentApp.app);
-                      //     //   console.log(addr);
-                      //     //   console.log("line 431 inside _runStack _new URL(" + currentApp.app + ")");
-                      //       // if (addr) {
-                      //     //     console.log('appL["app"] is a URL, navigating to: ' + addr);
-                      //     //     window.location.href = addr; // New type "url" for strings
-                      //     //     return
-                      //       // }
-                          }
-                          else 
-
-                      //     if (typeof initialArgs === 'string' || typeof applications === "string") 
-                      {
-                            let addr = new URL(<?= appL ?>);
-                      //       console.log("Initial args = " + initialArgs + ": : string")
-                      //       console.log("Error: let addr = ", addr)
-
-                      //       // console.log(addr);
-                      //       // console.log("line 431 inside _runStack _new URL(" + initialArgs + ")");
-
-                      //       if (addr || typeof applications === "string") {
-
-                      //         // console.log('appL is a URL, navigating to: ' + addr);
-
-                              window.location.href = addr; // New type "url" for strings
-
-                              // window.open(JSON.stringify(initialArgs), "_top")
-                              // const confirmation = window.confirm(
-                              //   "Click OK to continue to the destination.",
-                              // );
-                              // if (confirmation) {
-                              //   var linkFollow = document.createElement("a");
-                              //   linkFollow.href = JSON.stringify(<?= appL ?>);
-                              //   linkFollow.id = "linkFOLLOW";
-                              //   linkFollow.target = "_self";
-                              //   linkFollow.rel = "noopener noreferrer";
-                              //   document.body.appendChild(linkFollow);
-                              //   document.getElementById("linkFOLLOW").click();
-                              //   document.getElementById("linkFOLLOW").remove();
-                              // }
-
-                              console.log("Error: window.location.href = ", window.location.href)
-                      //         return
-
-                            }
-
-                      //     }
-
-                      //     // --- END MODIFIED ---
-
-                      //     try {
-                      //       console.log("Processing Json object", typeof initialArgs);
-
-                      //       // console.log(initialArgs.trim().startsWith("<") && initialArgs.trim().endsWith(">"));
-                      //       // console.log("line 444 _runStack JSON.parse(" + initialArgs + ")");
-
-                      //       const parsedJson = JSON.parse(initialArgs);
-                      //       if (parsedJson) {
-                              
-                      //         // Convert the JavaScript object into a formatted JSON string
-
-                      //         console.log("initialArgs is a JSON object, navigating to", initialArgs);
-
-                      //         // const jsonString = JSON.stringify(parsedJson, null, 2); 
-
-                      //         document.open();
-                      //         document.write("<pre>" + jsonString + "</pre>"); // Wrap in <pre> for formatting
-                      //         document.close();
-                              
-                      //       }
-                      //     } catch (jsonError) {
-                      //       console.log("Processing error invalid Json", typeof initialArgs);
-
-                      //       // Not JSON, treat as HTML or plain text
-
-                      //       console.log("Processing HTML", typeof initialArgs);
-                      //       if (initialArgs.trim().startsWith("<") && initialArgs.trim().endsWith(">")) {
-
-                      //         // More robust HTML check
-                      //         // console.log(initialArgs.trim().startsWith("<") && initialArgs.trim().endsWith(">"));
-
-                      //         document.open();
-                      //         document.write('<pre class="z-depth-5 card-panel deep-purple darken-1 scale-transition scale-out scale-in btn-large" id="eventRes01" class="menu-img grey darken-4 z-depth-5" style="width: 100%; height: 100%; border: none;" allow="autoplay" allow="encrypted-media" title="Dontime Life Website" frameborder="0" allowfullscreen >' + initialArgs + '</pre>');
-                      //         document.close();
-
-                      //         // const iframe = document.createElement("iframe");
-                      //         // iframe.id = "eventRes01";
-                      //         // iframe.title = "Dontime Life Website";
-                      //         // iframe.allow = "autoplay; encrypted-media";
-                      //         // iframe.allowFullscreen = true;
-                      //         // iframe.style.width = "100%";
-                      //         // iframe.style.height = "100%";
-                      //         // iframe.style.border = "none";
-                      //         // iframe.className = "z-depth-5 card-panel deep-purple darken-1 scale-transition scale-out scale-in btn-large menu-img grey darken-4 z-depth-5";
-                      //         // document.getElementById("iframeContainer").appendChild(iframe);
-                      //         // const iframeDoc = iframe.contentWindow.document;
-                      //         // iframeDoc.open();
-                      //         // document.open();
-                      //         // document.write('<div id="iframeContainer">' + iframeDoc.write(initialArgs) + '</div>');
-                      //         // document.close();
-                      //         // iframeDoc.close();
-
-                      //       } 
-                      //       else {
-                      //         console.log("Processing this", typeof initialArgs);
-                      //         let appStr = null;
-                      //           if (typeof initialArgs === "object") {
-                      //             appStr = JSON.stringify(initialArgs);
-                      //           } else {
-
-                      //             // Escape special characters and wrap in quotes for the HTML template
-
-                      //             appStr = JSON.stringify(initialArgs); 
-                      //           }
-
-                      //         // const fStr = JSON.stringify(currentApp.index? currentApp.index.funcStr:"null");
-                      //         // const dStr = JSON.stringify(currentApp.index? currentApp.index.dataStr:"null");
-                      //         // const indStr = fStr? fStr:dStr;
-                      //         // const combineStr = indStr + " " + appStr
-                      //         // console.log("typeof initialArgs === ", typeof initialArgs);
-
-                      //         chUrl.value = JSON.stringify(appStr, null, 2);
-                      //       }
-                      //     }
+                      //   catch (error) {
+                      //   try { 
+                      //       currentApp = JSON.parse(<?= appL ?>)
+                      //       console.log("Error try JSON.parse(appL) = ", typeof <?= appL ?>)
                       //   }
-                      // } else {
-                      //   chUrl.value = '[""]'; // Default if args is missing
+                      //   catch (err) { 
+                      //       currentApp = JSON.stringify(<?= appL ?>)
+                      //       console.log("Error catch JSON.stringify(appL) = ", typeof <?= appL ?>)
+
+                      //   }
+                      //     console.log("Processing error: invalid JSON. currentApp = ", currentApp)
+
+                      //     // If it's not valid JSON, treat it as a plain string
+                      //     // if (typeof currentApp.app === "object") {
+                      //     //   currentApp = JSON.stringify(currentApp.app);
+                      //     //   console.log("Client-side: Initial Object of WebApp:", JSON.stringify(currentApp.app));
+                      //     // }
+                      //     // else 
+                      //     // Here, if payLoad.data is an object, you need to decide how to display it.
+                      //     // It could contain sub-properties you want to render.
+                          if (applications.type === "object") {
+
+                              console.log("Processing object", typeof currentApp)
+
+                              currentApp = applications;
+                              console.log("Client-side: Initial Object of WebApp:", applications)
+
+                      //         try {
+                                  if (currentApp?.data) {
+                                    var thisApp = currentApp?.data
+                                    console.log("Error: thisApp =", typeof thisApp);
+                                    if (thisApp?.html || thisApp?.app || thisApp?.myVar || thisApp?.url) {
+                                      currentApp = thisApp?.app || thisApp?.html || thisApp?.myVar || thisApp?.url;
+                                      console.log("Error: currentApp = ", typeof currentApp);
+                                    }
+                                    else {
+                                      currentApp = thisApp
+                                    }
+                                  }
+                      //             else if (currentApp?.app) {
+                      //               currentApp = currentApp?.app
+                      //             }
+                      //             else if (currentApp?.index) {
+                      //               currentApp = currentApp?.index
+                      //             }
+
+                      //             // else {
+                      //             //   currentApp = '<pre>' + currentApp + '</pre>';
+                      //             // }
+
+                      //         }
+                      //         catch (error) {
+                      //           console.error("Error: processing currentApp.data = ", error.toString())
+
+                              // try {
+                              //   if (currentApp.data && currentApp.data.html) {
+                              //     var thisHtml = currentApp.data;
+                              //   }
+                              // }
+                              // catch (error) {
+                              //   console.error("Error", error.toString())
+                              // }
+                              // try {
+                              //   if (currentApp.data && currentApp.data.url) {
+                              //     var thisUrl = currentApp.data
+                              //   }
+                              // }
+                              // catch (error) {
+                              //   console.error("Error", error.toString())
+                              // }
+                              // if (thisApp) {
+                              //   currentApp = thisApp;
+                              // } else if (thisUrl) {
+                              //   // If the object explicitly has a 'url' property
+                              //   iframeSrc = thisUrl;
+                              //   currentApp = currentApp.index;
+                              //   finalFeedDivContent = currentApp.link;
+                              // } else {
+                              //   // Default way to display a generic object: stringify it
+                              //   iframeSrc = currentApp.index; // Assign iframeSrc
+                              //   currentApp = '<pre>' + JSON.stringify(currentApp.data, null, 2) + '</pre>';
+                              //   finalFeedDivContent = currentApp.link;
+                              // }
+                          }
+                          // else {
+                          //   if (currentApp.app) {
+                          //     currentApp = currentApp.app
+                          //     console.log("Client-side: Initial String of WebApp:", currentApp.app);
+                          //   }
+                          //   else 
+                          //   if (<?= appL ?>) {
+                          //     console.log("Processing this", <?= appL ?>)
+                          //     currentApp = <?= appL ?>
+                          //     console.log("Client-side: Initial String of WebApp:", <?= appL ?>);
+                          //   }
+                          // }
+                      //     // }
+
+                      //   }
                       // }
+                      document.addEventListener("DOMContentLoaded", runStack)
+                        function runStack() {
+
+                          // console.log("line 660 Inside _renBlob block of serverside Runall doGet _runStack(" + currentApp + ")");
+
+                          initialArgs = currentApp
+                          // if (initialArgs !== undefined && initialArgs !== null && typeof applications !== "string") {
+
+                          // if (currentApp !== undefined && currentApp !== null) {
+                            // If trying to parse JSON on appL["app"] succeeds
+
+                          //   if (typeof initialArgs === 'object') {
+                          //     let appType = currentApp?.type || "";
+                              // if (typeof currentApp?.data === "object") {
+                              //   var appData = JSON.stringify(currentApp?.data) || "";
+                              // }
+                              // else {
+                              //   var appData = currentApp?.data || "";
+                              // }
+                          //     let appLink = currentApp?.link || "";
+                          //     let appFStr = currentApp?.fStr || "";
+                          //     let appDStr = currentApp?.dStr || "";
+                          //     let appIndex = currentApp?.index || "";
+                          //     let mainRen = appType + (appFStr || appDStr) + appData;
+
+                          //     // chUrl.value = JSON.stringify(appFStr, null, 2) || JSON.stringify(appDStr, null, 2);
+
+                          //     if (mainRen !== "undefined" && typeof mainRen !== "undefined" && typeof mainRen !== null && mainRen.length > 0) {
+                          //       chUrl.value = mainRen;
+                          //     }
+                          //     else {
+                                // if (typeof initialArgs === "object") {
+                                //   chUrl.value = JSON.stringify(initialArgs);
+                                // }
+                                // else {
+                                //   chUrl.value = initialArgs;
+                                // }
+                              // }
+                          //     console.log("Processing initialArgs = ", typeof initialArgs);
+                          //   } 
+
+                          //   // --- 3. if json error, handle String content (URL, JSON, HTML, or plain text)
+
+                          //   else if (typeof initialArgs === 'object' || typeof initialArgs === 'string') {
+                          //     console.log("Processing object or string", typeof initialArgs);
+
+                          //     // --- MODIFIED: Use Regex for URL check ---
+                          //     // Regex for a basic HTTP/HTTPS URL validation
+                          //     // This regex is fairly comprehensive for common URLs but can be refined if needed.
+                          //     // "^https?://(?:www\\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}(?:[-a-zA-Z0-9()@:%_+.~#?&//=]*)$"
+                          //     // const urlRegExString = "^https?://(.+?)."
+                          //     // const urlRegEx = new RegExp(urlRegExString);
+                          //     // if (currentApp.app) {
+                          //     //   let addr = new URL(currentApp.app);
+                          //     //   console.log(addr);
+                          //     //   console.log("line 431 inside _runStack _new URL(" + currentApp.app + ")");
+                          //       // if (addr) {
+                          //     //     console.log('appL["app"] is a URL, navigating to: ' + addr);
+                          //     //     window.location.href = addr; // New type "url" for strings
+                          //     //     return
+                          //       // }
+                              // }
+                              // else if (typeof initialArgs === "string")
+
+                          //     if (typeof initialArgs === 'string' || typeof applications === "string") 
+                          // {
+                                // let addr = new URL(initialArgs);
+                          //       console.log("Initial args = " + initialArgs + ": : string")
+                          //       console.log("Error: let addr = ", addr)
+
+                          //       // console.log(addr);
+                          //       // console.log("line 431 inside _runStack _new URL(" + initialArgs + ")");
+
+                          //       if (addr || typeof applications === "string") {
+
+                          //         // console.log('appL is a URL, navigating to: ' + addr);
+
+                                  // window.location.href = addr; // New type "url" for strings
+
+                                  // window.open(JSON.stringify(initialArgs), "_top")
+                                  // const confirmation = window.confirm(
+                                  //   "Click OK to continue to the destination.",
+                                  // );
+                                  // if (confirmation) {
+                                  //   var linkFollow = document.createElement("a");
+                                  //   linkFollow.href = JSON.stringify(<?= appL ?>);
+                                  //   linkFollow.id = "linkFOLLOW";
+                                  //   linkFollow.target = "_self";
+                                  //   linkFollow.rel = "noopener noreferrer";
+                                  //   document.body.appendChild(linkFollow);
+                                  //   document.getElementById("linkFOLLOW").click();
+                                  //   document.getElementById("linkFOLLOW").remove();
+                                  // }
+
+                                  // console.log("Error: window.location.href = ", window.location.href)
+                          //         return
+
+                                // }
+
+                          //     }
+
+                          //     // --- END MODIFIED ---
+
+                          //     try {
+                          //       console.log("Processing Json object", typeof initialArgs);
+
+                          //       // console.log(initialArgs.trim().startsWith("<") && initialArgs.trim().endsWith(">"));
+                          //       // console.log("line 444 _runStack JSON.parse(" + initialArgs + ")");
+
+                          //       const parsedJson = JSON.parse(initialArgs);
+                          //       if (parsedJson) {
+                                  
+                          //         // Convert the JavaScript object into a formatted JSON string
+
+                          //         console.log("initialArgs is a JSON object, navigating to", initialArgs);
+
+                          //         // const jsonString = JSON.stringify(parsedJson, null, 2); 
+
+                          //         document.open();
+                          //         document.write("<pre>" + jsonString + "</pre>"); // Wrap in <pre> for formatting
+                          //         document.close();
+                                  
+                          //       }
+                          //     } catch (jsonError) {
+                          //       console.log("Processing error invalid Json", typeof initialArgs);
+
+                          //       // Not JSON, treat as HTML or plain text
+
+                          //       console.log("Processing HTML", typeof initialArgs);
+                          //       if (initialArgs.trim().startsWith("<") && initialArgs.trim().endsWith(">")) {
+
+                          //         // More robust HTML check
+                          //         // console.log(initialArgs.trim().startsWith("<") && initialArgs.trim().endsWith(">"));
+
+                          //         document.open();
+                          //         document.write('<pre class="z-depth-5 card-panel deep-purple darken-1 scale-transition scale-out scale-in btn-large" id="eventRes01" class="menu-img grey darken-4 z-depth-5" style="width: 100%; height: 100%; border: none;" allow="autoplay" allow="encrypted-media" title="Dontime Life Website" frameborder="0" allowfullscreen >' + initialArgs + '</pre>');
+                          //         document.close();
+
+                          //         // const iframe = document.createElement("iframe");
+                          //         // iframe.id = "eventRes01";
+                          //         // iframe.title = "Dontime Life Website";
+                          //         // iframe.allow = "autoplay; encrypted-media";
+                          //         // iframe.allowFullscreen = true;
+                          //         // iframe.style.width = "100%";
+                          //         // iframe.style.height = "100%";
+                          //         // iframe.style.border = "none";
+                          //         // iframe.className = "z-depth-5 card-panel deep-purple darken-1 scale-transition scale-out scale-in btn-large menu-img grey darken-4 z-depth-5";
+                          //         // document.getElementById("iframeContainer").appendChild(iframe);
+                          //         // const iframeDoc = iframe.contentWindow.document;
+                          //         // iframeDoc.open();
+                          //         // document.open();
+                          //         // document.write('<div id="iframeContainer">' + iframeDoc.write(initialArgs) + '</div>');
+                          //         // document.close();
+                          //         // iframeDoc.close();
+
+                          //       } 
+                          //       else {
+                          //         console.log("Processing this", typeof initialArgs);
+                          //         let appStr = null;
+                          //           if (typeof initialArgs === "object") {
+                          //             appStr = JSON.stringify(initialArgs);
+                          //           } else {
+
+                          //             // Escape special characters and wrap in quotes for the HTML template
+
+                          //             appStr = JSON.stringify(initialArgs); 
+                          //           }
+
+                          //         // const fStr = JSON.stringify(currentApp.index? currentApp.index.funcStr:"null");
+                          //         // const dStr = JSON.stringify(currentApp.index? currentApp.index.dataStr:"null");
+                          //         // const indStr = fStr? fStr:dStr;
+                          //         // const combineStr = indStr + " " + appStr
+                          //         // console.log("typeof initialArgs === ", typeof initialArgs);
+
+                          //         chUrl.value = JSON.stringify(appStr, null, 2);
+                          //       }
+                          //     }
+                          //   }
+                          // } else {
+                          //   chUrl.value = '[""]'; // Default if args is missing
+                          // }
+                    }
+                  }
                         chUrl.addEventListener("change", function() {
                           try {
 
@@ -1365,14 +1490,14 @@ function doGet(e) {
                                         console.log("Client-side: Page re-rendered with new content from server.");
                                       } 
                                       catch (error) {
-                                        console.error("Client-side Error during full re-render:", error);
+                                        console.error("Client-side Error during full re-render:", error.stack);
                                         alert("Error re-rendering: " + error.message);
                                       }
                                     }
                             handleStackUpdate()
                           } catch (error) {
                             alert("Error processing input. Please ensure it's valid JSON or a plain string.");
-                            console.error("Input processing error:", error);
+                            console.error("Input processing error:", error.stack);
                           }
                         });
                     }
@@ -1380,26 +1505,19 @@ function doGet(e) {
               </body>
             </html>`,
           {
-            appL:
-              (payLoad.type === "text" || payLoad.type === "url") &&
-              this[libName].isValidUrl(payLoad.data).hostname &&
-              this[libName].isValidUrl(iframeSrc).hostname
-                ? iframeSrc
-                : JSON.stringify(payLoad),
-            etop: JSON.stringify(e),
+            appL: ((payLoad.type === "text" || payLoad.type === "url") && this[libName].isValidUrl(payLoad.data).hostname) && this[libName].isValidUrl(iframeSrc).hostname ? iframeSrc : JSON.stringify(payLoad),
+            etop: JSON.stringify(e.parameter),
             tupL: htmlArray[funcTres0Index] || htmlArray[funcTresIndex],
             homePage: this[libName].getScriptUrl(),
           },
         ),
-        aplot:
-          payLoad.type === "text" || payLoad.type === "url"
-            ? iframeSrc
-            : JSON.stringify(payLoad),
+        aplot: payLoad.type === "text" || payLoad.type === "url" ? iframeSrc : JSON.stringify(payLoad),
         e: JSON.stringify(e),
         homePage: this[libName].getScriptUrl(),
+        stylist: htmlStyle,
       },
 
-      "returning renderTemplate contentApp [" +
+      "GitHub Pages with Apps Script returning renderTemplate contentApp [" +
         libFunc +
         "].apply(this, [" +
         (foobarr || htmlArray[foobarr0Index] || htmlArray[foobarrIndex]) +
@@ -1411,7 +1529,7 @@ function doGet(e) {
         (foobarr || htmlArray[foobarr0Index] || htmlArray[foobarrIndex]),
     );
   } catch (error) {
-    console.error(`Error executing function "${libFunc}":`, error);
+    console.error(`Error executing function "${libFunc}":`, error.stack);
     throw new Error(
       "Error executing function: " + error.toString() + "\n" + error.stack,
     );
@@ -1419,7 +1537,7 @@ function doGet(e) {
   // } else {
   //   return;
   // }
-}
+};
 // const accessGranted
 // = this[libName].validateFiles();const youNeedAccess
 // = this[libName].scriptQuit();
@@ -1600,7 +1718,7 @@ function doGet(e) {
  * and re-render the entire page based on it.
  * @param {GoogleAppsScript.Events.AppsScriptHttpRequestEvent} clientEObject The 'e' object sent from the client, with updated parameters.
  * @returns {GoogleAppsScript.HTML.HtmlOutput} The complete new HTML content wrapped in HtmlOutput.
- */
+ */ 
 function runBoilerplate(func, args) {
   Logger.log(
     "Server-side: runBoilerplate called with clientEObject: " +
@@ -1711,4 +1829,4 @@ function runAll(func, args) {
   var libFunc = arr[1];
   args = args || [];
   return this[libName][libFunc].apply(this, args);
-}
+};

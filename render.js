@@ -19,7 +19,7 @@ var include = function (file, argsObject) {
       .getBlob()
       .getDataAsString();
   } catch (error) {
-    console.log("error in include: " + error);
+    console.log("error in include: " + error.stack);
     throw new Error(
       "Error in include html: " + error.toString() + "\n" + error.stack,
     );
@@ -378,13 +378,13 @@ var renderFile = function (file, argsObject, title) {
                       serverside("processFormData",[formData, selectedTemplateUrl]).then((newDocUrl)=>{
                         $("#result").html("<p>Document created. <a href='" + newDocUrl + "' target='_blank'>Open Document</a></p>");
                       }).catch((error)=>{
-                        console.error("Error:", error);
+                        console.error("Error:", error.stack);
                         $("#result").html("<p>Error creating document. Please check the logs.</p>");
                       })
 
                     });
 
-                  }).catch((er)=>{alert(er);console.error("Error:", er);return "Error" + er})}else {
+                  }).catch((er)=>{alert(er.toString());console.error("Error:", er.stack);return "Error" + er.stack})}else {
                 $("#editorFrame").prop("src", "");
                 $("#myForm").hide();}
             });
@@ -414,8 +414,8 @@ var renderFile = function (file, argsObject, title) {
               $("#successMessage").text(result); // Display success message
             })
             .catch(error => {
-              console.error("Error submitting domain:", error);
-              $("#errorMessage").text(error); // Display error message
+              console.error("Error submitting domain:", error.stack);
+              $("#errorMessage").text(error.stack); // Display error message
             });
         }
 
@@ -432,8 +432,8 @@ var renderFile = function (file, argsObject, title) {
               displaySearchResults(results); // Display results
             })
             .catch(error => {
-              console.error("Error looking up domain:", error);
-              $("#errorMessage").text(error); // Display error message
+              console.error("Error looking up domain:", error.stack);
+              $("#errorMessage").text(error.stack); // Display error message
             });
         }
 
@@ -552,7 +552,7 @@ var renderFile = function (file, argsObject, title) {
       return foo.handleRequest(argsObject);
     }
   } catch (error) {
-    console.log("error in renderTemplate: " + error);
+    console.log("error in renderTemplate: " + error.stack);
     throw new Error(
       "Error in renderFile html: " + error.toString() + "\n" + error.stack,
     );
@@ -771,7 +771,7 @@ var renderTemplate = function (blob, argsObject, title) {
             .withSuccessHandler((result) => {
               resolve(result)})
             .withFailureHandler((error) => {
-              console.log(error)
+              console.log(error.stack)
               reject(error)})
             .runBoilerplate(func, args)})};
           const results = document.getElementById("w3Search");
@@ -838,7 +838,7 @@ var renderTemplate = function (blob, argsObject, title) {
             .then((search) => {
               document.getElementById("rndnewdiv").innerHTML = search})
             .catch((error) => {
-              console.log(error)
+              console.log(error.stack)
               document.getElementById("labRND").innerText = JSON.stringify(er)})}
         </script>
         <script>document.getElementById('func').addEventListener('change', <?!= funcClicked ?>)</script>
@@ -927,7 +927,7 @@ var renderTemplate = function (blob, argsObject, title) {
       .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL)
       .setTitle(title);
   } catch (error) {
-    console.log("error in renderTemplate: " + error);
+    console.log("error in renderTemplate: " + error.stack);
     return "Error rendering template.";
   }
 }; // or throw error.
@@ -1018,7 +1018,7 @@ var appList = function (e) {
             .withSuccessHandler((result) => {
                 resolve(result)})
             .withFailureHandler((error) => {
-                console.log(error)
+                console.log(error.stack)
                 console.log(document.getElementById("test").innerHTML)
                 reject(error)})
             .runBoilerplate([func], [args])})};
@@ -1089,7 +1089,7 @@ var appList = function (e) {
             .withSuccessHandler((result) => {
                 resolve(result)})
             .withFailureHandler((error) => {
-                console.log(error)
+                console.log(error.stack)
                 console.log(document.getElementById("test").innerHTML)
                 reject(error)})
             .runBoilerplate([func], [args])})};
