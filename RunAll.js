@@ -6,28 +6,29 @@ function doGet(e) {
   let content;
   // console.log("data value", data);
   if (data?.length > 0) {
-    data.forEach((key) =>{
-      Array(content).push(e.parameter[key])
-    })
-  }
-  else {
-    let genFuction = this[libName].createRandomFunction()
+    data.forEach((key) => {
+      Array(content).push(e.parameter[key]);
+    });
+  } else {
+    let genFuction = this[libName].createRandomFunction();
     var data = Object.keys(genFuction);
-    data.forEach((key) =>{
-      data.push(genFuction[key])
-    })
+    data.forEach((key) => {
+      data.push(genFuction[key]);
+    });
   }
   // console.log("content value", content);
-  return renderFile("Untitled4.html",
-  {
-    appL: Object.values(this[libName].mis(content || data))[0],
-    etop: JSON.stringify(e.parameter),
-    tupL: functionRegistry.getHtmlList[0],
-    homePage: this[libName].getScriptUrl(),
-    e: JSON.stringify(e),
-    stylist: htmlStyle,
-  },
-  "GitHub Pages with Apps Script")
+  return renderFile(
+    "Untitled4.html",
+    {
+      appL: Object.values(this[libName].mis(content || data))[0],
+      etop: JSON.stringify(e.parameter),
+      tupL: functionRegistry.getHtmlList[0],
+      homePage: this[libName].getScriptUrl(),
+      e: JSON.stringify(e),
+      stylist: htmlStyle,
+    },
+    "GitHub Pages with Apps Script",
+  );
 
   // Early return for getData action
   if (e && e.parameter && e.parameter.action === "getData") {
