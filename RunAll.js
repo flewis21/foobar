@@ -561,7 +561,7 @@ function doGet(e) {
     if (funcCallParams.length > 0) {
       console.log("funcCallParams value", funcCallParams);
       return renderFile(
-        "Untitled4.html",
+        "Untitled2.html",
         {
           appL:
             ((payLoad.type === "text" || payLoad.type === "url") &&
@@ -882,7 +882,7 @@ function doGet(e) {
                       .runBoilerplate(func, args);
                   })
                 };
-                // const currentE = JSON.parse(<?= e ?>);
+                const currentE = JSON.parse(<?= e ?>);
                 // const scriptURL =
                 //   <?= homePage ?>;
 
@@ -966,81 +966,81 @@ function doGet(e) {
                 //   }
                 // }
 
-                // var i = 0;
-                // function move() {
-                //   if (i = 0) {
-                //     i = 1;
-                //     var elem = document.getElementById("myBar");
-                //     var width = 1;
-                //     var id = setInterval(frame, 10);
-                //     function frame() {
-                //       if (width >= 100) {
-                //         clearInterval(id);
-                //         i = 0;
-                //       } else {
-                //         width++;
-                //         elem.style.width = width + "%";
-                //       }
-                //     }
-                //   }
-                // }
+                var i = 0;
+                function move() {
+                  if (i = 0) {
+                    i = 1;
+                    var elem = document.getElementById("myBar");
+                    var width = 1;
+                    var id = setInterval(frame, 10);
+                    function frame() {
+                      if (width >= 100) {
+                        clearInterval(id);
+                        i = 0;
+                      } else {
+                        width++;
+                        elem.style.width = width + "%";
+                      }
+                    }
+                  }
+                }
                 
-                // document.addEventListener("DOMContentLoaded", function runeRun() {
-                //   move(); // Call on page load
-                //   // fetchData(); // Call on page load
-                //   eRun();
-                // });
+                document.addEventListener("DOMContentLoaded", function () {
+                  move(); // Call on page load
+                  // fetchData(); // Call on page load
+                  eRun();
+                });
 
-                // function eRun() {
-                //   console.log("line 218");
-                //   var objUrl = document.getElementById("pageObj");
-                //   objUrl.addEventListener("change", function () {
-                //     try {
-                //       // Parse the user's input as the new 'args' value
-                //       // Allow direct strings or JSON arrays/objects
-                //       let parsedE;
-                //       try {
-                //         parsedE = JSON.parse(this.value);
-                //       } catch (jsonError) {
-                //         // If it's not valid JSON, treat it as a plain string
-                //         parsedE = this.value;
-                //       }
-                //       // --- MODIFICATION STARTS HERE ---
-                //       // Create a *new*, reduced e object containing only func and args
-                //       const updatedClientE = {
-                //         parameter: {
-                //           func: "driveManager" || "", // Keep the original func
-                //           args: parsedE                 // Use the new parsed args
-                //         }
-                //       };
-                //       // --- MODIFICATION ENDS HERE ---
-                //       alert("e.parameter['args'] updated. Sending back to server for re-render.");
-                //       console.log("Client-side: Updated e object to send:", updatedClientE);
-                //       async function handlePageUpdate() {
-                //         try {
-                //           // This part is still problematic if newStackContent is meant to be HTML
-                //           // and it directly comes from updatedClientApp (which is the textarea value)
-                //           // If updatedClientApp contains HTML, it needs to be processed to be displayable.
-                //           const newHtmlContent = await serverSide(updatedClientE.parameter["func"], [updatedClientE.parameter["args"]]);
-                //           alert(newHtmlContent.type); 
-                //           // else {
-                //             document.open();
-                //             document.write(newHtmlContent.data);
-                //             document.close();
-                //             console.log("Client-side: Page re-rendered with new content from server.");
-                //           // }
-                //         } 
-                //         catch (error) {
-                //           console.error("Client-side Error during full re-render:", error.stack);
-                //           alert("Error re-rendering: " + e + "\n" + error.message);
-                //         }
-                //       }
-                //       handlePageUpdate()
-                    // } catch (error) {
-                    //   alert("Error processing input. Please ensure it's valid JSON or a plain string." + e + "\n" + error.stack);
-                    //   console.error("Input processing error:", error.stack);
-                    // }
-                    //     }
+                function eRun() {
+                  console.log("line 218");
+                  var objUrl = document.getElementById("pageObj");
+                  objUrl.addEventListener("change", function () {
+                    try {
+                      // Parse the user's input as the new 'args' value
+                      // Allow direct strings or JSON arrays/objects
+                      let parsedE;
+                      try {
+                        parsedE = JSON.parse(this.value);
+                      } catch (jsonError) {
+                        // If it's not valid JSON, treat it as a plain string
+                        parsedE = this.value;
+                      }
+                      // --- MODIFICATION STARTS HERE ---
+                      // Create a *new*, reduced e object containing only func and args
+                      const updatedClientE = {
+                        parameter: {
+                          func: "driveManager" || "", // Keep the original func
+                          args: parsedE                 // Use the new parsed args
+                        }
+                      };
+                      // --- MODIFICATION ENDS HERE ---
+                      alert("e.parameter['args'] updated. Sending back to server for re-render.");
+                      console.log("Client-side: Updated e object to send:", updatedClientE);
+                      async function handlePageUpdate() {
+                        try {
+                          // This part is still problematic if newStackContent is meant to be HTML
+                          // and it directly comes from updatedClientApp (which is the textarea value)
+                          // If updatedClientApp contains HTML, it needs to be processed to be displayable.
+                          const newHtmlContent = await serverSide(updatedClientE.parameter["func"], [updatedClientE.parameter["args"]]);
+                          alert(newHtmlContent.type); 
+                          // else {
+                            document.open();
+                            document.write(newHtmlContent.data);
+                            document.close();
+                            console.log("Client-side: Page re-rendered with new content from server.");
+                          // }
+                        } 
+                        catch (error) {
+                          console.error("Client-side Error during full re-render:", error.stack);
+                          alert("Error re-rendering: " + e + "\n" + error.message);
+                        }
+                      }
+                      handlePageUpdate()
+                    } catch (error) {
+                      alert("Error processing input. Please ensure it's valid JSON or a plain string." + e + "\n" + error.stack);
+                      console.error("Input processing error:", error.stack);
+                    }
+                        }
                     //   }
                     // }
                 //   });

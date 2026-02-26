@@ -9,7 +9,7 @@
       href="https://fonts.googleapis.com/css?family=Acme"
       rel="stylesheet"
     />
-    <style>
+    <!-- <style>
       body {
         flex-grow: 1;
         color: blue;
@@ -21,13 +21,28 @@
         align-content: flex-start;
         overflow: auto;
       }
-    </style>
+    </style> -->
+    <?!= stylist.progress ?> <?!= stylist.progressBar ?>
   </head>
   <body id="JavaScriptDoGet">
+    <div class="progress-bar" id="data-display">
+      Loading...
+      <div id="myBar" class="progress"></div>
+    </div>
     <div id="eObject"><input type="text" id="pageObj" value="" /></div>
     <div>
       <?!= HtmlService.createHtmlOutputFromFile("Untitled3").getContent() ?>
     </div>
+
+    <h2>Contact Form</h2>
+    <form id="myForm">
+      <label for="name">Name:</label><br />
+      <input type="text" id="name" name="name" /><br />
+      <label for="email">Email:</label><br />
+      <input type="email" id="email" name="email" /><br /><br />
+      <button type="button" onclick="submitForm()">Submit</button>
+      <div id="form-message"></div>
+    </form>
   </body>
 </html>
 <script>
@@ -203,4 +218,68 @@
         }
       });
   }
+
+  async function submitForm() {
+    const form = document.getElementById("myForm");
+    const formData = new FormData(form);
+    const data = {};
+    formData.forEach((value, key) => (data[key] = value));
+    if (!data.name) {
+      document.getElementById("form-message").textContent =
+        "Error: Name is required";
+      return;
+    }
+    if (!data.email) {
+      document.getElementById("form-message").textContent =
+        "Error: Email is required";
+      return;
+    }
+
+    try {
+      const response = await fetch(scriptURL + "?action=submitForm", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`HTTP error ${response.status}: ${errorText}`);
+      }
+      const responseData = await response.json();
+      document.getElementById("form-message").textContent =
+        responseData.message;
+
+      if (responseData.success) {
+        form.reset();
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      document.getElementById("form-message").textContent =
+        `Error: ${error.message}`;
+    }
+  }
+
+  var i = 0;
+  function move() {
+    if (i == 0) {
+      i = 1;
+      var elem = document.getElementById("myBar");
+      var width = 1;
+      var id = setInterval(frame, 10);
+      function frame() {
+        if (width >= 100) {
+          clearInterval(id);
+          i = 0;
+        } else {
+          width++;
+          elem.style.width = width + "%";
+        }
+      }
+    }
+  }
+
+  move(); // Call on page load
 </script>
