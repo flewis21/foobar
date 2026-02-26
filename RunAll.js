@@ -31,10 +31,11 @@ function doGet(e) {
     // console.log("data value", data);
     // console.log("e parameter(s)", eData);
     if (data?.length > 0) {
-      if ((e.parameter["func"] || e.parameter["args"] || e.parameter["file"])
-      ) {
-        Logger.log(">>> [MAIN] MAIN WEB APP CLIENT REQUEST: " + JSON.stringify(e));
-      } else if (""){
+      if (e.parameter["func"] || e.parameter["args"] || e.parameter["file"]) {
+        Logger.log(
+          ">>> [MAIN] MAIN WEB APP CLIENT REQUEST: " + JSON.stringify(e),
+        );
+      } else if ("") {
         data.forEach((key) => {
           console.log("e.parameter(s) value(s)", e.parameter[key]);
           funcCallParams.push(e.parameter[key]);
@@ -49,8 +50,7 @@ function doGet(e) {
         //   );
         // });
       }
-    } 
-    else {
+    } else {
       Logger.log(
         ">>> [MAIN] MAIN WEB APP No e.parameter[" +
           e?.parameter["func"] +
@@ -63,7 +63,7 @@ function doGet(e) {
       // var data = Object.keys(genFuction);
       // data.forEach((key) => {
       //   data.push(genFuction[key]);
-      // }); 
+      // });
       if (typeof this[libName].mis === "function") {
         if (typeof argsEd === "string") {
           e = this[libName].objectOfS(
@@ -76,7 +76,11 @@ function doGet(e) {
             ],
             functionRegistry.time,
           );
-        } else if (typeof argsEd === "object" && argsEd !== null && argsEd.name) {
+        } else if (
+          typeof argsEd === "object" &&
+          argsEd !== null &&
+          argsEd.name
+        ) {
           if (argsEd.parameters && argsEd.parameters.length > 0) {
             e = this[libName].objectOfS(
               ["parameter"],
@@ -559,30 +563,37 @@ function doGet(e) {
       return renderFile(
         "Untitled4.html",
         {
-          appL: (
-                (payLoad.type === "text" || payLoad.type === "url") &&
-                this[libName].isValidUrl(payLoad.data).hostname &&
-                this[libName].isValidUrl(iframeSrc).hostname
-                  ? iframeSrc
-                  : JSON.stringify(payLoad)) || Object.values(this[libName].mis(funcCallParams || data))[0],
+          appL:
+            ((payLoad.type === "text" || payLoad.type === "url") &&
+            this[libName].isValidUrl(payLoad.data).hostname &&
+            this[libName].isValidUrl(iframeSrc).hostname
+              ? iframeSrc
+              : JSON.stringify(payLoad)) ||
+            Object.values(this[libName].mis(funcCallParams || data))[0],
           aplot:
             payLoad.type === "text" || payLoad.type === "url"
               ? iframeSrc
               : JSON.stringify(payLoad),
           etop: JSON.stringify(e.parameter),
-          tupL: htmlArray[funcTres0Index] || htmlArray[funcTresIndex] || functionRegistry.getHtmlList[0],
+          tupL:
+            htmlArray[funcTres0Index] ||
+            htmlArray[funcTresIndex] ||
+            functionRegistry.getHtmlList[0],
           homePage: this[libName].getScriptUrl(),
           e: JSON.stringify(e),
           stylist: htmlStyle,
         },
-        "GitHub Pages with Apps Script returning ?func=" + libFunc + "&args=" + foobarr ||
-            (htmlArray[foobarr0Index] || htmlArray[foobarrIndex]) +
-              ", " +
-              {} +
-              ", " +
-              templateName ||
-            foobarr ||
-            (htmlArray[foobarr0Index] || htmlArray[foobarrIndex]) + ",",
+        "GitHub Pages with Apps Script returning ?func=" +
+          libFunc +
+          "&args=" +
+          foobarr ||
+          (htmlArray[foobarr0Index] || htmlArray[foobarrIndex]) +
+            ", " +
+            {} +
+            ", " +
+            templateName ||
+          foobarr ||
+          (htmlArray[foobarr0Index] || htmlArray[foobarrIndex]) + ",",
       );
     }
     if (libFunc === "renderFile") {
