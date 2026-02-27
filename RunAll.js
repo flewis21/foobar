@@ -252,7 +252,10 @@ function doGet(e) {
         // Handle other cases for foobarr, or it might be null/undefined
         finalArgsForFunction = [];
       }
-      if (libFunc === "renderFile" && (htmlArray.includes(foobarr) || htmlArray.includes(Array(foobarr)[0]))) {
+      if (
+        libFunc === "renderFile" &&
+        (htmlArray.includes(foobarr) || htmlArray.includes(Array(foobarr)[0]))
+      ) {
         console.log(
           "returning ?func=" + libFunc + "&args=" + foobarr ||
             (htmlArray[foobarr0Index] || htmlArray[foobarrIndex]) +
@@ -294,7 +297,7 @@ function doGet(e) {
         data.forEach((key) => {
           data.push(genFuction[key]);
         });
-        rawFuncResult = data
+        rawFuncResult = data;
       }
     } else if (
       (this[libName] && typeof this[libName][libFunc] !== "function") ||
