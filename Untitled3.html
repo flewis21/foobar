@@ -138,8 +138,13 @@
       if (typeof applications !== "string") {
         var reUpObject = Object.keys(applications);
       }
-      else {
-        addr = encodeURI(applications);
+      else if (!applications.type){
+        addr = applications;
+        window.location.href = addr; // New type "url" for strings
+        console.log("Error: window.location.href = ", window.location.href);
+      }
+      else if (applications.type && typeof application.data === "string") {
+        let addr = applications.data;
         window.location.href = addr; // New type "url" for strings
         console.log("Error: window.location.href = ", window.location.href);
       }
