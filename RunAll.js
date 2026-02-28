@@ -428,6 +428,7 @@ function doGet(e) {
       const appProcessed = processContent(rawFuncResult.app);
       // Overwrite payLoad if 'app' property yields more specific or desired content
       // You might want more sophisticated merging here if both rawFuncResult and .app hold valuable distinct data.
+      console.log("the appProcessed result(s)", JSON.stringify(appProcessed));
       if (
         appProcessed.type !== "unknown" ||
         (appProcessed.data !== null && appProcessed.data !== undefined)
@@ -1234,33 +1235,71 @@ function doGet(e) {
                   console.log("Client-side: Home Page URL:", homeStackUrl);
                   console.log("Clients applications:", <?= appL ?>);
                   console.log(<?= etop ?>);
+
+                  // console.log("line 657 Inside renBlob block of serverside Runall doGet");
+                  // Parse the input as the new value
+                  // Allow direct strings or JSON arrays/objects
+
+                  let initialArgs
+                  let currentApp
+                  let iframeSrc =
+                    "https://www.clubhouse.com/@fabianlewis?utm_medium=ch_profile&utm_campaign=lhTUtHb2bYqPN3w8EEB7FQ-247242"; // Default iframe src
+                  let finalFeedDivContent = "";
                   try {
                     var alppL = JSON.parse(<?= appL ?>)
                     console.log(!alppL.type);
                     if (!alppL.type) {
-                      let addr = new URL(alppL);
-                      if (addr) {
-                        console.log('appL is a URL, navigating to: ' + addr);
-                        window.location.href = addr; // New type "url" for strings
+                      if (typeof alppL === "string") {
+                        let addr = new URL(alppL);
+                        if (addr) {
+                          console.log('appL is a URL, navigating to: ' + addr);
+                          window.location.href = addr; // New type "url" for strings
+                        }
                       }
                     }
                       alert(alppL.type);
                     console.log(alppL.type && typeof alppL.data === "string");
                     if (alppL.type && typeof alppL.data === "string") {
-                      let addr = new URL(alppL.data);
-                      if (addr) {
-                        console.log('appL is a URL, navigating to: ' + addr);
-                        window.location.href = addr; // New type "url" for strings
+                      if (alppL.type !== "html") {
+                        let addr = new URL(alppL.data);
+                        if (addr) {
+                          console.log('appL is a URL, navigating to: ' + addr);
+                          window.location.href = addr; // New type "url" for strings
+                        }
+                        else {
+                          currentApp = alppL.data
+                        }
+                      }
+                    }
+                    console.log(alppL.type && typeof alppL.data === "object");
+                    if (alppL.type && typeof alppL.data === "object") {
+                      if (alppL.data !== null) {
+                        // let addr = new URL(alppL.data);
+                        // if (addr) {
+                        //   console.log('appL is a URL, navigating to: ' + addr);
+                        //   window.location.href = addr; // New type "url" for strings
+                        // }
+                        console.log(Object.keys(alppL.data));
+                          try {
+                            let blockAlppL = Object.keys(alppL.data);
+                            if (blockAlppL?.length > 0) {
+                              if (alppL.data["myVar"]) {
+                                currentApp = alppL.data["myVar"];
+                              } else {
+                                blockAlppL.forEach((key) => {
+                                  console.log("key(s) value(s)", alppL.data[key]);
+                                  blockAlppL.push(alppL.data[key]);
+                                })
+                                currentApp = blockAlppL;
+                              } 
+                            }
+                          }
+                          catch (erre) {
+                            console.log(erre.stack)
+                          }
                       }
                     }
                       alert(alppL.data);
-                    console.log(Object.keys(alppL.data));
-                      try {
-                        var blockAlppL = Object.keys(alppL.data);
-                      }
-                      catch (erre) {
-                        console.log(erre.stack)
-                      }
                   }
                   catch (error){
                     console.log(error.stack);
@@ -1272,35 +1311,25 @@ function doGet(e) {
                       }
 
                   }
-
-                  // console.log("line 657 Inside renBlob block of serverside Runall doGet");
-                  // Parse the input as the new value
-                  // Allow direct strings or JSON arrays/objects
-
-                  let initialArgs
-                  let currentApp
-                  let iframeSrc =
-                    "https://www.clubhouse.com/@fabianlewis?utm_medium=ch_profile&utm_campaign=lhTUtHb2bYqPN3w8EEB7FQ-247242"; // Default iframe src
-                  let finalFeedDivContent = "";
                   document.addEventListener("DOMContentLoaded", runStack)
                   function runStack() {
 
                     // console.log("line 660 Inside _renBlob block of serverside Runall doGet _runStack(" + currentApp + ")");
 
                     initialArgs = currentApp
-                    // if (initialArgs !== undefined && initialArgs !== null && typeof applications !== "string") {
+                    if (initialArgs !== undefined && initialArgs !== null && typeof applications !== "string") {
 
-                    // if (currentApp !== undefined && currentApp !== null) {
+                    if (currentApp !== undefined && currentApp !== null) {
                       // If trying to parse JSON on appL["app"] succeeds
 
-                    //   if (typeof initialArgs === 'object') {
+                      if (typeof initialArgs === 'object') {
                     //     let appType = currentApp?.type || "";
-                        // if (typeof currentApp?.data === "object") {
+                        if (typeof currentApp?.data === "object") {
                         //   var appData = JSON.stringify(currentApp?.data) || "";
-                        // }
-                        // else {
+                        }
+                        else {
                         //   var appData = currentApp?.data || "";
-                        // }
+                        }
                     //     let appLink = currentApp?.link || "";
                     //     let appFStr = currentApp?.fStr || "";
                     //     let appDStr = currentApp?.dStr || "";
@@ -1309,23 +1338,23 @@ function doGet(e) {
 
                     //     // chUrl.value = JSON.stringify(appFStr, null, 2) || JSON.stringify(appDStr, null, 2);
 
-                    //     if (mainRen !== "undefined" && typeof mainRen !== "undefined" && typeof mainRen !== null && mainRen.length > 0) {
+                        if (mainRen !== "undefined" && typeof mainRen !== "undefined" && typeof mainRen !== null && mainRen.length > 0) {
                     //       chUrl.value = mainRen;
-                    //     }
-                    //     else {
-                          // if (typeof initialArgs === "object") {
+                        }
+                        else {
+                          if (typeof initialArgs === "object") {
                           //   chUrl.value = JSON.stringify(initialArgs);
-                          // }
-                          // else {
+                          }
+                          else {
                           //   chUrl.value = initialArgs;
-                          // }
-                        // }
+                          }
+                        }
                     //     console.log("Processing initialArgs = ", typeof initialArgs);
-                    //   } 
+                      } 
 
                     //   // --- 3. if json error, handle String content (URL, JSON, HTML, or plain text)
 
-                    //   else if (typeof initialArgs === 'object' || typeof initialArgs === 'string') {
+                      else if (typeof initialArgs === 'object' || typeof initialArgs === 'string') {
                     //     console.log("Processing object or string", typeof initialArgs);
 
                     //     // --- MODIFIED: Use Regex for URL check ---
@@ -1334,19 +1363,19 @@ function doGet(e) {
                     //     // "^https?://(?:www\\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}(?:[-a-zA-Z0-9()@:%_+.~#?&//=]*)$"
                     //     // const urlRegExString = "^https?://(.+?)."
                     //     // const urlRegEx = new RegExp(urlRegExString);
-                    //     // if (currentApp.app) {
+                        if (currentApp.app) {
                     //     //   let addr = new URL(currentApp.app);
                     //     //   console.log(addr);
                     //     //   console.log("line 431 inside _runStack _new URL(" + currentApp.app + ")");
-                    //       // if (addr) {
+                          if (addr) {
                     //     //     console.log('appL["app"] is a URL, navigating to: ' + addr);
                     //     //     window.location.href = addr; // New type "url" for strings
                     //     //     return
-                    //       // }
-                        // }
+                          }
+                        }
                         // else if (typeof initialArgs === "string")
 
-                    //     if (typeof initialArgs === 'string' || typeof applications === "string") 
+                        if (typeof initialArgs === 'string' || typeof applications === "string") 
                     // {
                           // let addr = new URL(initialArgs);
                     //       console.log("Initial args = " + initialArgs + ": : string")
@@ -1355,7 +1384,7 @@ function doGet(e) {
                     //       // console.log(addr);
                     //       // console.log("line 431 inside _runStack _new URL(" + initialArgs + ")");
 
-                    //       if (addr || typeof applications === "string") {
+                          if (addr || typeof applications === "string") {
 
                     //         // console.log('appL is a URL, navigating to: ' + addr);
 
@@ -1365,7 +1394,7 @@ function doGet(e) {
                             // const confirmation = window.confirm(
                             //   "Click OK to continue to the destination.",
                             // );
-                            // if (confirmation) {
+                            if (confirmation) {
                             //   var linkFollow = document.createElement("a");
                             //   linkFollow.href = JSON.stringify(<?= appL ?>);
                             //   linkFollow.id = "linkFOLLOW";
@@ -1374,25 +1403,25 @@ function doGet(e) {
                             //   document.body.appendChild(linkFollow);
                             //   document.getElementById("linkFOLLOW").click();
                             //   document.getElementById("linkFOLLOW").remove();
-                            // }
+                            }
 
                             // console.log("Error: window.location.href = ", window.location.href)
                     //         return
 
-                          // }
+                          }
 
-                    //     }
+                        }
 
                     //     // --- END MODIFIED ---
 
-                    //     try {
+                        try {
                     //       console.log("Processing Json object", typeof initialArgs);
 
                     //       // console.log(initialArgs.trim().startsWith("<") && initialArgs.trim().endsWith(">"));
                     //       // console.log("line 444 _runStack JSON.parse(" + initialArgs + ")");
 
                     //       const parsedJson = JSON.parse(initialArgs);
-                    //       if (parsedJson) {
+                          if (parsedJson) {
                             
                     //         // Convert the JavaScript object into a formatted JSON string
 
@@ -1404,14 +1433,14 @@ function doGet(e) {
                     //         document.write("<pre>" + jsonString + "</pre>"); // Wrap in <pre> for formatting
                     //         document.close();
                             
-                    //       }
-                    //     } catch (jsonError) {
+                          }
+                        } catch (jsonError) {
                     //       console.log("Processing error invalid Json", typeof initialArgs);
 
                     //       // Not JSON, treat as HTML or plain text
 
                     //       console.log("Processing HTML", typeof initialArgs);
-                    //       if (initialArgs.trim().startsWith("<") && initialArgs.trim().endsWith(">")) {
+                          if (initialArgs.trim().startsWith("<") && initialArgs.trim().endsWith(">")) {
 
                     //         // More robust HTML check
                     //         // console.log(initialArgs.trim().startsWith("<") && initialArgs.trim().endsWith(">"));
@@ -1437,18 +1466,18 @@ function doGet(e) {
                     //         // document.close();
                     //         // iframeDoc.close();
 
-                    //       } 
-                    //       else {
+                          } 
+                          else {
                     //         console.log("Processing this", typeof initialArgs);
                     //         let appStr = null;
-                    //           if (typeof initialArgs === "object") {
+                              if (typeof initialArgs === "object") {
                     //             appStr = JSON.stringify(initialArgs);
-                    //           } else {
+                              } else {
 
                     //             // Escape special characters and wrap in quotes for the HTML template
 
                     //             appStr = JSON.stringify(initialArgs); 
-                    //           }
+                              }
 
                     //         // const fStr = JSON.stringify(currentApp.index? currentApp.index.funcStr:"null");
                     //         // const dStr = JSON.stringify(currentApp.index? currentApp.index.dataStr:"null");
@@ -1457,12 +1486,12 @@ function doGet(e) {
                     //         // console.log("typeof initialArgs === ", typeof initialArgs);
 
                     //         chUrl.value = JSON.stringify(appStr, null, 2);
-                    //       }
-                    //     }
-                    //   }
-                    // } else {
+                          }
+                        }
+                      }
+                    } else {
                     //   chUrl.value = '[""]'; // Default if args is missing
-                    // }
+                    }
                     chUrl.addEventListener("change", function() {
                       try {
 
