@@ -414,6 +414,7 @@ function doGet(e) {
     }
 
     // Process the main rawFuncResult
+    console.log("the content result(s)", JSON.stringify(rawFuncResult));
     payLoad = processContent(rawFuncResult);
     console.log("the payLoad result(s)", JSON.stringify(payLoad));
 
@@ -903,116 +904,38 @@ function doGet(e) {
                   })
                 };
                 console.log("line 209");
-                const currentE = JSON.parse(<?= e ?>);
+                try {
+                 let e = JSON.parse(<?= e ?>);
+                  if (e && e.parameter) {
+                    let data = Object.keys(e.parameter);
+                    if (data?.length > 0) {
+                      if (e.parameter["args"]) {
+                        const currentE = e.parameter["args"];
+                      } else {
+                        data.forEach((key) => {
+                          console.log("e.parameter(s) value(s)", e.parameter[key]);
+                          data.push(e.parameter[key]);
+                        });
+                        const currentE = data;
+                      }
+                    } 
+                    else {
+                      const currentE = null;
+                    }
+                  }
+                  else {
+                    const currentE = null;
+                  }
+                }
+                catch (error){
+                  const currentE = null;
+                }
                 console.log("line 210");
                 const homePageUrl = <?= homePage ?>;
                 console.log("line 213");
                 console.log("Client-side: Initial doGet event object:",  currentE);
                 console.log("Client-side: Home Page URL:", homePageUrl);
                 console.log("line 215");
-                // const scriptURL =
-                //   <?= homePage ?>;
-
-                // async function fetchData() {
-                //   try {
-                //     const response = await serverSide("handleRequest") //fetch(scriptURL + "?action=getData");
-                //     try {
-
-                //       let responseData;
-                      // const contentType = response.headers.get("content-type");
-
-                      // if (contentType && contentType.includes("application/json")) {
-                      //   responseData = await response.json();
-                      // } else if (contentType && contentType.includes("text/plain")) {
-                      //   responseData = await response.text();
-                      // } else {
-                      //   responseData = await response.text();
-                      // }
-                //       if (responseData.message.content) {
-                //         document.location.href = responseData.message.content;
-                //       } else if (responseData.message.link) {
-                //         document.location.href = responseData.message.link;
-                //       } else {
-                //         document.getElementById("data-display").textContent =
-                //           JSON.stringify(responseData, null, 2);
-                //       }
-                //     }
-                //     catch (error) {
-                //       const errorText = error.stack;
-                //       throw new Error(
-                //         HTTP error! status: response.status, errorText,
-                //       );
-                //     }
-                //   } catch (error) {
-                //     console.error("Error fetching data:", error.stack);
-                //     document.getElementById("data-display").textContent =
-                //       "Error fetching data: " + error.message;
-                //   }
-                // }
-
-                async function submitForm() {
-                  const form = document.getElementById("myForm");
-                  const formData = new FormData(form);
-                  const data = {};
-                  formData.forEach((value, key) => (data[key] = value));
-                  if (!data.name) {
-                    document.getElementById("form-message").textContent =
-                      "Error: Name is required";
-                    return;
-                  }
-                  if (!data.email) {
-                    document.getElementById("form-message").textContent =
-                      "Error: Email is required";
-                    return;
-                  }
-
-                  try {
-                    const response = await fetch(scriptURL + "?action=submitForm", {
-                      method: "POST",
-                      headers: {
-                        "Content-Type": "application/json",
-                      },
-                      body: JSON.stringify(data),
-                    });
-
-                    if (!response.ok) {
-                      const errorText = await response.text();
-                      throw new Error(HTTP error response.status: errorText);
-                    }
-                    const responseData = await response.json();
-                    document.getElementById("form-message").textContent =
-                      responseData.message;
-
-                    if (responseData.success) {
-                      form.reset();
-                    }
-                  } catch (error) {
-                    console.error("Error submitting form:", error.stack);
-                    document.getElementById("form-message").textContent =
-                      Error: error.message;
-                  }
-                }
-
-                var i = 0;
-                function move() {
-                  if (i = 0) {
-                    i = 1;
-                    var elem = document.getElementById("myBar");
-                    var width = 100;
-                    var id = setInterval(frame, 10);
-                    function frame() {
-                      if (width >= 100) {
-                        clearInterval(id);
-                        i = 0;
-                      } else {
-                        width++;
-                        elem.style.width = width + "%";
-                      }
-                    }
-                  }
-                }
-                move(); // Call on page load
-
                 document.addEventListener("DOMContentLoaded", eRun);
                 function eRun() {
                   console.log("line 218");
@@ -1020,7 +943,7 @@ function doGet(e) {
                   console.log("line 220");
                   var objDiv = document.getElementById("eObject");
                   console.log("line 222");
-                  let initialArgs = currentE.parameter["args"];
+                  let initialArgs = currentE //.parameter["args"];
                   if (initialArgs !== undefined && initialArgs !== null) {
                     if (typeof initialArgs === 'object') {
                       console.log("line 234: creating pretty-printed initialArgs object");
@@ -1152,13 +1075,116 @@ function doGet(e) {
                             alert("Error re-rendering: " + error.message);
                           }
                         }
-                        handlePageUpdate()
+                        handlePageUpdate(); // Call on page load
                       } catch (error) {
                         alert("Error processing input. Please ensure it's valid JSON or a plain string.");
                         console.error("Input processing error:", error);
                       }
                     });
                 }
+                const scriptURL =
+                  <?= homePage ?>;
+
+                async function fetchData() {
+                  try {
+                    const response = await serverSide("handleRequest") //fetch(scriptURL + "?action=getData");
+                    try {
+
+                      let responseData;
+                      const contentType = response.headers.get("content-type");
+
+                      if (contentType && contentType.includes("application/json")) {
+                        responseData = await response.json();
+                      } else if (contentType && contentType.includes("text/plain")) {
+                        responseData = await response.text();
+                      } else {
+                        responseData = await response.text();
+                      }
+                      if (responseData.message.content) {
+                        document.location.href = responseData.message.content;
+                      } else if (responseData.message.link) {
+                        document.location.href = responseData.message.link;
+                      } else {
+                        document.getElementById("data-display").textContent =
+                          JSON.stringify(responseData, null, 2);
+                      }
+                    }
+                    catch (error) {
+                      const errorText = error.stack;
+                      throw new Error(
+                        HTTP error! status: response.status, errorText,
+                      );
+                    }
+                  } catch (error) {
+                    console.error("Error fetching data:", error.stack);
+                    document.getElementById("data-display").textContent =
+                      "Error fetching data: " + error.message;
+                  }
+                }
+
+                async function submitForm() {
+                  const form = document.getElementById("myForm");
+                  const formData = new FormData(form);
+                  const data = {};
+                  formData.forEach((value, key) => (data[key] = value));
+                  if (!data.name) {
+                    document.getElementById("form-message").textContent =
+                      "Error: Name is required";
+                    return;
+                  }
+                  if (!data.email) {
+                    document.getElementById("form-message").textContent =
+                      "Error: Email is required";
+                    return;
+                  }
+
+                  try {
+                    const response = await fetch(scriptURL + "?action=submitForm", {
+                      method: "POST",
+                      headers: {
+                        "Content-Type": "application/json",
+                      },
+                      body: JSON.stringify(data),
+                    });
+
+                    if (!response.ok) {
+                      const errorText = await response.text();
+                      throw new Error(HTTP error response.status: errorText);
+                    }
+                    const responseData = await response.json();
+                    document.getElementById("form-message").textContent =
+                      responseData.message;
+
+                    if (responseData.success) {
+                      form.reset();
+                    }
+                  } catch (error) {
+                    console.error("Error submitting form:", error.stack);
+                    document.getElementById("form-message").textContent =
+                      Error: error.message;
+                  }
+                }
+
+                var i = 0;
+                function move() {
+                  if (i = 0) {
+                    i = 1;
+                    var elem = document.getElementById("myBar");
+                    var width = 100;
+                    var id = setInterval(frame, 10);
+                    function frame() {
+                      if (width >= 100) {
+                        clearInterval(id);
+                        i = 0;
+                      } else {
+                        width++;
+                        elem.style.width = width + "%";
+                      }
+                    }
+                  }
+                }
+                move(); // Call on page load
+                fetchData(); // Call on page load
               </script>
             </body>
           </html>`,
@@ -1264,7 +1290,7 @@ function doGet(e) {
                               console.log("key(s) value(s)", alppL[key]);
                               blockAlppL.push(alppL[key]);
                             })
-                            currentApp = blockAlppL; 
+                            chUrl.value = blockAlppL; 
                           }
                           else {
                             let addr = new URL(<?= homePage ?>);
@@ -1283,13 +1309,18 @@ function doGet(e) {
                     console.log(alppL.type && typeof alppL.data === "string");
                     if (alppL.type && typeof alppL.data === "string") {
                       if (alppL.type !== "html") {
-                        let addr = new URL(alppL.data);
-                        if (addr) {
-                          console.log('appL is a URL, navigating to: ' + addr);
-                          window.location.href = addr; // New type "url" for strings
+                        try {
+                          let addr = new URL(alppL.data);
+                          if (addr) {
+                            console.log('appL is a URL, navigating to: ' + addr);
+                            window.location.href = addr; // New type "url" for strings
+                          }
                         }
-                        else {
-                          currentApp = alppL.data
+                        catch (error) {
+                          if (alppL.type === "text") {
+                            console.log("Url failed using text:", alppL.data);
+                            chUrl.value = alppL.data
+                          }
                         }
                       }
                     }
@@ -1306,13 +1337,13 @@ function doGet(e) {
                             let blockAlppL = Object.keys(alppL.data);
                             if (blockAlppL && blockAlppL?.length > 0) {
                               if (alppL.data["myVar"]) {
-                                currentApp = alppL.data["myVar"];
+                                chUrl.value = alppL.data["myVar"];
                               } else {
                                 blockAlppL.forEach((key) => {
-                                  console.log("key(s) value(s)", alppL.data[key]);
                                   blockAlppL.push(alppL.data[key]);
-                                })
-                                currentApp = blockAlppL;
+                                });
+                                console.log("key(s) value(s)", blockAlppL);
+                                chUrl.value = blockAlppL;
                               } 
                             }
                             else {
