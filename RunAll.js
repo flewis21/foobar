@@ -1323,6 +1323,9 @@ function doGet(e) {
                           }
                         }
                       }
+                      else {
+                        chUrl.value = alppL.data
+                      }
                     }
                     console.log(alppL.type && typeof alppL.data === "object");
                     if (alppL.type && typeof alppL.data === "object") {
