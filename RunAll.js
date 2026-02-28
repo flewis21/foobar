@@ -42,7 +42,7 @@ function doGet(e) {
         });
         // eData.forEach((key) => {
         //   console.log("e.parameter(s) value(s)", e.parameter[key]);
-        //   argsEd = this[libName].createRandomFunction(e.parameter[key]);
+        //   argsEd = this[libName].driveManager(e.parameter[key]);
         //   funcCallParams.push(e.parameter[key]);
         //   console.log(
         //     "function call parameters inside forEach loop",
@@ -290,14 +290,14 @@ function doGet(e) {
             : this[libName]["misSt"].apply(this, parsedFuncArgs);
         }
       } else {
-        genFuction = this[libName].createRandomFunction(parsedFuncArgs);
+        genFuction = this[libName].driveManager(parsedFuncArgs,functionRegistry.time);
         // console.log("function call parameters", funcCallParams);
         // argsEd = this[libName].createRandomFunction();
-        let data = Object.keys(genFuction);
-        data.forEach((key) => {
-          data.push(genFuction[key]);
-        });
-        rawFuncResult = data;
+        // let data = Object.keys(genFuction);
+        // data.forEach((key) => {
+        //   data.push(genFuction[key]);
+        // });
+        rawFuncResult = genFuction;
       }
     } else if (
       (this[libName] && typeof this[libName][libFunc] !== "function") ||
@@ -415,7 +415,17 @@ function doGet(e) {
 
     // Process the main rawFuncResult
     console.log("the content result(s)", JSON.stringify(rawFuncResult));
-    payLoad = processContent(rawFuncResult);
+    if (Array.isArray(rawFuncResult)) {
+      if (rawFuncResult.length === 0) {
+        payload = { type: "object", data: rawFuncResult }
+      }
+      else {
+        payLoad = processContent(rawFuncResult);
+      }
+    }
+    else {
+      payLoad = processContent(rawFuncResult);
+    }
     console.log("the payLoad result(s)", JSON.stringify(payLoad));
 
     // If rawFuncResult was an object and it had an 'app' property,
@@ -1293,7 +1303,7 @@ function doGet(e) {
                             chUrl.value = blockAlppL; 
                           }
                           else {
-                            let addr = new URL(<?= homePage ?>);
+                            let addr = new URL("https://flewis21.github.io/foobar");
                             if (addr) {
                               console.log('appL is a URL, navigating to: ' + addr);
                               window.location.href = addr; // New type "url" for strings
@@ -1318,7 +1328,7 @@ function doGet(e) {
                         }
                         catch (error) {
                           if (alppL.type === "text") {
-                            console.log("Url failed using text:", alppL.data);
+                            console.log("Url failed, using text - ", alppL.data);
                             chUrl.value = alppL.data
                           }
                         }
@@ -1330,11 +1340,6 @@ function doGet(e) {
                     console.log(alppL.type && typeof alppL.data === "object");
                     if (alppL.type && typeof alppL.data === "object") {
                       if (alppL.data !== null) {
-                        // let addr = new URL(alppL.data);
-                        // if (addr) {
-                        //   console.log('appL is a URL, navigating to: ' + addr);
-                        //   window.location.href = addr; // New type "url" for strings
-                        // }
                         console.log(Object.keys(alppL.data));
                           try {
                             let blockAlppL = Object.keys(alppL.data);
@@ -1350,7 +1355,7 @@ function doGet(e) {
                               } 
                             }
                             else {
-                              let addr = new URL(<?= homePage ?>);
+                              let addr = new URL("https://flewis21.github.io/foobar");
                               if (addr) {
                                 console.log('appL is a URL, navigating to: ' + addr);
                                 window.location.href = addr; // New type "url" for strings
@@ -1362,7 +1367,7 @@ function doGet(e) {
                           }
                       }
                       else {
-                        let addr = new URL(<?= homePage ?>);
+                        let addr = new URL("https://flewis21.github.io/foobar");
                         if (addr) {
                           console.log('appL is a URL, navigating to: ' + addr);
                           window.location.href = addr; // New type "url" for strings
