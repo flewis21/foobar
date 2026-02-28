@@ -290,7 +290,10 @@ function doGet(e) {
             : this[libName]["misSt"].apply(this, parsedFuncArgs);
         }
       } else {
-        genFuction = this[libName].driveManager(parsedFuncArgs,functionRegistry.time);
+        genFuction = this[libName].driveManager(
+          parsedFuncArgs,
+          functionRegistry.time,
+        );
         // console.log("function call parameters", funcCallParams);
         // argsEd = this[libName].createRandomFunction();
         // let data = Object.keys(genFuction);
@@ -417,13 +420,11 @@ function doGet(e) {
     console.log("the content result(s)", JSON.stringify(rawFuncResult));
     if (Array.isArray(rawFuncResult)) {
       if (rawFuncResult.length === 0) {
-        payload = { type: "object", data: rawFuncResult }
-      }
-      else {
+        payload = { type: "object", data: rawFuncResult };
+      } else {
         payLoad = processContent(rawFuncResult);
       }
-    }
-    else {
+    } else {
       payLoad = processContent(rawFuncResult);
     }
     console.log("the payLoad result(s)", JSON.stringify(payLoad));
