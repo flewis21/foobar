@@ -415,6 +415,7 @@ function doGet(e) {
 
     // Process the main rawFuncResult
     payLoad = processContent(rawFuncResult);
+    console.log("the payLoad result(s)", JSON.stringify(payLoad));
 
     // If rawFuncResult was an object and it had an 'app' property,
     // we should specifically process that 'app' property as well.
@@ -428,7 +429,6 @@ function doGet(e) {
       const appProcessed = processContent(rawFuncResult.app);
       // Overwrite payLoad if 'app' property yields more specific or desired content
       // You might want more sophisticated merging here if both rawFuncResult and .app hold valuable distinct data.
-      console.log("the appProcessed result(s)", JSON.stringify(appProcessed));
       if (
         appProcessed.type !== "unknown" ||
         (appProcessed.data !== null && appProcessed.data !== undefined)
@@ -1256,6 +1256,28 @@ function doGet(e) {
                           window.location.href = addr; // New type "url" for strings
                         }
                       }
+                      else if (typeof alppL === "object") {
+                        try {
+                          let blockAlppL = Object.keys(alppL);
+                          if (blockAlppL && blockAlppL?.length > 0) {
+                            blockAlppL.forEach((key) => {
+                              console.log("key(s) value(s)", alppL[key]);
+                              blockAlppL.push(alppL[key]);
+                            })
+                            currentApp = blockAlppL; 
+                          }
+                          else {
+                            let addr = new URL(<?= homePage ?>);
+                            if (addr) {
+                              console.log('appL is a URL, navigating to: ' + addr);
+                              window.location.href = addr; // New type "url" for strings
+                            }
+                          }
+                        }
+                        catch (erre) {
+                          console.log(erre.stack)
+                        }
+                      }
                     }
                       alert(alppL.type);
                     console.log(alppL.type && typeof alppL.data === "string");
@@ -1282,7 +1304,7 @@ function doGet(e) {
                         console.log(Object.keys(alppL.data));
                           try {
                             let blockAlppL = Object.keys(alppL.data);
-                            if (blockAlppL?.length > 0) {
+                            if (blockAlppL && blockAlppL?.length > 0) {
                               if (alppL.data["myVar"]) {
                                 currentApp = alppL.data["myVar"];
                               } else {
@@ -1293,10 +1315,24 @@ function doGet(e) {
                                 currentApp = blockAlppL;
                               } 
                             }
+                            else {
+                              let addr = new URL(<?= homePage ?>);
+                              if (addr) {
+                                console.log('appL is a URL, navigating to: ' + addr);
+                                window.location.href = addr; // New type "url" for strings
+                              }
+                            }
                           }
                           catch (erre) {
                             console.log(erre.stack)
                           }
+                      }
+                      else {
+                        let addr = new URL(<?= homePage ?>);
+                        if (addr) {
+                          console.log('appL is a URL, navigating to: ' + addr);
+                          window.location.href = addr; // New type "url" for strings
+                        }
                       }
                     }
                       alert(alppL.data);
@@ -1304,7 +1340,7 @@ function doGet(e) {
                   catch (error){
                     console.log(error.stack);
                       alert(error.toString());
-                      let addr = new URL(applications);
+                      let addr = new URL(<?= appL ?>);
                       if (addr) {
                         console.log('appL is a URL, navigating to: ' + addr);
                         window.location.href = addr; // New type "url" for strings
