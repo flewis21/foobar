@@ -78,11 +78,7 @@ function doGet(e) {
         ],
         functionRegistry.time,
       );
-    } else if (
-      typeof argsEd === "object" &&
-      argsEd !== null &&
-      argsEd.name
-    ) {
+    } else if (typeof argsEd === "object" && argsEd !== null && argsEd.name) {
       if (argsEd.parameters && argsEd.parameters.length > 0) {
         e = this[libName].objectOfS(
           ["parameter"],
@@ -270,7 +266,9 @@ function doGet(e) {
         } else if (!libFunc || (libFunc && libFunc !== "renderFile")) {
           try {
             rawFunc = libFunc
-              ? this[libName]["misSt"].apply(this, [[libFunc, ...parsedFuncArgs]])
+              ? this[libName]["misSt"].apply(this, [
+                  [libFunc, ...parsedFuncArgs],
+                ])
               : this[libName]["misSt"].apply(this, [[...parsedFuncArgs]]);
             rawFuncResult = rawFunc.res;
           } catch {
@@ -279,7 +277,10 @@ function doGet(e) {
               : this[libName]["misSt"].apply(this, parsedFuncArgs);
           }
         } else {
-          genFuction = this[libName].driveManager(parsedFuncArgs,functionRegistry.time);
+          genFuction = this[libName].driveManager(
+            parsedFuncArgs,
+            functionRegistry.time,
+          );
           // console.log("function call parameters", funcCallParams);
           // argsEd = this[libName].createRandomFunction();
           // let data = Object.keys(genFuction);
@@ -354,7 +355,10 @@ function doGet(e) {
             return { type: "jsonData", data: parsedJson };
           } catch (jsonError) {
             // Not JSON, treat as HTML or plain text
-            if (content.trim().startsWith("<") && content.trim().endsWith(">")) {
+            if (
+              content.trim().startsWith("<") &&
+              content.trim().endsWith(">")
+            ) {
               // More robust HTML check
               return { type: "html", data: content };
             } else {
@@ -406,13 +410,11 @@ function doGet(e) {
       console.log("the content result(s)", JSON.stringify(rawFuncResult));
       if (Array.isArray(rawFuncResult)) {
         if (rawFuncResult.length === 0) {
-          payload = { type: "object", data: rawFuncResult }
-        }
-        else {
+          payload = { type: "object", data: rawFuncResult };
+        } else {
           payLoad = processContent(rawFuncResult);
         }
-      }
-      else {
+      } else {
         payLoad = processContent(rawFuncResult);
       }
       console.log("the payLoad result(s)", JSON.stringify(payLoad));
@@ -569,7 +571,7 @@ function doGet(e) {
     const vLen = [83, 94, 97, 99, 101, 103, 136, 132];
 
     // Final renderTemplate call
-    // if (this[libName] && typeof this[libName][libFunc] === "function") { 
+    // if (this[libName] && typeof this[libName][libFunc] === "function") {
     try {
       if (libFunc === "renderFile") {
         console.log(
@@ -914,7 +916,7 @@ function doGet(e) {
       //                     });
       //                     const currentE = data;
       //                   }
-      //                 } 
+      //                 }
       //                 else {
       //                   const currentE = null;
       //                 }
@@ -1195,7 +1197,7 @@ function doGet(e) {
       //             <meta name=viewport content="width=device-width, initial-scale=1">
       //             <link href="https://fonts.googleapis.com/css?family=Acme" rel="stylesheet">
       //             <style>
-      //               body 
+      //               body
       //                 {
       //                   flex-grow: 1;color:blue;text-decoration:bold;
       //                   flex-flow: row wrap;
@@ -1286,7 +1288,7 @@ function doGet(e) {
       //                           console.log("key(s) value(s)", alppL[key]);
       //                           blockAlppL.push(alppL[key]);
       //                         })
-      //                         chUrl.value = blockAlppL; 
+      //                         chUrl.value = blockAlppL;
       //                       }
       //                       else {
       //                         let addr = new URL("https://flewis21.github.io/foobar");
@@ -1338,7 +1340,7 @@ function doGet(e) {
       //                             });
       //                             console.log("key(s) value(s)", blockAlppL);
       //                             chUrl.value = blockAlppL;
-      //                           } 
+      //                           }
       //                         }
       //                         else {
       //                           let addr = new URL("https://flewis21.github.io/foobar");
@@ -1411,7 +1413,7 @@ function doGet(e) {
       //                       }
       //                     }
       //                 //     console.log("Processing initialArgs = ", typeof initialArgs);
-      //                   } 
+      //                   }
 
       //                 //   // --- 3. if json error, handle String content (URL, JSON, HTML, or plain text)
 
@@ -1436,7 +1438,7 @@ function doGet(e) {
       //                     }
       //                     // else if (typeof initialArgs === "string")
 
-      //                     if (typeof initialArgs === 'string' || typeof applications === "string") 
+      //                     if (typeof initialArgs === 'string' || typeof applications === "string")
       //                 // {
       //                       // let addr = new URL(initialArgs);
       //                 //       console.log("Initial args = " + initialArgs + ": : string")
@@ -1483,17 +1485,17 @@ function doGet(e) {
 
       //                 //       const parsedJson = JSON.parse(initialArgs);
       //                       if (parsedJson) {
-                              
+
       //                 //         // Convert the JavaScript object into a formatted JSON string
 
       //                 //         console.log("initialArgs is a JSON object, navigating to", initialArgs);
 
-      //                 //         // const jsonString = JSON.stringify(parsedJson, null, 2); 
+      //                 //         // const jsonString = JSON.stringify(parsedJson, null, 2);
 
       //                 //         document.open();
       //                 //         document.write("<pre>" + jsonString + "</pre>"); // Wrap in <pre> for formatting
       //                 //         document.close();
-                              
+
       //                       }
       //                     } catch (jsonError) {
       //                 //       console.log("Processing error invalid Json", typeof initialArgs);
@@ -1527,7 +1529,7 @@ function doGet(e) {
       //                 //         // document.close();
       //                 //         // iframeDoc.close();
 
-      //                       } 
+      //                       }
       //                       else {
       //                 //         console.log("Processing this", typeof initialArgs);
       //                 //         let appStr = null;
@@ -1537,7 +1539,7 @@ function doGet(e) {
 
       //                 //             // Escape special characters and wrap in quotes for the HTML template
 
-      //                 //             appStr = JSON.stringify(initialArgs); 
+      //                 //             appStr = JSON.stringify(initialArgs);
       //                           }
 
       //                 //         // const fStr = JSON.stringify(currentApp.index? currentApp.index.funcStr:"null");
@@ -1562,7 +1564,7 @@ function doGet(e) {
       //                     let htmlApp
       //                     try {
       //                       htmlApp = JSON.parse(this.value);
-      //                     } 
+      //                     }
       //                     catch (jsonError) {
 
       //                       // If it's not valid JSON, treat it as a plain string
@@ -1586,7 +1588,7 @@ function doGet(e) {
       //                                 document.write(newStackContent);
       //                                 document.close();
       //                                 console.log("Client-side: Page re-rendered with new content from server.");
-      //                               } 
+      //                               }
       //                               catch (error) {
       //                                 console.error("Client-side Error during full re-render:", error.stack);
       //                                 alert("Error re-rendering: " + error.message);
@@ -1640,16 +1642,15 @@ function doGet(e) {
         "Error executing function: " + error.toString() + "\n" + error.stack,
       );
     }
-  } 
-  else {
+  } else {
     console.log("funcCallParams value", funcCallParams);
     return renderFile(
       "Untitled2.html",
       {
         appL: Object.values(this[libName].driveManager(funcCallParams))[0],
-        aplot:Object.values(this[libName].driveManager(funcCallParams))[0],
+        aplot: Object.values(this[libName].driveManager(funcCallParams))[0],
         etop: JSON.stringify(e.parameter),
-        tupL:functionRegistry.getHtmlList[0],
+        tupL: functionRegistry.getHtmlList[0],
         homePage: this[libName].getScriptUrl(),
         e: JSON.stringify(e),
         stylist: htmlStyle,
@@ -1658,12 +1659,13 @@ function doGet(e) {
         libFunc +
         "&args=" +
         functionRegistry.getHtmlList[0] +
-          ", " +
-          {} +
-          ", " +
-          functionRegistry.getHtmlList[0] + ",",
+        ", " +
+        {} +
+        ", " +
+        functionRegistry.getHtmlList[0] +
+        ",",
     );
-  } 
+  }
   // } else {
   //   return;
   // }
