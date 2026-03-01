@@ -135,6 +135,111 @@
       let iframeSrc =
         "https://www.clubhouse.com/@fabianlewis?utm_medium=ch_profile&utm_campaign=lhTUtHb2bYqPN3w8EEB7FQ-247242"; // Default iframe src
       let finalFeedDivContent = "";
+      try {
+        var alppL = JSON.parse(<?= appL ?>)
+        console.log(!alppL.type);
+        if (!alppL.type) {
+          if (typeof alppL === "string") {
+            let addr = new URL(alppL);
+            if (addr) {
+              console.log('appL is a URL, navigating to: ' + addr);
+              window.location.href = addr; // New type "url" for strings
+            }
+          }
+          else if (typeof alppL === "object") {
+            try {
+              let blockAlppL = Object.keys(alppL);
+              if (blockAlppL && blockAlppL?.length > 0) {
+                blockAlppL.forEach((key) => {
+                  console.log("key(s) value(s)", alppL[key]);
+                  blockAlppL.push(alppL[key]);
+                })
+                chUrl.value = blockAlppL; 
+              }
+              else {
+                let addr = new URL("https://flewis21.github.io/foobar");
+                if (addr) {
+                  console.log('appL is a URL, navigating to: ' + addr);
+                  window.location.href = addr; // New type "url" for strings
+                }
+              }
+            }
+            catch (erre) {
+              console.log(erre.stack)
+            }
+          }
+        }
+          alert(alppL.type);
+        console.log(alppL.type && typeof alppL.data === "string");
+        if (alppL.type && typeof alppL.data === "string") {
+          if (alppL.type !== "html") {
+            try {
+              let addr = new URL(alppL.data);
+              if (addr) {
+                console.log('appL is a URL, navigating to: ' + addr);
+                window.location.href = addr; // New type "url" for strings
+              }
+            }
+            catch (error) {
+              if (alppL.type === "text") {
+                console.log("Url failed, using text - ", alppL.data);
+                chUrl.value = alppL.data
+              }
+            }
+          }
+          else {
+            chUrl.value = alppL.data
+          }
+        }
+        console.log(alppL.type && typeof alppL.data === "object");
+        if (alppL.type && typeof alppL.data === "object") {
+          if (alppL.data !== null) {
+            console.log(Object.keys(alppL.data));
+              try {
+                let blockAlppL = Object.keys(alppL.data);
+                if (blockAlppL && blockAlppL?.length > 0) {
+                  if (alppL.data["myVar"]) {
+                    chUrl.value = alppL.data["myVar"];
+                  } else {
+                    blockAlppL.forEach((key) => {
+                      blockAlppL.push(alppL.data[key]);
+                    });
+                    console.log("key(s) value(s)", blockAlppL);
+                    chUrl.value = blockAlppL;
+                  } 
+                }
+                else {
+                  let addr = new URL("https://flewis21.github.io/foobar");
+                  if (addr) {
+                    console.log('appL is a URL, navigating to: ' + addr);
+                    window.location.href = addr; // New type "url" for strings
+                  }
+                }
+              }
+              catch (erre) {
+                console.log(erre.stack)
+              }
+          }
+          else {
+            let addr = new URL("https://flewis21.github.io/foobar");
+            if (addr) {
+              console.log('appL is a URL, navigating to: ' + addr);
+              window.location.href = addr; // New type "url" for strings
+            }
+          }
+        }
+          alert(alppL.data);
+      }
+      catch (error){
+        console.log(error.stack);
+          alert(error.toString());
+          let addr = new URL(<?= appL ?>);
+          if (addr) {
+            console.log('appL is a URL, navigating to: ' + addr);
+            window.location.href = addr; // New type "url" for strings
+          }
+
+      }
       if (typeof applications !== "string") {
         var reUpObject = Object.keys(applications);
       }
