@@ -31,8 +31,7 @@ function doGet(e) {
         Logger.log(
           ">>> [MAIN] MAIN WEB APP CLIENT REQUEST: " + JSON.stringify(e),
         );
-      }
-      else {
+      } else {
         data.forEach((key) => {
           console.log("e.parameter(s) value(s)", e.parameter[key]);
           funcCallParams.push(e.parameter[key]);
@@ -50,7 +49,11 @@ function doGet(e) {
             ],
             functionRegistry.time,
           );
-        } else if (typeof argsEd === "object" && argsEd !== null && argsEd.name) {
+        } else if (
+          typeof argsEd === "object" &&
+          argsEd !== null &&
+          argsEd.name
+        ) {
           if (argsEd.parameters && argsEd.parameters.length > 0) {
             e = this[libName].objectOfS(
               ["parameter"],
@@ -110,9 +113,8 @@ function doGet(e) {
             );
           }
         }
-      } 
-    }
-    else {
+      }
+    } else {
       // genFuction = this[libName].createRandomFunction();
       console.log("function call parameters", funcCallParams);
       argsEd = this[libName].createRandomFunction();
@@ -192,8 +194,7 @@ function doGet(e) {
         }
       }
     }
-  }
-  else {
+  } else {
     argsEd = this[libName].createRandomFunction();
     data = Object.keys(argsEd);
     data.forEach((key) => {
@@ -569,11 +570,9 @@ function doGet(e) {
           } else {
             payLoad = processContent(rawFuncResult);
           }
-        }
-        else if (Object.keys(rawFuncResult).length === 0) {
+        } else if (Object.keys(rawFuncResult).length === 0) {
           payload = { type: "object", data: rawFuncResult };
-        }
-        else {
+        } else {
           payLoad = processContent(rawFuncResult);
         }
       } else {
@@ -1828,20 +1827,17 @@ function doGet(e) {
           functionRegistry.getHtmlList[0] +
           ",",
       );
-    }
-    catch (error) {
+    } catch (error) {
       Logger.log(error.toString());
       if (funcCallParams[0] === "undefined") {
-        return this[libName].getScriptUrl() + "?file=" + rndPage
-      }
-      else {
+        return this[libName].getScriptUrl() + "?file=" + rndPage;
+      } else {
         let fT = this[libName].fileBrowser(null, funcCallParams[0]);
         // let fSlash = this[libName].driveManager(funcCallParams[0])
-        let options = 
-          { 
-            muteHttpExceptions: true, 
-          }
-        let fDot = this[libName].getUrlResponse(fT.url, options)
+        let options = {
+          muteHttpExceptions: true,
+        };
+        let fDot = this[libName].getUrlResponse(fT.url, options);
         return renderTemplate(
           fDot.app,
           {
@@ -1854,7 +1850,7 @@ function doGet(e) {
             stylist: htmlStyle,
           },
           fT,
-        )
+        );
       }
     }
   }
