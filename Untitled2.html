@@ -29,8 +29,8 @@
       Loading...
       <div id="myBar" class="progress"></div>
     </div>
-    <div id="eObject"><input type="text" id="pageObj" value="" /></div>
-    <div>
+    <div id="eObject" style="display: none"><input type="text" id="pageObj" value="" /></div>
+    <div id="renBlob" style="display: none">
       <?!= HtmlService.createHtmlOutputFromFile("Untitled3").getContent() ?>
     </div>
 
@@ -65,6 +65,32 @@
   }
   console.log("line 209");
   const currentE = JSON.parse(<?= e ?>);
+  try {
+  let e = JSON.parse(<?= e ?>);
+    if (e && e.parameter) {
+      let data = Object.keys(e.parameter);
+      if (data?.length > 0) {
+        if (e.parameter["args"]) {
+          const currentE = e.parameter["args"];
+        } else {
+          data.forEach((key) => {
+            console.log("e.parameter(s) value(s)", e.parameter[key]);
+            data.push(e.parameter[key]);
+          });
+          const currentE = data;
+        }
+      }
+      else {
+        const currentE = null;
+      }
+    }
+    else {
+      const currentE = null;
+    }
+  }
+  catch (error){
+    const currentE = null;
+  }
   console.log("line 210");
   const homePageUrl = <?= homePage ?>;
   console.log("line 213");
@@ -79,17 +105,22 @@
     console.log("line 220");
     var objDiv = document.getElementById("eObject");
     console.log("line 222");
-    let initialArgs = currentE.parameter["args"];
+    var bDiv = document.getElementById("renBlob");
+    console.log("line 108")
+    let initialArgs = currentE; //.parameter["args"];
     if (initialArgs !== undefined && initialArgs !== null) {
       if (typeof initialArgs === 'object') {
         console.log("line 234: creating pretty-printed initialArgs object");
-        objUrl.value = JSON.stringify(initialArgs, null, 0);
+        objDiv.style.display = "block";
+        objUrl.value = JSON.stringify(initialArgs, null, 2);
       } else {
         console.log("line 237: falling back to initialArgs string");
+        objDiv.style.display = "block";
         objUrl.value = initialArgs; // If it's a string directly
       }
     } else {
       console.log("line 241: falling back to empty string");
+      objDiv.style.display = "block";
       objUrl.value = '[""]'; // Default if args is missing
     }
       objUrl.addEventListener("change", function () {
@@ -108,8 +139,8 @@
           // Create a *new*, reduced e object containing only func and args
           const updatedClientE = {
             parameter: {
-              func: "driveManager" //currentE.parameter.func, // Keep the original func
-              args: parsedE                 // Use the new parsed args
+              func: "driveManager", //currentE.parameter.func, // Keep the original func
+              args: parsedE,                 // Use the new parsed args
             }
           };
           // --- MODIFICATION ENDS HERE ---
@@ -129,64 +160,64 @@
                 document.close();
                 console.log("Client-side: Page re-rendered with new content from server.");
               }
-              else if (newHtmlContent && newHtmlContent.type === "object" && newHtmlContent.data) {
-                if (newHtmlContent.data.app) {
-                  let allProperty = Object.keys(newHtmlContent);
-                  alert("newHtmlContent keys: " + allProperty);
-                  console.log("newHtmlContent keys:", allProperty);
-                  let allValue = Object.values(newHtmlContent);
-                  alert("newHtmlContent values: " + allValue);
-                  console.log("newHtmlContent values:", allValue);
-                  let nApp = newHtmlContent.data.app;
-                  alert("newHtmlContent data app value: " + nApp);
-                  console.log("newHtmlContent data app value:", nApp);
-                  let nIndex = newHtmlContent.data.index;
-                  alert("newHtmlContent data index value: " + nIndex);
-                  console.log("newHtmlContent data index value:", nIndex);
-                  let nLink = newHtmlContent.data.link;
-                  alert("newHtmlContent data link value: " + nLink);
-                  console.log("newHtmlContent data link value:", nLink);
-                  let nType = newHtmlContent.type;
-                  alert("newHtmlContent type: " + nType);
-                  console.log("newHtmlContent type:", nType);
-                  let nddr = new URL(nApp);
-                  alert("newHtmlContent is data app value a url? " + nddr);
-                  console.log("newHtmlContent is data app value a url?", nddr);
-                  let ndln = new URL(nLink);
-                  alert("newHtmlContent data link value: " + ndln);
-                  console.log("newHtmlContent data link value:", ndln);
-                  let ndInUrl = new Url(nIndex.url);
-                  alert("newHtmlContent data index url value: " + ndInUrl);
-                  console.log("newHtmlContent data index url value:", ndInUrl);
-                  if (nApp.myVar) {
-                  }
-                  else if (typeof nApp === "object") {
-                  }
-                  else {
+              // else if (newHtmlContent && newHtmlContent.type === "object" && newHtmlContent.data) {
+              //   if (newHtmlContent.data.app) {
+              //     let allProperty = Object.keys(newHtmlContent);
+              //     alert("newHtmlContent keys: " + allProperty);
+              //     console.log("newHtmlContent keys:", allProperty);
+              //     let allValue = Object.values(newHtmlContent);
+              //     alert("newHtmlContent values: " + allValue);
+              //     console.log("newHtmlContent values:", allValue);
+              //     let nApp = newHtmlContent.data.app;
+              //     alert("newHtmlContent data app value: " + nApp);
+              //     console.log("newHtmlContent data app value:", nApp);
+              //     let nIndex = newHtmlContent.data.index;
+              //     alert("newHtmlContent data index value: " + nIndex);
+              //     console.log("newHtmlContent data index value:", nIndex);
+              //     let nLink = newHtmlContent.data.link;
+              //     alert("newHtmlContent data link value: " + nLink);
+              //     console.log("newHtmlContent data link value:", nLink);
+              //     let nType = newHtmlContent.type;
+              //     alert("newHtmlContent type: " + nType);
+              //     console.log("newHtmlContent type:", nType);
+              //     let nddr = new URL(nApp);
+              //     alert("newHtmlContent is data app value a url? " + nddr);
+              //     console.log("newHtmlContent is data app value a url?", nddr);
+              //     let ndln = new URL(nLink);
+              //     alert("newHtmlContent data link value: " + ndln);
+              //     console.log("newHtmlContent data link value:", ndln);
+              //     let ndInUrl = new Url(nIndex.url);
+              //     alert("newHtmlContent data index url value: " + ndInUrl);
+              //     console.log("newHtmlContent data index url value:", ndInUrl);
+              //     if (nApp.myVar) {
+              //     }
+              //     else if (typeof nApp === "object") {
+              //     }
+              //     else {
 
-                    if (nddr) {
-                      window.location.href = nApp; // New type "url" for strings
-                      console.log("Error: window.location.href = ", window.location.href)
-                    }
-                    else if (nApp.trim().startsWith("<") && nApp.trim().endsWith(">")) {
+              //       if (nddr) {
+              //         window.location.href = nApp; // New type "url" for strings
+              //         console.log("Error: window.location.href = ", window.location.href)
+              //       }
+              //       else if (nApp.trim().startsWith("<") && nApp.trim().endsWith(">")) {
 
-                      // More robust HTML check
-                      // console.log(initialArgs.trim().startsWith("<") && initialArgs.trim().endsWith(">"));
+              //         // More robust HTML check
+              //         // console.log(initialArgs.trim().startsWith("<") && initialArgs.trim().endsWith(">"));
 
-                      document.open();
-                      document.write('<pre class="z-depth-5 card-panel deep-purple darken-1 scale-transition scale-out scale-in btn-large" id="eventRes01" class="menu-img grey darken-4 z-depth-5" style="width: 100%; height: 100%; border: none;" allow="autoplay" allow="encrypted-media" title="Dontime Life Website" frameborder="0" allowfullscreen >' + nApp + '</pre>');
-                      document.close();
+              //         document.open();
+              //         document.write('<pre class="z-depth-5 card-panel deep-purple darken-1 scale-transition scale-out scale-in btn-large" id="eventRes01" class="menu-img grey darken-4 z-depth-5" style="width: 100%; height: 100%; border: none;" allow="autoplay" allow="encrypted-media" title="Dontime Life Website" frameborder="0" allowfullscreen >' + nApp + '</pre>');
+              //         document.close();
 
-                    }
-                  }
-                }
-                else {
-                  document.open();
-                  document.write(newHtmlContent.data); // Use the data property
-                  document.close();
-                }
-                console.log("Client-side: Page re-rendered with new content from server.");
-              }
+              //       }
+              //     }
+              //   }
+              //   else {
+              //     document.open();
+              //     document.write(newHtmlContent.data); // Use the data property
+              //     document.close();
+              //   }
+              //   console.log("Client-side: Page re-rendered with new content from server.");
+              // }
               else if (newHtmlContent && newHtmlContent.type === "text" && newHtmlContent.data) {
                 if (mddr) {
                   window.location.href = newHtmlContent.data; // New type "url" for strings
