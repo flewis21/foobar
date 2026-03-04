@@ -116,7 +116,7 @@
       }
       // console.log("line 367: Beginning evaluation");
       // const homeStackUrl = JSON.stringify(<?= homePage ?>);
-      // const applications = JSON.stringify(<?= appL ?>);
+      const applications = <?= appL ?>;
       // const chUrl = document.getElementById("indexBeta");
 
       // // alert("line 653 Inside renBlob block of serverside Runall doGet");
@@ -129,12 +129,12 @@
       // // Parse the input as the new value
       // // Allow direct strings or JSON arrays/objects
 
-      // let initialArgs;
-      // let currentApp;
-      // let addr;
-      // let iframeSrc =
-      //   "https://www.clubhouse.com/@fabianlewis?utm_medium=ch_profile&utm_campaign=lhTUtHb2bYqPN3w8EEB7FQ-247242"; // Default iframe src
-      // let finalFeedDivContent = "";
+      let initialArgs;
+      let currentApp;
+      let addr;
+      let iframeSrc =
+        "https://www.clubhouse.com/@fabianlewis?utm_medium=ch_profile&utm_campaign=lhTUtHb2bYqPN3w8EEB7FQ-247242"; // Default iframe src
+      let finalFeedDivContent = "";
       // try {
       //   var alppL = JSON.parse(<?= appL ?>)
       //   console.log(!alppL.type);
@@ -233,7 +233,7 @@
       // catch (error){
       //   console.log(error.stack);
       //     alert(error.toString());
-      //     let addr = new URL(<?= appL ?>);
+      //     let addr = new URL(applications);
       //     if (addr) {
       //       console.log('appL is a URL, navigating to: ' + addr);
       //       window.location.href = addr; // New type "url" for strings

@@ -324,7 +324,7 @@ function doGet(e) {
       .toString()
       .split(" ");
     var rndHtmlIndex = Math.floor(Math.random() * Math.floor(htmlArray.length));
-    console.log("rndHtml = " + htmlArray[rndHtmlIndex]);
+    // console.log("rndHtml = " + htmlArray[rndHtmlIndex]);
     var rndPage = htmlArray[rndHtmlIndex];
     var htmlDosArg = rndPage; // Default value
     var htmlTresArg = rndPage; // Default value

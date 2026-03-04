@@ -25,9 +25,9 @@
     <?!= stylist.progress ?> <?!= stylist.progressBar ?>
   </head>
   <body id="JavaScriptDoGet">
-    <div class="progress-bar" id="data-display">
+    <div class="progress-bar" id="data-display" style="display: none">
       Loading...
-      <div id="myBar" class="progress"></div>
+      <div id="myBar" class="progress" style="display: none"></div>
     </div>
     <div id="eObject" style="display: none">
       <input type="text" id="pageObj" value="" />
@@ -108,21 +108,25 @@
     var objDiv = document.getElementById("eObject");
     console.log("line 222");
     var bDiv = document.getElementById("renBlob");
-    console.log("line 108")
+    console.log("line 112");
+    var dispDiv = document.getElementById("data-display");
+    console.log("line 114");
     let initialArgs = currentE; //.parameter["args"];
     if (initialArgs !== undefined && initialArgs !== null) {
       if (typeof initialArgs === 'object') {
         console.log("line 234: creating pretty-printed initialArgs object");
         objDiv.style.display = "block";
+        bDiv.style.display = "block";
         objUrl.value = JSON.stringify(initialArgs, null, 2);
       } else {
         console.log("line 237: falling back to initialArgs string");
         objDiv.style.display = "block";
+        bDiv.style.display = "block";
         objUrl.value = initialArgs; // If it's a string directly
       }
     } else {
       console.log("line 241: falling back to empty string");
-      objDiv.style.display = "block";
+      bDiv.style.display = "block";
       objUrl.value = '[""]'; // Default if args is missing
     }
       objUrl.addEventListener("change", function () {
@@ -153,7 +157,13 @@
               // This part is still problematic if newStackContent is meant to be HTML
               // and it directly comes from updatedClientApp (which is the textarea value)
               // If updatedClientApp contains HTML, it needs to be processed to be displayable.
-              const newHtmlContent = await serverSide(updatedClientE.parameter["func"], [updatedClientE.parameter["args"]]);
+              const newHtmlContent = await serverSide(updatedClientE.parameter["func"], [updatedClientE.parameter["args"]])
+              // .then((nHC) =>{
+              //   dispDiv.style.display = "block";
+              // })
+              // .catch((error) =>{
+              //   console.log("Error with re rendering on serverside", error.stack)
+              // });
               alert(newHtmlContent.type)
               let mddr = new URL(newHtmlContent.data);
               if (newHtmlContent && newHtmlContent.type === "html" && newHtmlContent.data) {
@@ -162,40 +172,59 @@
                 document.close();
                 console.log("Client-side: Page re-rendered with new content from server.");
               }
-              // else if (newHtmlContent && newHtmlContent.type === "object" && newHtmlContent.data) {
-              //   if (newHtmlContent.data.app) {
-              //     let allProperty = Object.keys(newHtmlContent);
-              //     alert("newHtmlContent keys: " + allProperty);
-              //     console.log("newHtmlContent keys:", allProperty);
+              else if (newHtmlContent && newHtmlContent.type === "object" && newHtmlContent.data) {
+
+                let nType = newHtmlContent.type;
+
+                alert("newHtmlContent type: " + nType);
+                console.log("newHtmlContent type:", nType);
+                if (newHtmlContent.data.app) {
+
+                  let allProperty = Object.keys(newHtmlContent);
+
+                  alert("newHtmlContent keys: " + allProperty);
+                  console.log("newHtmlContent keys:", allProperty);
+
               //     let allValue = Object.values(newHtmlContent);
+
               //     alert("newHtmlContent values: " + allValue);
               //     console.log("newHtmlContent values:", allValue);
-              //     let nApp = newHtmlContent.data.app;
-              //     alert("newHtmlContent data app value: " + nApp);
-              //     console.log("newHtmlContent data app value:", nApp);
-              //     let nIndex = newHtmlContent.data.index;
-              //     alert("newHtmlContent data index value: " + nIndex);
-              //     console.log("newHtmlContent data index value:", nIndex);
-              //     let nLink = newHtmlContent.data.link;
-              //     alert("newHtmlContent data link value: " + nLink);
-              //     console.log("newHtmlContent data link value:", nLink);
-              //     let nType = newHtmlContent.type;
-              //     alert("newHtmlContent type: " + nType);
-              //     console.log("newHtmlContent type:", nType);
-              //     let nddr = new URL(nApp);
-              //     alert("newHtmlContent is data app value a url? " + nddr);
-              //     console.log("newHtmlContent is data app value a url?", nddr);
-              //     let ndln = new URL(nLink);
-              //     alert("newHtmlContent data link value: " + ndln);
-              //     console.log("newHtmlContent data link value:", ndln);
-              //     let ndInUrl = new Url(nIndex.url);
-              //     alert("newHtmlContent data index url value: " + ndInUrl);
-              //     console.log("newHtmlContent data index url value:", ndInUrl);
+
+                  let nApp = newHtmlContent.data.app;
+
+                  alert("newHtmlContent data app value: " + nApp);
+                  console.log("newHtmlContent data app value:", nApp);
+
+                  let nIndex = newHtmlContent.data.index;
+
+                  alert("newHtmlContent data index value: " + nIndex);
+                  console.log("newHtmlContent data index value:", nIndex);
+
+                  let nLink = newHtmlContent.data.link;
+
+                  alert("newHtmlContent data link value: " + nLink);
+                  console.log("newHtmlContent data link value:", nLink);
+
               //     if (nApp.myVar) {
               //     }
               //     else if (typeof nApp === "object") {
               //     }
               //     else {
+
+                  //     let nddr = new URL(nApp);
+
+                  //     alert("newHtmlContent is data app value a url? " + nddr);
+                  //     console.log("newHtmlContent is data app value a url?", nddr);
+
+                  //     let ndln = new URL(nLink);
+
+                  //     alert("newHtmlContent data link value: " + ndln);
+                  //     console.log("newHtmlContent data link value:", ndln);
+
+                  //     let ndInUrl = new Url(nIndex.url);
+
+                  //     alert("newHtmlContent data index url value: " + ndInUrl);
+                  //     console.log("newHtmlContent data index url value:", ndInUrl);
 
               //       if (nddr) {
               //         window.location.href = nApp; // New type "url" for strings
@@ -212,14 +241,14 @@
 
               //       }
               //     }
-              //   }
-              //   else {
-              //     document.open();
-              //     document.write(newHtmlContent.data); // Use the data property
-              //     document.close();
-              //   }
-              //   console.log("Client-side: Page re-rendered with new content from server.");
-              // }
+                }
+                else {
+                  document.open();
+                  document.write(newHtmlContent.data); // Use the data property
+                  document.close();
+                }
+                console.log("Client-side: Page re-rendered with new content from server.");
+              }
               else if (newHtmlContent && newHtmlContent.type === "text" && newHtmlContent.data) {
                 if (mddr) {
                   window.location.href = newHtmlContent.data; // New type "url" for strings
@@ -238,10 +267,12 @@
                 document.close();
                 console.log("Client-side: Page re-rendered with new content from server.");
               }
+              dispDiv.style.display = "none";
             }
             catch (error) {
               console.error("Client-side Error during full re-render:", error);
               alert("Error re-rendering: " + error.message);
+              dispDiv.style.display = "none";
             }
           }
           handlePageUpdate()
@@ -299,6 +330,8 @@
   function move() {
     if (i == 0) {
       i = 1;
+      var barDiv = document.getElementById("myBar");
+      console.log("line 325");
       var elem = document.getElementById("myBar");
       var width = 1;
       var id = setInterval(frame, 10);
@@ -307,6 +340,7 @@
           clearInterval(id);
           i = 0;
         } else {
+          barDiv.style.display = "block";
           width++;
           elem.style.width = width + "%";
         }
