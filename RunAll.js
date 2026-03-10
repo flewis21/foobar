@@ -31,88 +31,91 @@ function doGet(e) {
         Logger.log(
           ">>> [MAIN] MAIN WEB APP CLIENT REQUEST: " + JSON.stringify(e),
         );
-      } else {
+      }
+      else {
+        if (!e.parameter["func"] && !e.parameter["args"]) {
+          argsEd = this[libName].createRandomFunction();
+          if (typeof argsEd === "string") {
+            e = this[libName].objectOfS(
+              ["parameter"],
+              [
+                [
+                  ["func", argsEd],
+                  // ["args", argsEd],
+                ],
+              ],
+              functionRegistry.time,
+            );
+          } else if (
+            typeof argsEd === "object" &&
+            argsEd !== null &&
+            argsEd.name
+          ) {
+            if (argsEd.parameters && argsEd.parameters.length > 0) {
+              e = this[libName].objectOfS(
+                ["parameter"],
+                [
+                  [
+                    ["func", argsEd.name],
+                    ["args", [...argsEd.parameters]],
+                  ],
+                ],
+                functionRegistry.time,
+              );
+            } else {
+              e = this[libName].objectOfS(
+                ["parameter"],
+                [
+                  [
+                    ,
+                    ["func", argsEd.name],
+                    // ["args", argsEd.name],
+                  ],
+                ],
+                functionRegistry.time,
+              );
+            }
+          } else {
+            console.log("Unexpected argsEd type: ", argsEd);
+            let argsedObj = []; //Object.values(argsEd);
+            let aOKeys = Object.keys(argsEd);
+            if (aOKeys.length > 0) {
+              aOKeys.forEach((key) => {
+                argsedObj.push(argsEd[key]);
+              });
+              e = this[libName].objectOfS(
+                ["parameter"],
+                [
+                  [
+                    ["func", aOKeys],
+                    ["args", argsedObj],
+                    // ["func", "mis"],
+                    // ["args", "Invalid Entry"],
+                  ],
+                ],
+                functionRegistry.time,
+              );
+            } else {
+              e = this[libName].objectOfS(
+                ["parameter"],
+                [
+                  [
+                    ["func", "aVar"],
+                    ["args", "varA"],
+                    // ["func", "mis"],
+                    // ["args", "Invalid Entry"],
+                  ],
+                ],
+                functionRegistry.time,
+              );
+            }
+          }
+        }
         data.forEach((key) => {
           console.log("e.parameter(s) value(s)", e.parameter[key]);
           funcCallParams.push(e.parameter[key]);
         });
         console.log("function call parameters", funcCallParams);
-        argsEd = this[libName].createRandomFunction();
-        if (typeof argsEd === "string") {
-          e = this[libName].objectOfS(
-            ["parameter"],
-            [
-              [
-                ["func", argsEd],
-                // ["args", argsEd],
-              ],
-            ],
-            functionRegistry.time,
-          );
-        } else if (
-          typeof argsEd === "object" &&
-          argsEd !== null &&
-          argsEd.name
-        ) {
-          if (argsEd.parameters && argsEd.parameters.length > 0) {
-            e = this[libName].objectOfS(
-              ["parameter"],
-              [
-                [
-                  ["func", argsEd.name],
-                  ["args", [...argsEd.parameters]],
-                ],
-              ],
-              functionRegistry.time,
-            );
-          } else {
-            e = this[libName].objectOfS(
-              ["parameter"],
-              [
-                [
-                  ,
-                  ["func", argsEd.name],
-                  // ["args", argsEd.name],
-                ],
-              ],
-              functionRegistry.time,
-            );
-          }
-        } else {
-          console.log("Unexpected argsEd type: ", argsEd);
-          let argsedObj = []; //Object.values(argsEd);
-          let aOKeys = Object.keys(argsEd);
-          if (aOKeys.length > 0) {
-            aOKeys.forEach((key) => {
-              argsedObj.push(argsEd[key]);
-            });
-            e = this[libName].objectOfS(
-              ["parameter"],
-              [
-                [
-                  ["func", aOKeys],
-                  ["args", argsedObj],
-                  // ["func", "mis"],
-                  // ["args", "Invalid Entry"],
-                ],
-              ],
-              functionRegistry.time,
-            );
-          } else {
-            e = this[libName].objectOfS(
-              ["parameter"],
-              [
-                [
-                  ["func", "aVar"],
-                  ["args", "varA"],
-                  // ["func", "mis"],
-                  // ["args", "Invalid Entry"],
-                ],
-              ],
-              functionRegistry.time,
-            );
-          }
-        }
       }
     } else {
       // genFuction = this[libName].createRandomFunction();
@@ -1829,17 +1832,20 @@ function doGet(e) {
       );
     } catch (error) {
       Logger.log(error.toString());
+      let fT;
       if (funcCallParams[0] === "undefined") {
         return this[libName].getScriptUrl() + "?file=" + rndPage;
       } else {
-        let fT = this[libName].fileBrowser(null, funcCallParams[0]);
-        // let fSlash = this[libName].driveManager(funcCallParams[0])
+        fT = this[libName].fileBrowser(null, funcCallParams[0]);
+        if (!fT) {
+          gT = this[libName].driveManager(funcCallParams[0])
+        }
         let options = {
           muteHttpExceptions: true,
         };
-        let fDot = this[libName].getUrlResponse(fT.url, options);
+        let fDot = this[libName].getUrlResponse(fT.url || gT, options);
         return renderTemplate(
-          fDot.app,
+          fDot?.app,
           {
             appL: Object.values(this[libName].mis(funcCallParams)),
             aplot: Object.values(this[libName].mis(funcCallParams)),
@@ -1849,7 +1855,7 @@ function doGet(e) {
             e: JSON.stringify(e),
             stylist: htmlStyle,
           },
-          fT,
+          JSON.stringify(fT.name || gT),
         );
       }
     }

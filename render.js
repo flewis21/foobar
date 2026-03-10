@@ -697,8 +697,8 @@ var renderTemplate = function (blob, argsObject, title) {
         </style>
       </head>
       <body id="renderTemplate">
-        <div><p>
-          <div>
+        <div class="row btn-large"><p>
+          <div class="col s12 container">
               <p>Is the conveyance of power and authority an objective, measurable quantity?</p>
             <br />
               <i>No, the conveyance of power and authority is not inherently an objective, measurable quantity. Here's why:</i>

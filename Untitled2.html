@@ -5,11 +5,11 @@
     <meta charset="utf-8" />
     <meta name="Subscribe" content="ATL Budget Studio" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link
+    <!-- <link
       href="https://fonts.googleapis.com/css?family=Acme"
       rel="stylesheet"
-    />
-    <!-- <style>
+    /> -->
+    <style>
       body {
         flex-grow: 1;
         color: blue;
@@ -21,8 +21,8 @@
         align-content: flex-start;
         overflow: auto;
       }
-    </style> -->
-    <?!= stylist.progress ?> <?!= stylist.progressBar ?>
+      <?!= stylist.progress ?> <?!= stylist.progressBar ?>
+    </style>
   </head>
   <body id="JavaScriptDoGet">
     <div class="progress-bar" id="data-display" style="display: none">
@@ -32,7 +32,7 @@
       <input type="text" id="pageObj" value="Loading..." />
     </div>
     <div id="renBlob" style="display: none">
-      <?!= HtmlService.createHtmlOutputFromFile("Untitled3").getContent() ?>
+      <?!= HtmlService.createHtmlTemplateFromFile("Untitled3").evaluate().getContent() ?>
     </div>
 
     <h2>Contact Form</h2>

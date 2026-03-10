@@ -5,10 +5,10 @@
     <meta charset="utf-8" />
     <meta name="Subscribe" content="JavaScript webapp" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link
+    <!-- <link
       href="https://fonts.googleapis.com/css?family=Acme"
       rel="stylesheet"
-    />
+    /> -->
     <style>
       body {
         flex-grow: 1;
@@ -21,21 +21,22 @@
         align-content: flex-start;
         overflow: auto;
       }
+      <?!= stylist.progress ?> <?!= stylist.progressBar ?>
     </style>
   </head>
   <body id="JavaScript">
     <div class="row">
       <div id="zeroSize"></div>
     </div>
-    <div class="row">
+    <!-- <div class="row"> -->
       <!-- <div class="responsive-section"> -->
       <!-- <div class="container"> -->
       <!-- <label id="labSEOC"> <strong></strong></label> -->
-      <div class="row">
-        <div class="col s12 card-panel amber">
+      <!-- <div class="row"> -->
+        <!-- <div class="col s12 card-panel amber"> -->
           <!-- <div class="responsive-section"> -->
           <!-- <div class="container"> -->
-          <div class="col s12 receipt red">
+          <!-- <div class="col s12 receipt red"> -->
             <!-- <table
                       class="striped centered highlight responsive-table grey z-depth-5"
                       style="width: 100%"
@@ -72,7 +73,7 @@
                             >
                               <tbody>
                                 <td> -->
-            <div>
+            <div class="btn-large">
               <textarea
                 id="indexBeta"
                 spellcheck="false"
@@ -88,14 +89,14 @@
                         </tr>
                       </tbody>
                     </table> -->
-          </div>
           <!-- </div> -->
           <!-- </div> -->
-        </div>
-      </div>
+          <!-- </div> -->
+        <!-- </div> -->
       <!-- </div> -->
       <!-- </div> -->
-    </div>
+      <!-- </div> -->
+    <!-- </div> -->
     <script>
       function clientSide(func, args) {
         return new Promise((resolve, reject) => {
@@ -157,7 +158,7 @@
                 chUrl.value = blockAlppL;
               }
               else {
-                let addr = new URL("https://flewis21.github.io/foobar");
+                let addr = new URL(<?= homPage ?> + "?action=getData");
                 if (addr) {
                   console.log('appL is a URL, navigating to: ' + addr);
                   window.location.href = addr; // New type "url" for strings
@@ -209,7 +210,7 @@
                   }
                 }
                 else {
-                  let addr = new URL("https://flewis21.github.io/foobar");
+                  let addr = new URL(<?= homPage ?> + "?action=getData");
                   if (addr) {
                     console.log('appL is a URL, navigating to: ' + addr);
                     window.location.href = addr; // New type "url" for strings
@@ -221,7 +222,7 @@
               }
           }
           else {
-            let addr = new URL("https://flewis21.github.io/foobar");
+            let addr = new URL(<?= homPage ?> + "?action=getData");
             if (addr) {
               console.log('appL is a URL, navigating to: ' + addr);
               window.location.href = addr; // New type "url" for strings
