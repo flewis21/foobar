@@ -31,8 +31,7 @@ function doGet(e) {
         Logger.log(
           ">>> [MAIN] MAIN WEB APP CLIENT REQUEST: " + JSON.stringify(e),
         );
-      }
-      else {
+      } else {
         if (!e.parameter["func"] && !e.parameter["args"]) {
           argsEd = this[libName].createRandomFunction();
           if (typeof argsEd === "string") {
@@ -1838,7 +1837,7 @@ function doGet(e) {
       } else {
         fT = this[libName].fileBrowser(null, funcCallParams[0]);
         if (!fT) {
-          gT = this[libName].driveManager(funcCallParams[0])
+          gT = this[libName].driveManager(funcCallParams[0]);
         }
         let options = {
           muteHttpExceptions: true,
