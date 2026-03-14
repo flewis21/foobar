@@ -53,503 +53,11 @@ var renderFile = function (file, argsObject, title) {
           tmp[key] = argsObject[key];
         });
       }
-
-      // tmp["list"] = htmlListArray;
-      // END IF
-      // Route[file] = argsObject
-      // var research = geneFrame(seoSheet(coUtility()[0].rndTitle).url
-      var funcCheck = foo.appList();
-      var schedule = foo.dateTime(new Date());
-      var html = foo.contentApp(
-        `
-      <!DOCTYPE html>
-      <html lang="en">
-        <head>
-          <?!= builtStyling().evaluate().getContent() ?>
-          <style>
-          
-            /* Remove all default table styling and override inline styles */
-            table, thead, tbody, tr, th, td {
-              all: unset !important; /* This is a powerful reset, removing all inherited and default styles */
-              display: block !important; /* Treat all table elements as block-level to remove table-specific layout */
-            }
-
-            /* You might want to re-add some basic block-level display for structure */
-            table {
-              width: 100% !important; /* Example: set table width */
-              border-collapse: separate !important; /* Override default collapse if present */
-              border-spacing: 0 !important; /* Remove spacing between cells */
-            }
-
-            tr {
-              display: flex !important; /* Use flexbox for rows for more control */
-              width: 100% !important;
-            }
-
-            body, div, th, td {
-              flex: 0px 0px 60px 60px !important; /* Make cells equally distribute space within the flex row */
-              padding: 5px !important; /* Remove default padding */
-              margin: 0.5px 0.5px 0.5px 0.5px !important; /* Remove default margin */
-              border: 5px !important; /* Remove any default borders */
-              vertical-align: top !important; /* Reset vertical alignment */
-              text-align: left !important; /* Reset text alignment */
-              justify-content: space-around !important;
-              align-items: center !important;
-              border-radius: 0.5px !important;
-              width: 100% !important;
-            }
-
-            /* If you have specific classes on your table, you can target them with higher specificity if needed */
-            /* For example, to target the inner table specifically */
-            .receipt table.striped.centered.highlight.responsive-table.grey.z-depth-5 table {
-              all: unset !important;
-              display: block !important;
-            }
-
-            /* And for its cells, rows, etc. */
-            .receipt table.striped.centered.highlight.responsive-table.grey.z-depth-5 table tr,
-            .receipt table.striped.centered.highlight.responsive-table.grey.z-depth-5 table td {
-              all: unset !important;
-              display: block !important; /* Or display: flex for rows, display: block for cells */
-            }
-                #jsonInput {
-                  display: none;
-                  width: 100%;
-                  height: 8vh; /* Or whatever height you need */
-                  margin:10px auto;
-                  padding: 0px;
-                  box-sizing: border-box; /* Include padding in width/height */
-                  border:1px solid #ccc;
-                  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'monospace'; /* Monospaced font is crucial */
-                  font-size: 14px;
-                  line-height: 1.5; /* Good for readability */
-                  white-space:pre-wrap;
-                  text-align:left;
-                  background-color: #282c34; /* Dark background common for code editors */
-                  color: #abb2bf; /* Light text color for contrast */
-                  resize: vertical; /* Allow vertical resizing, or 'none' to disable */
-                  overflow: auto; /* Enable scrolling if content exceeds height */
-
-
-                  /* Focus state */
-                  outline: none; /* Remove default blue outline on focus */
-                  box-shadow: 0 0 0 2px rgba(97, 175, 239, 0.5); /* Custom focus highlight */
-                  transition: box-shadow 0.2s ease-in-out;
-                }
-                /* Style for the new textarea */
-                #indexBeta,#player1,#player2 {
-                  /* Basic layout and appearance */
-                  width: 100%;
-                  height: 80vh; /* Or whatever height you need */
-                  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'monospace'; /* Monospaced font is crucial */
-                  font-size: 14px;
-                  line-height: 1.5; /* Good for readability */
-                  margin:10px auto;
-                  white-space:pre-wrap;
-                  text-align:left;
-                  padding: 0px;
-                  box-sizing: border-box; /* Include padding in width/height */
-                  border: 1px solid #333;
-                  background-color: #282c34; /* Dark background common for code editors */
-                  color: #abb2bf; /* Light text color for contrast */
-                  resize: vertical; /* Allow vertical resizing, or 'none' to disable */
-                  overflow: auto; /* Enable scrolling if content exceeds height */
-
-                  /* Hide default textarea scrollbar (optional, but common for custom scrollbars) */
-                  /* If you hide this, you'd need to implement custom scrollbars with JavaScript */
-                  /* -webkit-overflow-scrolling: touch; */ /* For smooth scrolling on touch devices */
-                  /* &::-webkit-scrollbar { display: none; } */
-                  /* & { -ms-overflow-style: none; scrollbar-width: none; } */
-
-
-                  /* Focus state */
-                  outline: none; /* Remove default blue outline on focus */
-                  box-shadow: 0 0 0 2px rgba(97, 175, 239, 0.5); /* Custom focus highlight */
-                  transition: box-shadow 0.2s ease-in-out;
-                };
-
-                #indexBeta,#jsonInput,#player1,#player2:focus {
-                    box-shadow: 0 0 0 2px rgba(97, 175, 239, 0.8); /* More prominent on focus */
-                }
-
-                /* Optional: Placeholder styling */
-                #indexBeta,#jsonInput,#player1,#player2:placeholder {
-                    color: #616e7f;
-                }
-      
-                /* This is the most likely culprit based on your computed styles */
-                /* Make the date numbers a dark color */
-                .datepicker-day-button {
-                  color: #424242 !important; /* A dark gray. Using !important ensures it overrides Materialize defaults and your other styles. */
-                }
-
-                /* Consider other states for the datepicker buttons if needed */
-                /* Example: If today's date also disappears */
-                .datepicker-table td.is-today .datepicker-day-button {
-                    color: #ff9800 !important; /* Example: orange for today's date */
-                }
-                /* Example: If selected dates' numbers disappear (often they should be white on a colored background) */
-                .datepicker-table td.is-selected .datepicker-day-button {
-                    color: white !important; /* Keep white if the selected background is dark */
-                }
-
-
-                /* --- SPECIFIC OVERRIDES FOR MATERIALIZE DATEPICKER --- */
-
-                .datepicker-container table {
-                  /* Re-establish standard table display */
-                  display: table !important;
-                  width: 100% !important; /* Ensure it takes full width of its container */
-                  border-collapse: collapse !important; /* Standard table styling */
-                }
-
-                .datepicker-container thead {
-                  display: table-header-group !important;
-                }
-
-                .datepicker-container tbody {
-                  display: table-row-group !important;
-                }
-
-                .datepicker-container tr {
-                  display: table-row !important;
-                }
-
-                .datepicker-container th,
-                .datepicker-container td {
-                  /* Re-establish table cell display */
-                  display: table-cell !important;
-                  /* Undo flex and reset padding/margin/border that your global rules removed */
-                  flex: none !important; /* Crucial to undo flex: 1 */
-                  padding: 0 !important; /* Materialize has its own padding for day buttons, often 0 for cell and padding on button */
-                  margin: 0 !important;
-                  border: none !important;
-                  vertical-align: middle !important; /* Standard for cells */
-                  text-align: center !important; /* Days of week and numbers are typically centered */
-                }
-
-                /* Also ensure the color fix is here with high specificity */
-                .datepicker-container .datepicker-day-button {
-                  color: #424242 !important;
-                }
-
-                /* You may need to inspect Materialize's default CSS to fine-tune padding, line-height, etc.,
-                  as "all: unset" also removes these. This is why Strategy 1 is preferred. */
-                  
-
-                /*
-                IMPORTANT NOTE ON YOUR GLOBAL TABLE RESETS:
-                You have:
-                table, thead, tbody, tr, th, td {
-                  all: unset !important;
-                  display: block !important;
-                }
-                AND
-                th, td {
-                  flex: 1 !important;
-                  padding: 0 !important;
-                  margin: 0 !important;
-                  border: none !important;
-                  vertical-align: top !important;
-                  text-align: left !important;
-                }
-
-                While the "color" fix above should work, these extremely aggressive table resets
-                could cause other layout issues with the Materialize datepicker (which uses a table).
-                If you encounter further layout problems (e.g., misalignment of days, weird spacing),
-                you might need to make these table resets less global or more specific to *only* the tables
-                you intend to radically change (like your .receipt table),
-                and *not* apply them to the datepicker's internal table.
-                For now, apply the color fix first, as it's the direct solution to the numbers being invisible.
-                */
-
-              
-
-          </style>
-        </head>
-        <body id="renderFile">
-      <div class="row">
-      <div class="col s12 m12 l12 card-panel amber">
-      <div class="responsive-section">
-      <div class="btn-large" style="clear: both">
-      <div class="col s12 receipt red">
-      <table class="striped centered highlight responsive-table grey z-depth-5" style="width:100%">
-        <thead>
-        </thead>
-        <tbody>
-          <tr>
-            <td style="vertical-align: top;text-align: left">
-              <table class="striped centered highlight responsive-table grey z-depth-5" style="width:100%">
-                <tbody>
-                  <td>
-                    <div class="row"><p>
-                    <p> To truly "own" something, beyond just having it issued, granted in custody, or being responsible for it, you generally need these key elements:</p>
-
-                    <i>Legal Title:</i>
-                    <p> This is the formal, legal recognition of your right to the property. It's often documented in official records, like a deed for real estate or a certificate of title for a vehicle. </p>
-                    <i>Rights of Possession and Control: </i>
-                    <p> This includes the right to use the property as you see fit (within legal limits), to exclude others from using it, and to determine what happens to it. </p>
-                    <i>Right of Disposal:</i>
-                    <p>This is the power to transfer ownership to someone else, whether by sale, gift, or inheritance. </p>
-                    <i>Freedom from Competing Claims:</i>
-                    <p> True ownership means that your right to the property is secure and not easily challenged by others. </p>
-                    <i>Bearing the Burdens of Ownership:</i>
-                    <p> This means that the owner is responsible for any liabilities, taxes, or maintainance associated with the property. </p>
-                    </div>
-                    <div class="row"><p>
-                    <p> Is the conveyance of power and authority an objective, measurable quantity?</p><br />
-
-
-                    <i>   No, the conveyance of power and authority is not inherently an objective, measurable quantity. Here's why:
-                    <br />
-                    <br />
-                    </i>
-                    <div class="row">
-                          <p style="text-align: left">Subjectivity in Definition: Power and authority themselves are complex concepts with no single, universally agreed-upon definition. What constitutes "power" or "authority" can vary significantly depending on the context, the individuals involved, and the values held by the observer.</p>
-                    <br />
-                          <p style="text-align: left">Qualitative Aspects: The impact of power and authority often involves qualitative factors like influence, respect, legitimacy, and the consent of those subject to it. These are difficult to quantify precisely.</p>
-                    <br />
-                          <p style="text-align: left">Contextual Dependence: The effectiveness of the conveyance of power and authority depends heavily on the specific context – the social, political, and cultural environment in which it occurs.</p>
-                    <br />
-                    </div>
-                    <i>
-                          However, there are some aspects that can be measured or assessed to some degree:
-                    <br />
-                    <br />
-                    </i>
-                    <div class="row">
-                          <p style="text-align: left">Visible Demonstrations: Observable actions like issuing commands, making decisions, controlling resources, or enforcing rules can provide evidence of the exercise of power.</p>
-                    <br />
-                          <p style="text-align: left">Compliance and Obedience: The extent to which others comply with the directives of an authority figure can be observed and, to some extent, measured.</p>
-                    <br />
-                          <p style="text-align: left">Social Influence: The ability to influence the beliefs, attitudes, or behaviors of others can be assessed through surveys, observations, or other social science research methods.</p>
-                    <br />
-                    </div>
-                    <p style="text-align: left">
-                          In conclusion: While some aspects of the conveyance of power and authority can be measured or assessed, it's crucial to acknowledge the inherent limitations and the significant role of subjective interpretation in understanding these complex phenomena.
-                    <br />
-                    </p>
-                    </p>
-                    </div>
-                    <br />
-                    <div><?!= renTemp ?></div>
-                  </td>
-                </tbody>
-              </table>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      </div></div></div></div></div>
-      <iframe src="https://discord.com/widget?id=1477464657722867722&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
-      <script>
-      document.querySelector("div").setAttribute("style", "color: blue; clear: both; text-align: center;");
-      document.querySelector("body").setAttribute("style", "background-color: amber;background: 282828;");
-      document.querySelector("iframe").setAttribute("style", "color: blue; clear: both; text-align: center;");
-        function serverside(func, args) {
-        return new Promise((resolve, reject) => {
-          google.script.run
-          .withSuccessHandler(result => {
-              resolve(result)})
-          .withFailureHandler(error => {
-              reject(error)})
-          .runBoilerplate(func, args)})}; 
-          $(document).ready(function() {
-            $('select').formSelect();
-
-            $('#templateSelect').change(function() {
-              var selectedTemplateUrl 
-                = $(this).val();
-                if (selectedTemplateUrl) {
-                  $("#editorFrame").prop("src", selectedTemplateUrl); // Load template in iframe
-                  $("#myForm").show(); // Show the form only after template is loaded.
-                  $("#myForm").empty(); // Clear previous form fields.
-                  // 2. Dynamically create form fields based on template placeholders (requires server-side)
-                  serverside("getPlaceholders",[selectedTemplateUrl]).then((placeholders)=>{
-                    placeholders.forEach(function(placeholder) {
-                      var fieldName 
-                        = placeholder.replace(/{{|}}/g, ''); // Extract field name
-                      $("#myForm").append("<label for='" + fieldName + "'>" + fieldName + ":</label><br>");
-                      $("#myForm").append("<input type='text' name='" + fieldName + "'><br>");
-                    });
-                    $("#myForm").append("<button type='submit'>Submit</button>");
-
-
-                    $("#myForm").submit(function(event) {
-                      event.preventDefault();
-
-                      var formData 
-                        = $(this).serializeObject();
-                      serverside("processFormData",[formData, selectedTemplateUrl]).then((newDocUrl)=>{
-                        $("#result").html("<p>Document created. <a href='" + newDocUrl + "' target='_blank'>Open Document</a></p>");
-                      }).catch((error)=>{
-                        console.error("Error:", error.stack);
-                        $("#result").html("<p>Error creating document. Please check the logs.</p>");
-                      })
-
-                    });
-
-                  }).catch((er)=>{alert(er.toString());console.error("Error:", er.stack);return "Error" + er.stack})}else {
-                $("#editorFrame").prop("src", "");
-                $("#myForm").hide();}
-            });
-
-            $.fn.serializeObject = function() { // jQuery plugin for serializing form data
-              var o 
-                = {};
-              var a 
-                = this.serializeArray();
-              $.each(a, function() {
-                if (o[this.name] !== undefined) {
-                  if (!o[this.name].push) {
-                    o[this.name] = [o[this.name]];
-                  }
-                  o[this.name].push(this.value || '');
-                } else {
-                  o[this.name] = this.value || '';
-                }
-              });
-              return o;
-            };
-          });
-        function submitDomain(formData) {
-          serverside("submitDomain", [formData])
-            .then(result => {
-              console.log("Server response:", result);
-              $("#successMessage").text(result); // Display success message
-            })
-            .catch(error => {
-              console.error("Error submitting domain:", error.stack);
-              $("#errorMessage").text(error.stack); // Display error message
-            });
-        }
-
-        $("#domainForm").submit(function(event) {
-          event.preventDefault();
-          const formData = $(this).serializeObject();
-          submitDomain(formData); // Call the function
-        });
-
-        function lookupDomain(searchTerm) {
-          serverside("lookupDomain", [searchTerm])
-            .then(results => {
-              console.log("Lookup results:", results);
-              displaySearchResults(results); // Display results
-            })
-            .catch(error => {
-              console.error("Error looking up domain:", error.stack);
-              $("#errorMessage").text(error.stack); // Display error message
-            });
-        }
-
-        $("#lookupButton").click(function() {
-          const searchTerm = $("#searchTerm").val();
-          lookupDomain(searchTerm);
-        });
-
-        var busa = document.getElementById("artiicleIndex");
-        var busx = document.getElementById("loadingLab");
-        var busc = document.getElementById("contentDiv");
-        busa.addEventListener('keypress', function(event) {
-          // If the user preses the "Enter" key on the keyboard. 
-          if (event.key === "Enter")  {
-            const strValue = busa.value;
-            busx.innerText = "... waiting for " + strValue;
-            serverside("jFund", strValue)
-            .then((article) => {
-              if (article) {
-                // User clicked "No" or X in the title bar.
-                busx.innerText = ""
-                busc.innerHTML = article;}})
-            .catch((er) => {
-              console.log(er)
-              busx.innerText = JSON.stringify(er)})
-            busa.value = ""}})
-      </script>
-      <script>document.getElementById('func').addEventListener('change', <?!= funcClicked ?>)</script>
-      <script>document.getElementById('args').addEventListener('change', <?!= argsClicked ?>)</script>
-      <input type="hidden" value="<?= getUrl(ScriptApp) ?>" id="url" />
-    </body>
-  </html>`,
-        {
-          funcClicked: function () {
-            //console.log(document.getElementById("test").innerHTML)
-            // Init a timeout variable to be used below
-            let timeout = null;
-            (() => {
-              // Clear the timeout if it has already been set.
-              // This will prevent the previous task from executing
-              // if it has been less than <MILLISECONDS>
-              // clearTimeout(timeout);
-              // Make a new timeout set to go off in 1000ms (1 second)
-              // timeout = setTimeout
-              // (function  ()
-              // {console.log('Input Value:', textInput.value);}, 5000)();
-              if (typeof url === "undefined") {
-                var urlData = document.getElementById("url").value;
-                var url = urlData.toString();
-              }
-              var func = document.getElementById("func").value;
-              var args = document.getElementById("args").value;
-              if (typeof args !== "undefined") {
-                var linkFollow = document.createElement("a");
-                linkFollow.href =
-                  url +
-                  "?func=" +
-                  encodeURIComponent(func) +
-                  "&args=" +
-                  encodeURIComponent(args);
-                linkFollow.id = "linkFOLLOW";
-                linkFollow.target = "_top";
-                document.body.appendChild(linkFollow);
-                document.getElementById("linkFOLLOW").click();
-                document.getElementById("linkFOLLOW").remove();
-              }
-            })();
-          },
-          argsClicked: function () {
-            //console.log(document.getElementById("test").innerHTML)
-            // Init a timeout variable to be used below
-            let timeout = null;
-            (() => {
-              // Clear the timeout if it has already been set.
-              // This will prevent the previous task from executing
-              // if it has been less than <MILLISECONDS>
-              // clearTimeout(timeout);
-              // Make a new timeout set to go off in 1000ms (1 second)
-              // timeout = setTimeout
-              // (function  ()
-              // {console.log('Input Value:', textInput.value);}, 5000)();
-              if (typeof url === "undefined") {
-                var urlData = document.getElementById("url").value;
-                var url = urlData.toString();
-              }
-              var func = document.getElementById("func").value;
-              var args = document.getElementById("args").value;
-              if (typeof func !== "undefined") {
-                var linkFollow = document.createElement("a");
-                linkFollow.href =
-                  url +
-                  "?func=" +
-                  encodeURIComponent(func) +
-                  "&args=" +
-                  encodeURIComponent(args);
-                linkFollow.id = "linkFOLLOW";
-                linkFollow.target = "_top";
-                document.body.appendChild(linkFollow);
-                document.getElementById("linkFOLLOW").click();
-                document.getElementById("linkFOLLOW").remove();
-              }
-            })();
-          },
-          renTemp: tmp.evaluate().getContent(),
-        },
-      );
       return (
-        HtmlService.createHtmlOutput(html) //tmp
-          // .evaluate()
+        tmp
+          .evaluate()
           .setTitle(title)
-          // .append(html)
+          // .append()
           // .setSandboxMode(HtmlService.SandboxMode.IFRAME)
           .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL)
       );
@@ -558,6 +66,541 @@ var renderFile = function (file, argsObject, title) {
     }
   } catch (error) {
     console.log("error in renderTemplate: " + error.stack);
+    throw new Error(
+      "Error in renderFile html: " + error.toString() + "\n" + error.stack,
+    );
+  }
+};
+
+var renle = function (file, argsObject, title) {
+  console.log(
+    functionRegistry.time +
+      "\n" +
+      arguments.callee.name +
+      "\nfile is !" +
+      !file +
+      " = " +
+      file +
+      "\nargsObject is !" +
+      !argsObject +
+      " = " +
+      JSON.stringify(argsObject) +
+      "\ntitle is !" +
+      !title +
+      " = " +
+      title,
+  );
+  try {
+    if (file) {
+      const tmp = HtmlService.createTemplateFromFile(file);
+      if (argsObject) {
+        const keys = Object.keys(argsObject);
+        keys.forEach(function (key) {
+          tmp[key] = argsObject[key];
+        });
+      }
+      // tmp["list"] = htmlListArray;
+      // END IF
+      // Route[file] = argsObject
+      // var research = geneFrame(seoSheet(coUtility()[0].rndTitle).url
+      var funcCheck = foo.appList();
+      var schedule = foo.dateTime(new Date());
+  //     tmp["html"] = foo.contentApp(
+  //       `
+  //     <!DOCTYPE html>
+  //     <html lang="en">
+  //       <head>
+  //         <style>
+          
+  //           /* Remove all default table styling and override inline styles */
+  //           table, thead, tbody, tr, th, td {
+  //             all: unset !important; /* This is a powerful reset, removing all inherited and default styles */
+  //             display: block !important; /* Treat all table elements as block-level to remove table-specific layout */
+  //           }
+
+  //           /* You might want to re-add some basic block-level display for structure */
+  //           table {
+  //             width: 100% !important; /* Example: set table width */
+  //             border-collapse: separate !important; /* Override default collapse if present */
+  //             border-spacing: 0 !important; /* Remove spacing between cells */
+  //           }
+
+  //           tr {
+  //             display: flex !important; /* Use flexbox for rows for more control */
+  //             width: 100% !important;
+  //           }
+
+  //           body, div, th, td {
+  //             flex: 0px 0px 60px 60px !important; /* Make cells equally distribute space within the flex row */
+  //             padding: 5px !important; /* Remove default padding */
+  //             margin: 0.5px 0.5px 0.5px 0.5px !important; /* Remove default margin */
+  //             border: 5px !important; /* Remove any default borders */
+  //             vertical-align: top !important; /* Reset vertical alignment */
+  //             text-align: left !important; /* Reset text alignment */
+  //             justify-content: space-around !important;
+  //             align-items: center !important;
+  //             border-radius: 0.5px !important;
+  //             width: 100% !important;
+  //           }
+
+  //           /* If you have specific classes on your table, you can target them with higher specificity if needed */
+  //           /* For example, to target the inner table specifically */
+  //           .receipt table.striped.centered.highlight.responsive-table.grey.z-depth-5 table {
+  //             all: unset !important;
+  //             display: block !important;
+  //           }
+
+  //           /* And for its cells, rows, etc. */
+  //           .receipt table.striped.centered.highlight.responsive-table.grey.z-depth-5 table tr,
+  //           .receipt table.striped.centered.highlight.responsive-table.grey.z-depth-5 table td {
+  //             all: unset !important;
+  //             display: block !important; /* Or display: flex for rows, display: block for cells */
+  //           }
+  //               #jsonInput {
+  //                 display: none;
+  //                 width: 100%;
+  //                 height: 8vh; /* Or whatever height you need */
+  //                 margin:10px auto;
+  //                 padding: 0px;
+  //                 box-sizing: border-box; /* Include padding in width/height */
+  //                 border:1px solid #ccc;
+  //                 font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'monospace'; /* Monospaced font is crucial */
+  //                 font-size: 14px;
+  //                 line-height: 1.5; /* Good for readability */
+  //                 white-space:pre-wrap;
+  //                 text-align:left;
+  //                 background-color: #282c34; /* Dark background common for code editors */
+  //                 color: #abb2bf; /* Light text color for contrast */
+  //                 resize: vertical; /* Allow vertical resizing, or 'none' to disable */
+  //                 overflow: auto; /* Enable scrolling if content exceeds height */
+
+
+  //                 /* Focus state */
+  //                 outline: none; /* Remove default blue outline on focus */
+  //                 box-shadow: 0 0 0 2px rgba(97, 175, 239, 0.5); /* Custom focus highlight */
+  //                 transition: box-shadow 0.2s ease-in-out;
+  //               }
+  //               /* Style for the new textarea */
+  //               #indexBeta,#player1,#player2 {
+  //                 /* Basic layout and appearance */
+  //                 width: 100%;
+  //                 height: 80vh; /* Or whatever height you need */
+  //                 font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'monospace'; /* Monospaced font is crucial */
+  //                 font-size: 14px;
+  //                 line-height: 1.5; /* Good for readability */
+  //                 margin:10px auto;
+  //                 white-space:pre-wrap;
+  //                 text-align:left;
+  //                 padding: 0px;
+  //                 box-sizing: border-box; /* Include padding in width/height */
+  //                 border: 1px solid #333;
+  //                 background-color: #282c34; /* Dark background common for code editors */
+  //                 color: #abb2bf; /* Light text color for contrast */
+  //                 resize: vertical; /* Allow vertical resizing, or 'none' to disable */
+  //                 overflow: auto; /* Enable scrolling if content exceeds height */
+
+  //                 /* Hide default textarea scrollbar (optional, but common for custom scrollbars) */
+  //                 /* If you hide this, you'd need to implement custom scrollbars with JavaScript */
+  //                 /* -webkit-overflow-scrolling: touch; */ /* For smooth scrolling on touch devices */
+  //                 /* &::-webkit-scrollbar { display: none; } */
+  //                 /* & { -ms-overflow-style: none; scrollbar-width: none; } */
+
+
+  //                 /* Focus state */
+  //                 outline: none; /* Remove default blue outline on focus */
+  //                 box-shadow: 0 0 0 2px rgba(97, 175, 239, 0.5); /* Custom focus highlight */
+  //                 transition: box-shadow 0.2s ease-in-out;
+  //               };
+
+  //               #indexBeta,#jsonInput,#player1,#player2:focus {
+  //                   box-shadow: 0 0 0 2px rgba(97, 175, 239, 0.8); /* More prominent on focus */
+  //               }
+
+  //               /* Optional: Placeholder styling */
+  //               #indexBeta,#jsonInput,#player1,#player2:placeholder {
+  //                   color: #616e7f;
+  //               }
+      
+  //               /* This is the most likely culprit based on your computed styles */
+  //               /* Make the date numbers a dark color */
+  //               .datepicker-day-button {
+  //                 color: #424242 !important; /* A dark gray. Using !important ensures it overrides Materialize defaults and your other styles. */
+  //               }
+
+  //               /* Consider other states for the datepicker buttons if needed */
+  //               /* Example: If today's date also disappears */
+  //               .datepicker-table td.is-today .datepicker-day-button {
+  //                   color: #ff9800 !important; /* Example: orange for today's date */
+  //               }
+  //               /* Example: If selected dates' numbers disappear (often they should be white on a colored background) */
+  //               .datepicker-table td.is-selected .datepicker-day-button {
+  //                   color: white !important; /* Keep white if the selected background is dark */
+  //               }
+
+
+  //               /* --- SPECIFIC OVERRIDES FOR MATERIALIZE DATEPICKER --- */
+
+  //               .datepicker-container table {
+  //                 /* Re-establish standard table display */
+  //                 display: table !important;
+  //                 width: 100% !important; /* Ensure it takes full width of its container */
+  //                 border-collapse: collapse !important; /* Standard table styling */
+  //               }
+
+  //               .datepicker-container thead {
+  //                 display: table-header-group !important;
+  //               }
+
+  //               .datepicker-container tbody {
+  //                 display: table-row-group !important;
+  //               }
+
+  //               .datepicker-container tr {
+  //                 display: table-row !important;
+  //               }
+
+  //               .datepicker-container th,
+  //               .datepicker-container td {
+  //                 /* Re-establish table cell display */
+  //                 display: table-cell !important;
+  //                 /* Undo flex and reset padding/margin/border that your global rules removed */
+  //                 flex: none !important; /* Crucial to undo flex: 1 */
+  //                 padding: 0 !important; /* Materialize has its own padding for day buttons, often 0 for cell and padding on button */
+  //                 margin: 0 !important;
+  //                 border: none !important;
+  //                 vertical-align: middle !important; /* Standard for cells */
+  //                 text-align: center !important; /* Days of week and numbers are typically centered */
+  //               }
+
+  //               /* Also ensure the color fix is here with high specificity */
+  //               .datepicker-container .datepicker-day-button {
+  //                 color: #424242 !important;
+  //               }
+
+  //               /* You may need to inspect Materialize's default CSS to fine-tune padding, line-height, etc.,
+  //                 as "all: unset" also removes these. This is why Strategy 1 is preferred. */
+                  
+
+  //               /*
+  //               IMPORTANT NOTE ON YOUR GLOBAL TABLE RESETS:
+  //               You have:
+  //               table, thead, tbody, tr, th, td {
+  //                 all: unset !important;
+  //                 display: block !important;
+  //               }
+  //               AND
+  //               th, td {
+  //                 flex: 1 !important;
+  //                 padding: 0 !important;
+  //                 margin: 0 !important;
+  //                 border: none !important;
+  //                 vertical-align: top !important;
+  //                 text-align: left !important;
+  //               }
+
+  //               While the "color" fix above should work, these extremely aggressive table resets
+  //               could cause other layout issues with the Materialize datepicker (which uses a table).
+  //               If you encounter further layout problems (e.g., misalignment of days, weird spacing),
+  //               you might need to make these table resets less global or more specific to *only* the tables
+  //               you intend to radically change (like your .receipt table),
+  //               and *not* apply them to the datepicker's internal table.
+  //               For now, apply the color fix first, as it's the direct solution to the numbers being invisible.
+  //               */
+
+              
+
+  //         </style>
+  //       </head>
+  //       <body id="renderFile">
+  //     <div class="row">
+  //     <div class="col s12 m12 l12 card-panel amber">
+  //     <div class="responsive-section">
+  //     <div class="btn-large" style="clear: both">
+  //     <div class="col s12 receipt red">
+  //     <table class="striped centered highlight responsive-table grey z-depth-5" style="width:100%">
+  //       <thead>
+  //       </thead>
+  //       <tbody>
+  //         <tr>
+  //           <td style="vertical-align: top;text-align: left">
+  //             <table class="striped centered highlight responsive-table grey z-depth-5" style="width:100%">
+  //               <tbody>
+  //                 <td>
+  //                   <div class="row"><p>
+  //                   <p> To truly "own" something, beyond just having it issued, granted in custody, or being responsible for it, you generally need these key elements:</p>
+
+  //                   <i>Legal Title:</i>
+  //                   <p> This is the formal, legal recognition of your right to the property. It's often documented in official records, like a deed for real estate or a certificate of title for a vehicle. </p>
+  //                   <i>Rights of Possession and Control: </i>
+  //                   <p> This includes the right to use the property as you see fit (within legal limits), to exclude others from using it, and to determine what happens to it. </p>
+  //                   <i>Right of Disposal:</i>
+  //                   <p>This is the power to transfer ownership to someone else, whether by sale, gift, or inheritance. </p>
+  //                   <i>Freedom from Competing Claims:</i>
+  //                   <p> True ownership means that your right to the property is secure and not easily challenged by others. </p>
+  //                   <i>Bearing the Burdens of Ownership:</i>
+  //                   <p> This means that the owner is responsible for any liabilities, taxes, or maintainance associated with the property. </p>
+  //                   </div>
+  //                   <div class="row"><p>
+  //                   <p> Is the conveyance of power and authority an objective, measurable quantity?</p><br />
+
+
+  //                   <i>   No, the conveyance of power and authority is not inherently an objective, measurable quantity. Here's why:
+  //                   <br />
+  //                   <br />
+  //                   </i>
+  //                   <div class="row">
+  //                         <p style="text-align: left">Subjectivity in Definition: Power and authority themselves are complex concepts with no single, universally agreed-upon definition. What constitutes "power" or "authority" can vary significantly depending on the context, the individuals involved, and the values held by the observer.</p>
+  //                   <br />
+  //                         <p style="text-align: left">Qualitative Aspects: The impact of power and authority often involves qualitative factors like influence, respect, legitimacy, and the consent of those subject to it. These are difficult to quantify precisely.</p>
+  //                   <br />
+  //                         <p style="text-align: left">Contextual Dependence: The effectiveness of the conveyance of power and authority depends heavily on the specific context – the social, political, and cultural environment in which it occurs.</p>
+  //                   <br />
+  //                   </div>
+  //                   <i>
+  //                         However, there are some aspects that can be measured or assessed to some degree:
+  //                   <br />
+  //                   <br />
+  //                   </i>
+  //                   <div class="row">
+  //                         <p style="text-align: left">Visible Demonstrations: Observable actions like issuing commands, making decisions, controlling resources, or enforcing rules can provide evidence of the exercise of power.</p>
+  //                   <br />
+  //                         <p style="text-align: left">Compliance and Obedience: The extent to which others comply with the directives of an authority figure can be observed and, to some extent, measured.</p>
+  //                   <br />
+  //                         <p style="text-align: left">Social Influence: The ability to influence the beliefs, attitudes, or behaviors of others can be assessed through surveys, observations, or other social science research methods.</p>
+  //                   <br />
+  //                   </div>
+  //                   <p style="text-align: left">
+  //                         In conclusion: While some aspects of the conveyance of power and authority can be measured or assessed, it's crucial to acknowledge the inherent limitations and the significant role of subjective interpretation in understanding these complex phenomena.
+  //                   <br />
+  //                   </p>
+  //                   </p>
+  //                   </div>
+  //                   <br />
+  //                   <div></div>
+  //                 </td>
+  //               </tbody>
+  //             </table>
+  //           </td>
+  //         </tr>
+  //       </tbody>
+  //     </table>
+  //     </div></div></div></div></div>
+  //     <iframe src="https://discord.com/widget?id=1477464657722867722&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
+  //     <script>
+  //     document.querySelector("div").setAttribute("style", "color: blue; clear: both; text-align: center;");
+  //     document.querySelector("body").setAttribute("style", "background-color: amber;background: 282828;");
+  //     document.querySelector("iframe").setAttribute("style", "color: blue; clear: both; text-align: center;");
+  //       function serverside(func, args) {
+  //       return new Promise((resolve, reject) => {
+  //         google.script.run
+  //         .withSuccessHandler(result => {
+  //             resolve(result)})
+  //         .withFailureHandler(error => {
+  //             reject(error)})
+  //         .runBoilerplate(func, args)})}; 
+  //         $(document).ready(function() {
+  //           $('select').formSelect();
+
+  //           $('#templateSelect').change(function() {
+  //             var selectedTemplateUrl 
+  //               = $(this).val();
+  //               if (selectedTemplateUrl) {
+  //                 $("#editorFrame").prop("src", selectedTemplateUrl); // Load template in iframe
+  //                 $("#myForm").show(); // Show the form only after template is loaded.
+  //                 $("#myForm").empty(); // Clear previous form fields.
+  //                 // 2. Dynamically create form fields based on template placeholders (requires server-side)
+  //                 serverside("getPlaceholders",[selectedTemplateUrl]).then((placeholders)=>{
+  //                   placeholders.forEach(function(placeholder) {
+  //                     var fieldName 
+  //                       = placeholder.replace(/{{|}}/g, ''); // Extract field name
+  //                     $("#myForm").append("<label for='" + fieldName + "'>" + fieldName + ":</label><br>");
+  //                     $("#myForm").append("<input type='text' name='" + fieldName + "'><br>");
+  //                   });
+  //                   $("#myForm").append("<button type='submit'>Submit</button>");
+
+
+  //                   $("#myForm").submit(function(event) {
+  //                     event.preventDefault();
+
+  //                     var formData 
+  //                       = $(this).serializeObject();
+  //                     serverside("processFormData",[formData, selectedTemplateUrl]).then((newDocUrl)=>{
+  //                       $("#result").html("<p>Document created. <a href='" + newDocUrl + "' target='_blank'>Open Document</a></p>");
+  //                     }).catch((error)=>{
+  //                       console.error("Error:", error.stack);
+  //                       $("#result").html("<p>Error creating document. Please check the logs.</p>");
+  //                     })
+
+  //                   });
+
+  //                 }).catch((er)=>{alert(er.toString());console.error("Error:", er.stack);return "Error" + er.stack})}else {
+  //               $("#editorFrame").prop("src", "");
+  //               $("#myForm").hide();}
+  //           });
+
+  //           $.fn.serializeObject = function() { // jQuery plugin for serializing form data
+  //             var o 
+  //               = {};
+  //             var a 
+  //               = this.serializeArray();
+  //             $.each(a, function() {
+  //               if (o[this.name] !== undefined) {
+  //                 if (!o[this.name].push) {
+  //                   o[this.name] = [o[this.name]];
+  //                 }
+  //                 o[this.name].push(this.value || '');
+  //               } else {
+  //                 o[this.name] = this.value || '';
+  //               }
+  //             });
+  //             return o;
+  //           };
+  //         });
+  //       function submitDomain(formData) {
+  //         serverside("submitDomain", [formData])
+  //           .then(result => {
+  //             console.log("Server response:", result);
+  //             $("#successMessage").text(result); // Display success message
+  //           })
+  //           .catch(error => {
+  //             console.error("Error submitting domain:", error.stack);
+  //             $("#errorMessage").text(error.stack); // Display error message
+  //           });
+  //       }
+
+  //       $("#domainForm").submit(function(event) {
+  //         event.preventDefault();
+  //         const formData = $(this).serializeObject();
+  //         submitDomain(formData); // Call the function
+  //       });
+
+  //       function lookupDomain(searchTerm) {
+  //         serverside("lookupDomain", [searchTerm])
+  //           .then(results => {
+  //             console.log("Lookup results:", results);
+  //             displaySearchResults(results); // Display results
+  //           })
+  //           .catch(error => {
+  //             console.error("Error looking up domain:", error.stack);
+  //             $("#errorMessage").text(error.stack); // Display error message
+  //           });
+  //       }
+
+  //       $("#lookupButton").click(function() {
+  //         const searchTerm = $("#searchTerm").val();
+  //         lookupDomain(searchTerm);
+  //       });
+
+  //       var busa = document.getElementById("artiicleIndex");
+  //       var busx = document.getElementById("loadingLab");
+  //       var busc = document.getElementById("contentDiv");
+  //       busa.addEventListener('keypress', function(event) {
+  //         // If the user preses the "Enter" key on the keyboard. 
+  //         if (event.key === "Enter")  {
+  //           const strValue = busa.value;
+  //           busx.innerText = "... waiting for " + strValue;
+  //           serverside("jFund", strValue)
+  //           .then((article) => {
+  //             if (article) {
+  //               // User clicked "No" or X in the title bar.
+  //               busx.innerText = ""
+  //               busc.innerHTML = article;}})
+  //           .catch((er) => {
+  //             console.log(er)
+  //             busx.innerText = JSON.stringify(er)})
+  //           busa.value = ""}})
+  //     </script>
+  //     <script>document.getElementById('func').addEventListener('change', <?!= funcClicked ?>)</script>
+  //     <script>document.getElementById('args').addEventListener('change', <?!= argsClicked ?>)</script>
+  //     <input type="hidden" value="<?= getUrl(ScriptApp) ?>" id="url" />
+  //   </body>
+  // </html>`,
+  //       {
+  //         funcClicked: function () {
+  //           //console.log(document.getElementById("test").innerHTML)
+  //           // Init a timeout variable to be used below
+  //           let timeout = null;
+  //           (() => {
+  //             // Clear the timeout if it has already been set.
+  //             // This will prevent the previous task from executing
+  //             // if it has been less than <MILLISECONDS>
+  //             // clearTimeout(timeout);
+  //             // Make a new timeout set to go off in 1000ms (1 second)
+  //             // timeout = setTimeout
+  //             // (function  ()
+  //             // {console.log('Input Value:', textInput.value);}, 5000)();
+  //             if (typeof url === "undefined") {
+  //               var urlData = document.getElementById("url").value;
+  //               var url = urlData.toString();
+  //             }
+  //             var func = document.getElementById("func").value;
+  //             var args = document.getElementById("args").value;
+  //             if (typeof args !== "undefined") {
+  //               var linkFollow = document.createElement("a");
+  //               linkFollow.href =
+  //                 url +
+  //                 "?func=" +
+  //                 encodeURIComponent(func) +
+  //                 "&args=" +
+  //                 encodeURIComponent(args);
+  //               linkFollow.id = "linkFOLLOW";
+  //               linkFollow.target = "_top";
+  //               document.body.appendChild(linkFollow);
+  //               document.getElementById("linkFOLLOW").click();
+  //               document.getElementById("linkFOLLOW").remove();
+  //             }
+  //           })();
+  //         },
+  //         argsClicked: function () {
+  //           //console.log(document.getElementById("test").innerHTML)
+  //           // Init a timeout variable to be used below
+  //           let timeout = null;
+  //           (() => {
+  //             // Clear the timeout if it has already been set.
+  //             // This will prevent the previous task from executing
+  //             // if it has been less than <MILLISECONDS>
+  //             // clearTimeout(timeout);
+  //             // Make a new timeout set to go off in 1000ms (1 second)
+  //             // timeout = setTimeout
+  //             // (function  ()
+  //             // {console.log('Input Value:', textInput.value);}, 5000)();
+  //             if (typeof url === "undefined") {
+  //               var urlData = document.getElementById("url").value;
+  //               var url = urlData.toString();
+  //             }
+  //             var func = document.getElementById("func").value;
+  //             var args = document.getElementById("args").value;
+  //             if (typeof func !== "undefined") {
+  //               var linkFollow = document.createElement("a");
+  //               linkFollow.href =
+  //                 url +
+  //                 "?func=" +
+  //                 encodeURIComponent(func) +
+  //                 "&args=" +
+  //                 encodeURIComponent(args);
+  //               linkFollow.id = "linkFOLLOW";
+  //               linkFollow.target = "_top";
+  //               document.body.appendChild(linkFollow);
+  //               document.getElementById("linkFOLLOW").click();
+  //               document.getElementById("linkFOLLOW").remove();
+  //             }
+  //           })();
+  //         },
+  //       },
+  //     );
+      return (
+        tmp
+          .evaluate()
+          .setTitle(title)
+          // .append()
+          // .setSandboxMode(HtmlService.SandboxMode.IFRAME)
+          .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL)
+      );
+    } else {
+      return foo.handleRequest(argsObject);
+    }
+  } catch (error) {
+    console.log("Error in renderFile: " + error.stack);
     throw new Error(
       "Error in renderFile html: " + error.toString() + "\n" + error.stack,
     );

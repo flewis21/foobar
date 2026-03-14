@@ -385,7 +385,7 @@ globalThis.searchString = function () {
   }
 };
 
-const htmlStyle = {
+var htmlStyle = {
   renderBody: HtmlService.createHtmlOutput(
     `<style>
           body 
@@ -401,7 +401,7 @@ const htmlStyle = {
               overflow: auto;
             }
         </style>`,
-  ).getContent(),
+  ),
   contentBody: HtmlService.createHtmlOutput(
     `<style>
            body
@@ -414,7 +414,7 @@ const htmlStyle = {
               overflow: auto;
             }
         </style>`,
-  ).getContent(),
+  ),
   wrapElement: HtmlService.createHtmlOutput(
     `<style>
            .wrap-element
@@ -424,7 +424,7 @@ const htmlStyle = {
               padding-top: 100%;
             }
         </style>`,
-  ).getContent(),
+  ),
   wrappedIframe: HtmlService.createHtmlOutput(
     `<style>
            .wrapped-iframe
@@ -437,7 +437,7 @@ const htmlStyle = {
               border: 0;
             }
         </style>`,
-  ).getContent(),
+  ),
   progressBar: HtmlService.createHtmlOutput(
     `<style>
            .progress-bar
@@ -446,7 +446,7 @@ const htmlStyle = {
               background-color: rgb(128, 128, 128);
             }
         </style>`,
-  ).getContent(),
+  ),
   progress: HtmlService.createHtmlOutput(
     `<style>
            .progress
@@ -456,5 +456,5 @@ const htmlStyle = {
               background-color: rgb(128, 0, 21);
             }
         </style>`,
-  ).getContent(),
+  ),
 };
