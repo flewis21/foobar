@@ -1,3 +1,5 @@
+@charset UTF8;
+
 .wrap-element {
   position: relative;
   overflow: hidden;
@@ -21,9 +23,110 @@
   background-color: rgb(128, 0, 21);
 }
 body {
+}
+
+article,
+aside,
+footer,
+header,
+nav,
+main,
+section {
+  display: block;
+}
+
+html,
+body,
+h1,
+h2,
+h3,
+ul,
+li,
+a,
+p,
+article,
+aside,
+footer,
+header,
+nav,
+main,
+section {
+  padding: 0;
+  margin: 0;
+}
+
+.banner {
+  background-color: #11233b;
+  color: white;
+  padding: 10px 20px;
+}
+
+body {
   background-image: url("https://styles.redditmedia.com/t5_fbc5d/styles/profileBanner_287kbmnfstk01.JPG?width=1280&height=384&frame=1&auto=webp&crop=1280:384,smart&s=8c7108cee59946ef6626e228d4be3ad539e207f0");
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: cover;
   background-position: center;
+  width: 960px;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #f0f0f0;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 15px;
+}
+
+nav {
+  background-color: #20416c;
+  padding: 5px;
+  margin-top: 1px;
+}
+
+li a {
+  color: white;
+}
+
+li {
+  display: inline;
+  margin-left: 15px;
+  margin-right: 15px;
+  font-size: 20px;
+  font-variant: small-caps;
+  font-weight: bold;
+}
+
+section {
+  background-color: #bbbbbb;
+  margin-top: 10px;
+  padding: 5px;
+}
+
+article {
+  background-color: white;
+  margin-top: 5px;
+  padding: 10px 15px;
+  color: black;
+}
+
+main {
+  width: 570px;
+  float: left;
+  margin-bottom: 10px;
+}
+
+aside {
+  background-color: #bbbbbb;
+  padding: 20px;
+  margin-top: 10px;
+}
+
+.socials {
+  float: right;
+  width: 400px;
+}
+
+footer {
+  clear: both;
+  background-color: #20416c;
+  color: white;
+  padding: 5px 20px;
 }
