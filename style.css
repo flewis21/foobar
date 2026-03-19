@@ -22,8 +22,6 @@
   height: 30px;
   background-color: rgb(128, 0, 21);
 }
-body {
-}
 
 article,
 aside,
@@ -77,8 +75,34 @@ body {
 
 nav {
   background-color: #20416c;
-  padding: 5px;
+  padding: 10px 2%;
+  justify-content: space-between;
   margin-top: 1px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  background: #fff;
+  position: static;
+  top: 0;
+  z-index: 10;
+}
+
+.nav-right img {
+  width: 25px;
+  margin-right: 25px;
+}
+
+.nav-right .user-icon {
+  width: 35px;
+  border-radius: 50%;
+  margin-right: 0;
+}
+
+.nav-left .logo {
+  width: 30px;
+}
+
+.nav-left .menu-icon {
+  width: 22px;
+  margin-right: 25px;
 }
 
 li a {
@@ -129,4 +153,9 @@ footer {
   background-color: #20416c;
   color: white;
   padding: 5px 20px;
+}
+
+.flex-div {
+  display: flex;
+  align-items: center;
 }
