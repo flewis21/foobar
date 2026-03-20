@@ -1,5 +1,3 @@
-@charset UTF8;
-
 .wrap-element {
   position: relative;
   overflow: hidden;
@@ -167,7 +165,7 @@ aside {
 
 .socials {
   float: right;
-  width: 443px;
+  width: 463px;
 }
 
 footer {
