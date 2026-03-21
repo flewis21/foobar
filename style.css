@@ -152,7 +152,7 @@ article {
 }
 
 main {
-  width: 375px;
+  width: 15%;
   float: left;
   margin-bottom: 10px;
 }
@@ -165,7 +165,7 @@ aside {
 
 .socials {
   float: right;
-  width: 463px;
+  width: 75%;
 }
 
 footer {
