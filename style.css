@@ -197,3 +197,6 @@ footer {
   display: flex;
   align-items: center;
 }
+.no-display {
+  display: none;
+}
