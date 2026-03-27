@@ -303,6 +303,7 @@ function doGet(e) {
       var libFunc = "renderFile";
     }
     var foobarr = funcDos || funcTres || funcCallParams || "Untitled2.html"; // Redundant variable
+    Logger.log("Foobar creation successfull. Foobar: " + foobarr)
     try {
       var htmlArray = [
         `untitled proMedia epaWebsite callBack oddChances jsGame checkOnDay uiAccess popUpOpen congressLeg congressMembers jFundamentals gnuFree myGNUFreeJS Section3.Challenge1 cors edgarFriendly editor ssForms styling theRoll theWorks uiAccess cGWI`,
@@ -329,7 +330,7 @@ function doGet(e) {
         // this[libName].renderFile(funcTres)
         return this[libName].renderFile(
           funcTres,
-          {},
+          {fileParam: funcTres,argsParam: funcDos,funcParam: funcUno,},
           "GitHub Pages with Apps Script returning ?func=" +
             libFunc +
             "&args=" +
@@ -338,8 +339,7 @@ function doGet(e) {
               ", " +
               {} +
               ", " +
-              templateName ||
-            foobarr ||
+              foobarr ||
             (htmlArray[foobarr0Index] || htmlArray[foobarrIndex]) + ",",
         );
       } catch (error) {
@@ -348,7 +348,7 @@ function doGet(e) {
       try {
         return renderFile(
           foobarr,
-          {},
+          {fileParam: funcTres,argsParam: funcDos,funcParam: funcUno,},
           "GitHub Pages with Apps Script returning ?func=" +
             libFunc +
             "&args=" +
@@ -357,13 +357,17 @@ function doGet(e) {
               ", " +
               {} +
               ", " +
-              templateName ||
-            foobarr ||
+              foobarr ||
             (htmlArray[foobarr0Index] || htmlArray[foobarrIndex]) + ",",
         );
       } catch (error) {
         Logger.log("Foobar HTML file Out of Order", error.stack);
-        return this[libName].handleGetData(e);
+        if (e && e.parameter && !e.parameter["file"]) {
+          return this[libName].handleGetData(e);
+        }
+        else if (e && e.parameter && e.parameter["file"]) {
+          return this[libName].handleGetData(e.parameter["file"]);
+        }
         // return renderTemplate(
         //   foobar,
         //   {
@@ -382,7 +386,7 @@ function doGet(e) {
       console.log("funcCallParams value", funcCallParams);
       return renderFile(
         "Untitled2.html",
-        {},
+        {fileParam: funcTres,argsParam: funcDos,funcParam: funcUno,},
         "GitHub Pages with Apps Script returning ?func=" +
           libFunc +
           "&args=" +
@@ -407,7 +411,7 @@ function doGet(e) {
           muteHttpExceptions: true,
         };
         let fDot = this[libName].getUrlResponse(fT.url || gT, options);
-        return renderTemplate(fDot?.app, {}, JSON.stringify(fT.name || gT));
+        return renderTemplate(fDot?.app, {fiB: fT,drM: gT,feR: fDot,fileParam: funcTres,argsParam: funcDos,funcParam: funcUno,}, JSON.stringify(fT.name || gT));
       }
     }
   }
