@@ -169,7 +169,12 @@ article {
   color: black;
 }
 
-main,
+main {
+  width: 75%;
+  float: left;
+  margin-bottom: 10px;
+}
+
 .side-main {
   width: 75%;
   float: left;
