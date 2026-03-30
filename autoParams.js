@@ -529,5 +529,5 @@ var renderArgsObject = {
                 document.getElementById("linkFOLLOW").remove();
               }
             })();
-          },`)
-}
+          },`),
+};

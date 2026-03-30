@@ -1,5 +1,3 @@
-
-
 var contentApp = function (blob, argsObject) {
   console.log(
     "Serverside render: line\ncontentApp(blob: " +
@@ -444,7 +442,6 @@ var renderFile = function (file, argsObject, title) {
       </html>
       `,
         {
-          
           renTemp: tmp.evaluate().getContent(),
         },
       );
@@ -1457,7 +1454,7 @@ var renderTemplate = function (blob, argsObject, title) {
         driveB: tmp.payL.link,
         driveA: tmp.payL.type,
         driveC: tmp.payL.data,
-      }
+      },
     );
   } catch (error) {
     console.error("Error rendering template:", error, error.stack);
@@ -1587,7 +1584,7 @@ var renderTemplate = function (blob, argsObject, title) {
 //                 z-index: 0;
 //                 height: 100%;
 //                 overflow: auto;}
-//           .menu-item {flex-flow: 
+//           .menu-item {flex-flow:
 //                     column nowrap;
 //                     flex-basis: auto;
 //                     flex-shrink: 0;
@@ -1699,7 +1696,7 @@ var renderTemplate = function (blob, argsObject, title) {
 //             secResearch()
 //             calcResearch()
 //             investResearch()
-//             newResearch()}) 
+//             newResearch()})
 //           function homeW3() {
 //             const strValue = results.value
 //             results.addEventListener("change",(e) => {
