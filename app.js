@@ -41,12 +41,10 @@ function onYouTubeIframeAPIReady() {
   let done = false;
   function onPlayerStateChange(event) {
     if (event.data == YT.PlayerState.PLAYING) {
-      setTimeout(nextVideo);
       event.target.setShuffle();
       event.target.setLoop();
       ctr++;
     } else if (event.data == YT.PlayerState.UNSTARTED && !done) {
-      var youtubeID = event.target.getVideoUrl();
       changeBorderColor(event.data);
       setTimeout(playVideo);
       event.target.setShuffle();
@@ -62,13 +60,11 @@ function onYouTubeIframeAPIReady() {
       event.target.playVideo();
       ctr++;
     } else if (event.data == YT.PlayerState.PAUSED && !done) {
-      setTimeout(playVideo);
       changeBorderColor(event.data);
       event.target.setShuffle();
       event.target.setLoop();
       event.target.playVideo();
     } else if (event.data == YT.PlayerState.BUFFERING && !done) {
-      setTimeout(playVideo);
       changeBorderColor(event.data);
       event.target.setShuffle();
       event.target.setLoop();
