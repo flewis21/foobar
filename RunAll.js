@@ -1,4 +1,5 @@
 function doGet(e) {
+  let executed = 0;
   var libName = "foo";
 
   // Early return for getData action
@@ -34,7 +35,8 @@ function doGet(e) {
       } else {
         if (!e.parameter["func"] && !e.parameter["args"]) {
           try {
-            return this[libName].handleGetData(e.parameter[data[0]]);
+            let handleData = handleGetData(e.parameter[data[0]]);
+            return handleData
           } catch (nvrMnd) {
             Logger.log("Library Content Service Out of Order: " + nvrMnd.stack);
             argsEd = this[libName].createRandomFunction(e.parameter[data[0]]);
@@ -305,26 +307,29 @@ function doGet(e) {
     var foobarr = funcDos || funcTres || funcCallParams || "Untitled2.html"; // Redundant variable
     Logger.log("Foobar creation successfull. Foobar: " + foobarr);
     try {
-      var htmlArray = [
-        `untitled proMedia epaWebsite callBack oddChances jsGame checkOnDay uiAccess popUpOpen congressLeg congressMembers jFundamentals gnuFree myGNUFreeJS Section3.Challenge1 cors edgarFriendly editor ssForms styling theRoll theWorks uiAccess cGWI`,
-      ]
-        .toString()
-        .split(" ");
+      // var htmlArray = functionRegistry.getHtmlList();
+      // [
+      //   `untitled proMedia epaWebsite callBack oddChances jsGame checkOnDay uiAccess popUpOpen congressLeg congressMembers jFundamentals gnuFree myGNUFreeJS Section3.Challenge1 cors edgarFriendly editor ssForms styling theRoll theWorks uiAccess cGWI`,
+      // ]
+      //   .toString()
+      //   .split(" ");
       if (funcTres) {
-        if (Array.isArray(funcTres)) {
-          const firstArg = funcTres[0];
-          if (htmlArray.includes(firstArg)) {
-            var funcTres0Index = htmlArray.findIndex(function (element) {
-              return element === firstArg;
-            });
-            htmlTresArg = htmlArray[funcTres0Index];
-          }
-        } else if (htmlArray.includes(funcTres)) {
-          var funcTresIndex = htmlArray.findIndex(function (element) {
-            return element === funcTres;
-          });
-          htmlTresArg = htmlArray[funcTresIndex];
-        }
+        // if (Array.isArray(funcTres)) {
+        //   const firstArg = funcTres[0];
+        //   if (htmlArray.includes(firstArg)) {
+        //     var funcTres0Index = htmlArray.findIndex(function (element) {
+        //       return element === firstArg;
+        //     });
+        //     htmlTresArg = htmlArray[funcTres0Index];
+        //   }
+        // } else if (htmlArray.includes(funcTres)) {
+        //   var funcTresIndex = htmlArray.findIndex(function (element) {
+        //     return element === funcTres;
+        //   });
+        //   htmlTresArg = htmlArray[funcTresIndex];
+        // }
+        var htmlTresArg = this[libName].functionHandle(e);
+        executed++
       }
       try {
         // this[libName].renderFile(funcTres)
@@ -363,9 +368,33 @@ function doGet(e) {
       } catch (error) {
         Logger.log("Foobar HTML file Out of Order", error.stack);
         if (e && e.parameter && !e.parameter["file"]) {
-          return this[libName].handleGetData(e);
+          let dataOR = handleGetData(e);
+          Logger.log("this is the object returned from handlegetData, \n" + dataOR);
+          if (dataOR.pL.type === "html") {
+            return renderTemplate(dataOR.message.info, {payL: dataOR}, JSON.stringify(e.parameter));
+          } else if (this[libName].isValidUrl(dataOR.message.content).hostname
+          ) {
+            var seoHtml = this[libName].seoCapital(dataOR.message.content);
+            return renderTemplate(seoHtml, {payL: dataOR}, JSON.stringify(e.parameter));
+          } else {
+            return ContentService.createTextOutput(JSON.stringify(dataOR)).setMimeType(
+              ContentService.MimeType.JSON,
+            );
+          }
         } else if (e && e.parameter && e.parameter["file"]) {
-          return this[libName].handleGetData(e.parameter["file"]);
+          let dataOR = handleGetData(e.parameter["file"]);
+          Logger.log("this is the object returned from handlegetData, \n" + dataOR);
+          if (dataOR.pL.type === "html") {
+            return renderTemplate(dataOR.message.info, {payL: dataOR}, JSON.stringify(e.parameter));
+          } else if (this[libName].isValidUrl(dataOR.message.content).hostname
+          ) {
+            var seoHtml = this[libName].seoCapital(dataOR.message.content);
+            return renderTemplate(seoHtml, {payL: dataOR}, JSON.stringify(e.parameter));
+          } else {
+            return ContentService.createTextOutput(JSON.stringify(dataOR)).setMimeType(
+              ContentService.MimeType.JSON,
+            );
+          }
         }
         // return renderTemplate(
         //   foobar,
@@ -2466,6 +2495,311 @@ function et(e) {
 //     throw error; // Re-throw for client-side catch
 //   }
 // }
+
+function handleGetData(e) {
+  var executed = 0;
+  console.info(`previously exec count - \nhandleGetData(${e}) - `, executed);
+  var htmlList = functionRegistry.getHtmlList();
+  executed++
+
+  // Logging
+  let rndE = "";
+  if (!e) {
+  console.info(`previously exec count - \nhandleGetData(${htmlList}) - `, executed);
+    // rndE = createRandomFunction();
+    Logger.log("Logging object keys for Func uno/dos " + Object.keys(rndE));
+  executed++
+  }
+  else if (e && !e.parameter) {
+  console.info(`previously exec count - \nhandleGetData(${htmlList}) - `, executed);
+    rndE = foo.createRandomFunction(e);
+    Logger.log("Logging object keys for Func uno/dos " + Object.keys(rndE));
+  executed++
+  }
+  else if (e && e.parameter) {
+    let objData = Object.keys(e.parameter);
+    if (objData.length === 0) {
+  console.info(`previously exec count - \nhandleGetData(${htmlList}) - `, executed);
+      rndE = foo.createRandomFunction();
+  executed++
+    }
+    else if (objData.length > 0) {
+      if (e.parameter["func"] || e.parameter["args"] || e.parameter["file"]) {
+        Logger.log(
+          ">>> [LIBRARY] LIBRARY REQUEST: " + JSON.stringify(e),
+        );
+        if (e.parameter["file"]) {
+          Logger.log("Determined that funcTres execution is requested! \n" + e.parameter["file"])
+          var funcTres = e?.parameter["file"];
+          try {
+  console.info(`previously exec count - \nhandleGetData(${JSON.stringify(rndE)}) - `, executed);
+            var htmlArray = functionRegistry.getHtmlList();
+  executed++
+            if (funcTres) {
+              if (Array.isArray(funcTres)) {
+                const firstArg = funcTres[0];
+                if (htmlArray.includes(firstArg)) {
+                  var funcTres0Index = htmlArray.findIndex(function (element) {
+                    return element === firstArg;
+                  });
+                  htmlTresArg = htmlArray[funcTres0Index];
+                }
+              } else if (htmlArray.includes(funcTres)) {
+                var funcTresIndex = htmlArray.findIndex(function (element) {
+                  return element === funcTres;
+                });
+                htmlTresArg = htmlArray[funcTresIndex];
+              }
+            }
+            try {
+              return renderFile(
+                funcTres,
+                {fileParam: funcTres,argsParam: e.parameter["args"],funcParam: e.parameter["func"],},
+                "GitHub Pages with Apps Script returning ?func=renderFile&args=" +
+                  (htmlArray[foobarr0Index] || htmlArray[foobarrIndex]) +
+                    ", " +
+                    {} +
+                    ", " +
+                    (htmlArray[foobarr0Index] || htmlArray[foobarrIndex]) + ",",
+              );
+            } 
+            catch (error) {
+              Logger.log("Requested! HTML file is Out of Order", error.stack);
+            }
+          } catch (error) {
+            console.error(`Error executing function "RENDERFILE":`, error.stack);
+            throw new Error(
+              "Error executing function: " + error.toString() + "\n" + error.stack,
+            );
+          }
+        }
+      } else {
+        if (!e.parameter["func"] && !e.parameter["args"]) {
+  console.info(`previously exec count - \nhandleGetData(${htmlList}) - `, executed);
+          var argsEd = foo.createRandomFunction(e.parameter[objData[0]]);
+  executed++
+          if (typeof argsEd === "string") {
+  console.info(`previously exec count - \nhandleGetData(${JSON.stringify(argsEd)}) - `, executed);
+            e = foo.objectOfS(
+              ["parameter"],
+              [
+                [
+                  ["func", argsEd],
+                ],
+              ],
+              functionRegistry.time,
+            );
+  executed++
+          } else if (typeof argsEd === "object" && argsEd !== null) {
+            let argsAP = Object.values(argsEd);
+            if (argsAP && argsAP.length > 0) {
+  console.info(`previously exec count - \nhandleGetData(${JSON.stringify(argsEd)}) - `, executed);
+              e = foo.objectOfS(
+                ["parameter"],
+                [
+                  [
+                    ["func", Object.keys(argsEd)[0]],
+                    ["args", [...Object.values(argsEd)[0]]],
+                  ],
+                ],
+                functionRegistry.time,
+              );
+  executed++
+            } else {
+  console.info(`previously exec count - \nhandleGetData(${JSON.stringify(argsEd)}) - `, executed);
+              e = foo.objectOfS(
+                ["parameter"],
+                [
+                  [
+                    ["func", Object.keys(argsEd)[0]],
+                  ],
+                ],
+                functionRegistry.time,
+              );
+  executed++
+            }
+          } else {
+            console.log("Unexpected argsEd type: ", argsEd);
+            let argsedObj = [];
+            let aOKeys = Object.keys(argsEd);
+            if (aOKeys.length > 0) {
+              aOKeys.forEach((key) => {
+                argsedObj.push(argsEd[key]);
+              });
+  console.info(`previously exec count - \nhandleGetData(${JSON.stringify(argsEd)}) - `, executed);
+              e = foo.objectOfS(
+                ["parameter"],
+                [
+                  [
+                    ["func", aOKeys],
+                    ["args", argsedObj],
+                  ],
+                ],
+                functionRegistry.time,
+              );
+  executed++
+            } else {
+  console.info(`previously exec count - \nhandleGetData(${JSON.stringify(argsEd)}) - `, executed);
+              e = foo.objectOfS(
+                ["parameter"],
+                [
+                  [
+                    ["func", "aVar"],
+                    ["args", "varA"],
+                  ],
+                ],
+                functionRegistry.time,
+              );
+  executed++
+            }
+          }
+        }
+      }
+    }
+  }
+  if (e && e.parameter && (!e.parameter["func"] && e.parameter["args"])) {
+    var funcUno;
+  }
+  else if (e && e.parameter && (e.parameter["func"] && !e.parameter["args"])) {
+    var funcUno = e.parameter["func"];
+  }
+  else if (e && e.parameter && (e.parameter["func"] && e.parameter["args"])) {
+    var funcUno = e.parameter["func"];
+  }
+  else {
+    var funcUno = Object.keys(rndE);
+  }
+  if (e && e.parameter && (e.parameter["func"] && !e.parameter["args"])) {
+    var funcDos;
+  }
+  else if (e && e.parameter && (!e.parameter["func"] && e.parameter["args"])) {
+    var funcDos = e.parameter["args"];
+  }
+  else if (e && e.parameter && (e.parameter["func"] && e.parameter["args"])) {
+    var funcDos = e.parameter["args"];
+  }
+  else {
+    var funcDos = Object.values(rndE);
+  }
+
+  // --- BEGIN Refactored payLoad processing ---
+
+  try {
+    let rawFuncResult = null;
+    let objVal = funcDos?.toString();
+    if (objVal?.indexOf(",") === -1) {
+  console.info(`previously exec count - \nhandleGetData(${[funcUno, funcDos]}) - `, executed);
+      var isObjValUrl = foo.isValidUrl(objVal).hostname;
+  executed++
+    }
+  console.info(`previously exec count - \nhandleGetData(${[funcUno, funcDos]}) - `, executed);
+    let rawUrlResult = isTruthy(isObjValUrl);
+  executed++
+    if (!rawUrlResult) {
+      let parsedFuncArgs = [];
+      let keyObject;
+      if (typeof funcDos === "object") {
+        keyObject = Object.keys(funcDos);
+        if (keyObject && keyObject.length > 0){
+          Logger.log("This execution is trying to JSON Parse a(n) " + typeof funcDos);
+          try {
+            Logger.log("These are the keys of the object that is being parsed - " + keyObject)
+            parsedFuncArgs = JSON.parse(funcDos);
+            console.info(error.stack);
+          } catch (jsonError) {
+            Logger.log("But, it is failing. \n" + jsonError.stack);
+            if (Array.isArray(funcDos) && funcDos.length > 0) {
+              parsedFuncArgs = funcDos; // Treat as a single string argument if not valid JSON
+            }
+          } 
+        }
+      }  
+      else if (typeof funcDos !== "object" && isTruthy(funcDos)) {
+        parsedFuncArgs = [funcDos]; // Treat as a single string argument if not valid JSON
+      } 
+      else {
+        parsedFuncArgs = funcDos; // Treat as a single string argument if not valid JSON
+      }    //   }
+        if (
+          (funcUno && typeof foo[funcUno] === "function " && !funcDos) ||
+          (funcUno && typeof foo[funcUno] !== "function" && !funcDos)
+        ) {
+          Logger.log("This execution is trying to process without funcDos. funcDos is  " + funcDos);
+          try {
+  console.info(`previously exec count - \nhandleGetData(${rawUrlResult}) - `, executed);
+              rawFuncResult = foo.mis([funcUno]);
+  executed++
+          } catch (error) {
+            Logger.log("But, it is failing.");
+  console.info(`previously exec count - \nhandleGetData(${rawUrlResult}) - `, executed);
+            rawFuncResult = foo[funcUno]();
+  executed++
+          }
+        } else if (
+          funcUno &&
+          typeof foo[funcUno] !== "function" &&
+          funcDos
+        ) {
+          Logger.log("This execution is trying to process with funcDos. funcDos is  " + funcDos);
+          try {
+  console.info(`previously exec count - \nhandleGetData(${rawUrlResult}) - `, executed);
+              rawFuncResult = foo.mis(funcUno.concat(parsedFuncArgs).join(""));
+  executed++
+          } 
+          catch (error) {
+            Logger.log("But, it is failing.");
+            if (funcUno && typeof foo[funcUno] === "function " && !funcDos) {
+  console.info(`previously exec count - \nhandleGetData(${rawFuncResult}) - `, executed);
+              rawFuncResult = foo[funcUno]();
+  executed++
+            } else if (!funcUno && funcDos) {
+  console.info(`previously exec count - \nhandleGetData(${rawFuncResult}) - `, executed);
+              rawFuncResult = foo[parsedFuncArgs]();
+  executed++
+            } else {
+  console.info(`previously exec count - \nhandleGetData(${rawFuncResult}) - `, executed);
+              rawFuncResult = foo[funcUno].apply(this, parsedFuncArgs);
+  executed++
+            }
+          }
+        } else if (!funcUno && funcDos) {
+          Logger.log("This execution is trying to process without funcUno. FuncUno is " + funcUno);
+          try {
+  console.info(`previously exec count - \nhandleGetData(${rawUrlResult}) - `, executed);
+              rawFuncResult = foo.mis([parsedFuncArgs]);
+  executed++
+          } catch (error) {
+            Logger.log("But, it is failing.");
+  console.info(`previously exec count - \nhandleGetData(${rawFuncResult}) - `, executed);
+            rawFuncResult = foo[parsedFuncArgs]();
+  executed++
+          }
+        } else {
+          Logger.log("This execution is trying to process all input \n" + [funcUno, parsedFuncArgs]);
+          try {
+  console.info(`previously exec count - \nhandleGetData(${rawUrlResult}) - `, executed);
+              rawFuncResult = foo.mis([funcUno, ...parsedFuncArgs]);
+  executed++
+          } catch (error) {
+            Logger.log("But, it is failing.");
+  console.info(`previously exec count - \nhandleGetData(${rawFuncResult}) - `, executed);
+            rawFuncResult = foo[funcUno].apply(this, parsedFuncArgs);
+  executed++
+          }
+        }
+    } else {
+      rawFuncResult = rndE;
+      console.log(
+        "Happens everytime createFandomFunction returns the form url as the objects value",
+        rawFuncResult,
+      );
+    }
+    return foo.globalHandleGetData(rawFuncResult)
+  } catch (error) {
+    console.error(`Error during payload processing:`, error);
+    appL = `Critical Error: ${error.stack}`;
+  }
+}
 
 /**
  * Server-side function to receive a new 'e' object from the client

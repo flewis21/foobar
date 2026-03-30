@@ -458,3 +458,76 @@ var htmlStyle = {
         </style>`,
   ),
 };
+
+var renderArgsObject = {
+  funcClicked: HtmlService.createHtmlOutput(`function () {
+            //console.log(document.getElementById("test").innerHTML)
+            // Init a timeout variable to be used below
+            let timeout = null;
+            (() => {
+              // Clear the timeout if it has already been set.
+              // This will prevent the previous task from executing
+              // if it has been less than <MILLISECONDS>
+              // clearTimeout(timeout);
+              // Make a new timeout set to go off in 1000ms (1 second)
+              // timeout = setTimeout
+              // (function  ()
+              // {console.log('Input Value:', textInput.value);}, 5000)();
+              if (typeof url === "undefined") {
+                var urlData = document.getElementById("url").value;
+                var url = urlData.toString();
+              }
+              var func = document.getElementById("func").value;
+              var args = document.getElementById("args").value;
+              if (typeof args !== "undefined") {
+                var linkFollow = document.createElement("a");
+                linkFollow.href =
+                  url +
+                  "?func=" +
+                  encodeURIComponent(func) +
+                  "&args=" +
+                  encodeURIComponent(args);
+                linkFollow.id = "linkFOLLOW";
+                linkFollow.target = "_top";
+                document.body.appendChild(linkFollow);
+                document.getElementById("linkFOLLOW").click();
+                document.getElementById("linkFOLLOW").remove();
+              }
+            })();
+          },
+          argsClicked: function () {
+            //console.log(document.getElementById("test").innerHTML)
+            // Init a timeout variable to be used below
+            let timeout = null;
+            (() => {
+              // Clear the timeout if it has already been set.
+              // This will prevent the previous task from executing
+              // if it has been less than <MILLISECONDS>
+              // clearTimeout(timeout);
+              // Make a new timeout set to go off in 1000ms (1 second)
+              // timeout = setTimeout
+              // (function  ()
+              // {console.log('Input Value:', textInput.value);}, 5000)();
+              if (typeof url === "undefined") {
+                var urlData = document.getElementById("url").value;
+                var url = urlData.toString();
+              }
+              var func = document.getElementById("func").value;
+              var args = document.getElementById("args").value;
+              if (typeof func !== "undefined") {
+                var linkFollow = document.createElement("a");
+                linkFollow.href =
+                  url +
+                  "?func=" +
+                  encodeURIComponent(func) +
+                  "&args=" +
+                  encodeURIComponent(args);
+                linkFollow.id = "linkFOLLOW";
+                linkFollow.target = "_top";
+                document.body.appendChild(linkFollow);
+                document.getElementById("linkFOLLOW").click();
+                document.getElementById("linkFOLLOW").remove();
+              }
+            })();
+          },`)
+}

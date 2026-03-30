@@ -113,22 +113,22 @@ var geneicType = function () {
   };
   // var functionObjectType = resolveParams(["isOmit",["e","b"],"isPick",["e","a"],"isExclude",["e","c"],"isMapped",["e","f"],"isPropertyOf","e","isKeyOf","e","isTruthy","e",,"isTypeScript","e","isValidDoubleObject",{a:"e",b:"e"}]);
   // var functionObjectType = resolveParams(["dtlsPro","bounty","portBing","hunter"]);
-  let randonWord = [globalThis.searchString().myNewArr]
-    .join("")
-    .split("")
-    .sort((a, b) => {
-      let priorityA = 0;
-      let priorityB = 0;
-      if (Math.random() < 0.5) {
-        priorityA = getZuluFreqPriority(a);
-      }
-      if (Math.random() < 0.5) {
-        priorityB = freqPriority.get(b);
-      }
-      return priorityA - priorityB;
-    })
-    .join("");
-  var functionObjectType = doGet({ parameter: { q: randonWord } });
+  // let randonWord = [globalThis.searchString().myNewArr]
+  //   .join("")
+  //   .split("")
+  //   .sort((a, b) => {
+  //     let priorityA = 0;
+  //     let priorityB = 0;
+  //     if (Math.random() < 0.5) {
+  //       priorityA = getZuluFreqPriority(a);
+  //     }
+  //     if (Math.random() < 0.5) {
+  //       priorityB = freqPriority.get(b);
+  //     }
+  //     return priorityA - priorityB;
+  //   })
+  //   .join("");
+  var functionObjectType = doGet({ parameter: { file: "" } });
   // var isExcludeValue = isOmit(functionObjectType["dtlsPro"], "c");
   // isExcludeValue = isOmit(isExcludeValue, "2");
   // isExcludeValue = isOmit(isExcludeValue, "3");
