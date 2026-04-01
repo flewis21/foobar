@@ -45,25 +45,18 @@ function onYouTubeIframeAPIReady() {
       changeBorderColor(event.data);
     } else if (event.data == YT.PlayerState.UNSTARTED) {
       changeBorderColor(event.data);
-      setTimeout(playVideo);
+      event.target.playVideo();
     } else if (event.data == YT.PlayerState.ENDED) {
-      iframePlayer.loadPlaylist("UU6DOFpA9UCTgNwJiVX1IOpQ", ctr);
       changeBorderColor(event.data);
-      event.target.nextvideo();
+      iframePlayer.loadPlaylist("UU6DOFpA9UCTgNwJiVX1IOpQ", ctr);
+      setShuffle();
+      event.target.nextVideo();
     } else if (event.data == YT.PlayerState.PAUSED) {
       changeBorderColor(event.data);
-      event.target.setShuffle();
-      event.target.setLoop();
-      event.target.playVideo();
     } else if (event.data == YT.PlayerState.BUFFERING) {
       changeBorderColor(event.data);
-      event.target.setShuffle();
-      event.target.setLoop();
-      event.target.playVideo();
     } else if (event.data == YT.PlayerState.VIDEO_CUED) {
       changeBorderColor(event.data);
-      setLoop();
-      event.target.playVideo();
     }
     done = true;
   }
