@@ -34,6 +34,7 @@ function onYouTubeIframeAPIReady() {
   function onPlayerReady(event) {
     setShuffle();
     event.target.nextVideo();
+    setTimeout(playVideo);
   }
 
   // 5. The API calls this function when the player's state changes.
@@ -43,15 +44,14 @@ function onYouTubeIframeAPIReady() {
   function onPlayerStateChange(event) {
     if (event.data == YT.PlayerState.PLAYING) {
       changeBorderColor(event.data);
-      iframePlayer.loadPlaylist("UU6DOFpA9UCTgNwJiVX1IOpQ", ctr);
       event.target.setLoop();
     } else if (event.data == YT.PlayerState.UNSTARTED && !done) {
       changeBorderColor(event.data);
       event.target.playVideo();
     } else if (event.data == YT.PlayerState.ENDED && !done) {
       changeBorderColor(event.data);
+      iframePlayer.loadPlaylist("UU6DOFpA9UCTgNwJiVX1IOpQ", ctr);
       event.target.nextvideo();
-      setTimeout(playVideo);
     } else if (event.data == YT.PlayerState.PAUSED && !done) {
       changeBorderColor(event.data);
       event.target.setShuffle();
