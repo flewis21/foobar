@@ -32,8 +32,7 @@ function onYouTubeIframeAPIReady() {
     },
   });
   function onPlayerReady(event) {
-    setShuffle();
-    event.target.nextVideo();
+    iframePlayer.loadPlaylist("UU6DOFpA9UCTgNwJiVX1IOpQ", ctr);
   }
 
   // 5. The API calls this function when the player's state changes.
@@ -42,6 +41,8 @@ function onYouTubeIframeAPIReady() {
   let done = false;
   function onPlayerStateChange(event) {
     if (event.data == YT.PlayerState.PLAYING) {
+      setShuffle();
+      event.target.nextVideo();
       changeBorderColor(event.data);
       event.target.setLoop();
     } else if (event.data == YT.PlayerState.UNSTARTED && !done) {
@@ -61,7 +62,6 @@ function onYouTubeIframeAPIReady() {
       event.target.setLoop();
       event.target.playVideo();
     } else if (event.data == YT.PlayerState.VIDEO_CUED && !done) {
-      iframePlayer.loadPlaylist("UU6DOFpA9UCTgNwJiVX1IOpQ", ctr);
       changeBorderColor(event.data);
       event.target.playVideo();
     }
