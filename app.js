@@ -43,24 +43,24 @@ function onYouTubeIframeAPIReady() {
   function onPlayerStateChange(event) {
     if (event.data == YT.PlayerState.PLAYING) {
       changeBorderColor(event.data);
-    } else if (event.data == YT.PlayerState.UNSTARTED && !done) {
+    } else if (event.data == YT.PlayerState.UNSTARTED) {
       changeBorderColor(event.data);
       setTimeout(playVideo);
-    } else if (event.data == YT.PlayerState.ENDED && !done) {
+    } else if (event.data == YT.PlayerState.ENDED) {
       iframePlayer.loadPlaylist("UU6DOFpA9UCTgNwJiVX1IOpQ", ctr);
       changeBorderColor(event.data);
       event.target.nextvideo();
-    } else if (event.data == YT.PlayerState.PAUSED && !done) {
+    } else if (event.data == YT.PlayerState.PAUSED) {
       changeBorderColor(event.data);
       event.target.setShuffle();
       event.target.setLoop();
       event.target.playVideo();
-    } else if (event.data == YT.PlayerState.BUFFERING && !done) {
+    } else if (event.data == YT.PlayerState.BUFFERING) {
       changeBorderColor(event.data);
       event.target.setShuffle();
       event.target.setLoop();
       event.target.playVideo();
-    } else if (event.data == YT.PlayerState.VIDEO_CUED && !done) {
+    } else if (event.data == YT.PlayerState.VIDEO_CUED) {
       changeBorderColor(event.data);
       setLoop();
       event.target.playVideo();
