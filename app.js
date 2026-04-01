@@ -109,15 +109,15 @@ function onYouTubeIframeAPIReady() {
   }
 
   function getVideoUrl() {
-    player1.getVideoUrl();
+    iframePlayer.getVideoUrl();
   }
 
   function setLoop() {
-    player1.setLoop(true);
+    iframePlayer.setLoop(true);
   }
 
   function setShuffle() {
-    player1.setShuffle(true);
+    iframePlayer.setShuffle(true);
   }
 
   function playVideo() {
@@ -128,11 +128,11 @@ function onYouTubeIframeAPIReady() {
   }
 
   function pauseVideo() {
-    player1.pauseVideo();
+    iframePlayer.pauseVideo();
   }
 
   function onPlayerError() {
-    player1.destroy;
+    iframePlayer.destroy;
     onYouTubeIframeAPIReady();
   }
 }
