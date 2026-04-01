@@ -32,9 +32,10 @@ function onYouTubeIframeAPIReady() {
     },
   });
   function onPlayerReady(event) {
+    event.target.playVideo();
+    setTimeout(playVideo);
     setShuffle();
     event.target.nextVideo();
-    event.target.playVideo();
   }
 
   // 5. The API calls this function when the player's state changes.
