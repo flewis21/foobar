@@ -33,7 +33,8 @@ function onYouTubeIframeAPIReady() {
   });
   function onPlayerReady(event) {
     event.target.loadPlaylist("UU6DOFpA9UCTgNwJiVX1IOpQ", ctr);
-    setTimeout(setShuffle);
+    setShuffle();
+    setTimeout(nextvideo);
   }
 
   // 5. The API calls this function when the player's state changes.
