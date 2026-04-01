@@ -40,8 +40,8 @@ function onYouTubeIframeAPIReady() {
   function onPlayerStateChange(event) {
     if (event.data == YT.PlayerState.PLAYING) {
       setShuffle();
+      setLoop();
       changeBorderColor(event.data);
-      event.target.setLoop();
     } else if (event.data == YT.PlayerState.UNSTARTED && !done) {
       changeBorderColor(event.data);
       event.target.playVideo();
