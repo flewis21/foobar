@@ -31,7 +31,10 @@ function onYouTubeIframeAPIReady() {
       onError: onPlayerError,
     },
   });
-  function onPlayerReady(event) {}
+  function onPlayerReady(event) {
+    setShuffle();
+    event.target.playVideo();
+  }
 
   // 5. The API calls this function when the player's state changes.
   //    The function indicates that when playing a video (state=1),
@@ -39,7 +42,6 @@ function onYouTubeIframeAPIReady() {
   let done = false;
   function onPlayerStateChange(event) {
     if (event.data == YT.PlayerState.PLAYING) {
-      setShuffle();
       setLoop();
       changeBorderColor(event.data);
     } else if (event.data == YT.PlayerState.UNSTARTED && !done) {
