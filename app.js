@@ -31,9 +31,7 @@ function onYouTubeIframeAPIReady() {
       onError: onPlayerError,
     },
   });
-  function onPlayerReady(event) {
-    iframePlayer.loadPlaylist("UU6DOFpA9UCTgNwJiVX1IOpQ", ctr);
-  }
+  function onPlayerReady(event) {}
 
   // 5. The API calls this function when the player's state changes.
   //    The function indicates that when playing a video (state=1),
@@ -48,6 +46,7 @@ function onYouTubeIframeAPIReady() {
       changeBorderColor(event.data);
       event.target.playVideo();
     } else if (event.data == YT.PlayerState.ENDED && !done) {
+      iframePlayer.loadPlaylist("UU6DOFpA9UCTgNwJiVX1IOpQ", ctr);
       changeBorderColor(event.data);
       event.target.nextvideo();
     } else if (event.data == YT.PlayerState.PAUSED && !done) {
