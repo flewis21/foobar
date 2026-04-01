@@ -56,12 +56,12 @@ function onYouTubeIframeAPIReady() {
       event.target.setLoop();
       event.target.playVideo();
     } else if (event.data == YT.PlayerState.BUFFERING && !done) {
-      iframePlayer.loadPlaylist("UU6DOFpA9UCTgNwJiVX1IOpQ", ctr);
       changeBorderColor(event.data);
       event.target.setShuffle();
       event.target.setLoop();
       event.target.playVideo();
     } else if (event.data == YT.PlayerState.VIDEO_CUED && !done) {
+      iframePlayer.loadPlaylist("UU6DOFpA9UCTgNwJiVX1IOpQ", ctr);
       changeBorderColor(event.data);
       event.target.playVideo();
     }
