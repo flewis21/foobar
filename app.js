@@ -46,7 +46,6 @@ function onYouTubeIframeAPIReady() {
       changeBorderColor(event.data);
     } else if (event.data == YT.PlayerState.UNSTARTED) {
       changeBorderColor(event.data);
-      event.target.playVideo();
     } else if (event.data == YT.PlayerState.ENDED) {
       changeBorderColor(event.data);
       iframePlayer.loadPlaylist("UU6DOFpA9UCTgNwJiVX1IOpQ", ctr);
@@ -58,6 +57,7 @@ function onYouTubeIframeAPIReady() {
       changeBorderColor(event.data);
     } else if (event.data == YT.PlayerState.VIDEO_CUED) {
       changeBorderColor(event.data);
+      event.target.playVideo();
     }
     done = true;
   }
