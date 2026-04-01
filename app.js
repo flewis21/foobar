@@ -33,7 +33,7 @@ function onYouTubeIframeAPIReady() {
   });
   function onPlayerReady(event) {
     setShuffle();
-    playVideo();
+    event.target.playVideo();
   }
 
   // 5. The API calls this function when the player's state changes.
