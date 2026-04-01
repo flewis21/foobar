@@ -32,7 +32,6 @@ function onYouTubeIframeAPIReady() {
     },
   });
   function onPlayerReady(event) {
-    iframePlayer.loadPlaylist("UU6DOFpA9UCTgNwJiVX1IOpQ", ctr);
     setShuffle();
     event.target.nextvideo();
     event.target.playVideo();
