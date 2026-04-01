@@ -28,6 +28,7 @@ function onYouTubeIframeAPIReady() {
     events: { onReady: onPlayerReady, onStateChange: onPlayerStateChange },
   });
   function onPlayerReady(event) {
+    event.target.setShuffle();
     event.target.nextVideo();
     event.target.playVideo();
   }
