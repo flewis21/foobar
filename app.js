@@ -63,10 +63,7 @@ function onYouTubeIframeAPIReady() {
       event.target.setLoop();
       event.target.playVideo();
     } else if (event.data == YT.PlayerState.VIDEO_CUED && !done) {
-      setTimeout(playVideo);
       changeBorderColor(event.data);
-      event.target.setShuffle();
-      event.target.setLoop();
       event.target.playVideo();
     }
     done = true;
