@@ -33,6 +33,7 @@ function onYouTubeIframeAPIReady() {
   });
   function onPlayerReady(event) {
     setShuffle();
+    setTimeout(nextVideo);
     event.target.playVideo();
   }
 
