@@ -25,9 +25,14 @@ function onYouTubeIframeAPIReady() {
       listType: "playlist",
       list: "UU6DOFpA9UCTgNwJiVX1IOpQ",
     },
-    events: { onReady: onPlayerReady, onStateChange: onPlayerStateChange },
+    events: {
+      onReady: onPlayerReady,
+      onStateChange: onPlayerStateChange,
+      onError: onPlayerError,
+    },
   });
   function onPlayerReady(event) {
+    event.target.loadPlaylist("UU6DOFpA9UCTgNwJiVX1IOpQ", ctr);
     event.target.setShuffle();
   }
 
@@ -38,24 +43,14 @@ function onYouTubeIframeAPIReady() {
   function onPlayerStateChange(event) {
     if (event.data == YT.PlayerState.PLAYING) {
       changeBorderColor(event.data);
-      iframePlayer.loadPlaylist("UU6DOFpA9UCTgNwJiVX1IOpQ", ctr);
-      event.target.setShuffle();
-      ctr++;
+      event.target.setLoop();
     } else if (event.data == YT.PlayerState.UNSTARTED && !done) {
       changeBorderColor(event.data);
-      setTimeout(nextVideo);
-      event.target.setShuffle();
-      event.target.setLoop();
       event.target.playVideo();
-      ctr++;
     } else if (event.data == YT.PlayerState.ENDED && !done) {
-      iframePlayer.loadPlaylist("UU6DOFpA9UCTgNwJiVX1IOpQ", ctr);
-      setTimeout(nextVideo);
       changeBorderColor(event.data);
-      event.target.setShuffle();
-      event.target.setLoop();
-      event.target.playVideo();
-      ctr++;
+      event.target.nextvideo();
+      setTimeout(playVideo);
     } else if (event.data == YT.PlayerState.PAUSED && !done) {
       changeBorderColor(event.data);
       event.target.setShuffle();
@@ -102,6 +97,11 @@ function onYouTubeIframeAPIReady() {
       document.getElementById("iframePlayer").style.borderColor = color;
     }
   }
+
+  function onPlayerError() {
+    iframePlayer.destroy;
+    onYouTubeIframeAPIReady();
+  }
   function stopVideo() {
     iframePlayer.stopVideo();
   }
@@ -127,10 +127,5 @@ function onYouTubeIframeAPIReady() {
 
   function pauseVideo() {
     iframePlayer.pauseVideo();
-  }
-
-  function onPlayerError() {
-    iframePlayer.destroy;
-    onYouTubeIframeAPIReady();
   }
 }
