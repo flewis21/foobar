@@ -35,6 +35,7 @@ function onYouTubeIframeAPIReady() {
     iframePlayer.loadPlaylist("UU6DOFpA9UCTgNwJiVX1IOpQ", ctr);
     event.target.nextVideo();
     setShuffle();
+    ctr++;
     event.target.playVideo();
   }
 
@@ -64,7 +65,6 @@ function onYouTubeIframeAPIReady() {
     } else if (event.data == YT.PlayerState.PAUSED) {
       changeBorderColor(event.data);
       setShuffle();
-      ctr++;
     } else if (event.data == YT.PlayerState.BUFFERING) {
       changeBorderColor(event.data);
       iframePlayer.loadPlaylist("UU6DOFpA9UCTgNwJiVX1IOpQ", ctr);
