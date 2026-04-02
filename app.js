@@ -33,7 +33,6 @@ function onYouTubeIframeAPIReady() {
   });
   function onPlayerReady(event) {
     setShuffle();
-    event.target.nextVideo();
   }
 
   // 5. The API calls this function when the player's state changes.
@@ -56,6 +55,7 @@ function onYouTubeIframeAPIReady() {
     } else if (event.data == YT.PlayerState.BUFFERING) {
       changeBorderColor(event.data);
       setShuffle();
+      setTimeout(nextVideo);
       event.target.neztVideo();
     } else if (event.data == YT.PlayerState.VIDEO_CUED) {
       changeBorderColor(event.data);
