@@ -63,10 +63,8 @@ function onYouTubeIframeAPIReady() {
       event.target.playVideo();
     } else if (event.data == YT.PlayerState.PAUSED) {
       changeBorderColor(event.data);
-      iframePlayer.loadPlaylist("UU6DOFpA9UCTgNwJiVX1IOpQ", ctr);
-      event.target.nextVideo();
       setShuffle();
-      event.target.playVideo();
+      event.target.nextVideo();
     } else if (event.data == YT.PlayerState.BUFFERING) {
       changeBorderColor(event.data);
       iframePlayer.loadPlaylist("UU6DOFpA9UCTgNwJiVX1IOpQ", ctr);
