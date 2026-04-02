@@ -47,6 +47,8 @@ function onYouTubeIframeAPIReady() {
     if (event.data == YT.PlayerState.PLAYING) {
       changeBorderColor(event.data);
       setShuffle();
+      event.target.nextVideo();
+      event.target.playVideo();
       ctr++;
     } else if (event.data == YT.PlayerState.UNSTARTED) {
       changeBorderColor(event.data);
