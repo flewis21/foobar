@@ -32,7 +32,7 @@ function onYouTubeIframeAPIReady() {
     },
   });
   function onPlayerReady(event) {
-    setShuffle();
+    iframePlayer.loadPlaylist("UU6DOFpA9UCTgNwJiVX1IOpQ", ctr);
   }
 
   // 5. The API calls this function when the player's state changes.
@@ -46,7 +46,6 @@ function onYouTubeIframeAPIReady() {
       changeBorderColor(event.data);
     } else if (event.data == YT.PlayerState.ENDED) {
       changeBorderColor(event.data);
-      iframePlayer.loadPlaylist("UU6DOFpA9UCTgNwJiVX1IOpQ", ctr);
       setShuffle();
       event.target.nextVideo();
     } else if (event.data == YT.PlayerState.PAUSED) {
