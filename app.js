@@ -49,10 +49,10 @@ function onYouTubeIframeAPIReady() {
       changeBorderColor(event.data);
     } else if (event.data == YT.PlayerState.ENDED) {
       changeBorderColor(event.data);
-      iframePlayer.loadPlaylist("UU6DOFpA9UCTgNwJiVX1IOpQ", ctr);
       event.target.playVideo();
     } else if (event.data == YT.PlayerState.PAUSED) {
       changeBorderColor(event.data);
+      iframePlayer.loadPlaylist("UU6DOFpA9UCTgNwJiVX1IOpQ", ctr);
     } else if (event.data == YT.PlayerState.BUFFERING) {
       changeBorderColor(event.data);
     } else if (event.data == YT.PlayerState.VIDEO_CUED) {
