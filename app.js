@@ -44,7 +44,6 @@ function onYouTubeIframeAPIReady() {
     if (event.data == YT.PlayerState.PLAYING) {
       changeBorderColor(event.data);
       setShuffle();
-      event.target.neztVideo();
     } else if (event.data == YT.PlayerState.UNSTARTED) {
       changeBorderColor(event.data);
     } else if (event.data == YT.PlayerState.ENDED) {
@@ -57,6 +56,7 @@ function onYouTubeIframeAPIReady() {
       changeBorderColor(event.data);
     } else if (event.data == YT.PlayerState.VIDEO_CUED) {
       changeBorderColor(event.data);
+      event.target.neztVideo();
     }
     done = true;
   }
