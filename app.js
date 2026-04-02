@@ -34,7 +34,7 @@ function onYouTubeIframeAPIReady() {
   function onPlayerReady(event) {
     iframePlayer.loadPlaylist("UU6DOFpA9UCTgNwJiVX1IOpQ", ctr);
     setShuffle();
-    setTimeout(nextVideo);
+    setTimeout(playVideo);
     event.target.playVideo();
     setLoop();
     event.target.playVideo();
@@ -60,7 +60,7 @@ function onYouTubeIframeAPIReady() {
     } else if (event.data == YT.PlayerState.BUFFERING) {
       changeBorderColor(event.data);
       setShuffle();
-      event.target.playVideo();
+      setTimeout(nextVideo);
       event.target.neztVideo();
     } else if (event.data == YT.PlayerState.VIDEO_CUED) {
       changeBorderColor(event.data);
