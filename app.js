@@ -33,7 +33,7 @@ function onYouTubeIframeAPIReady() {
   });
   function onPlayerReady(event) {
     setShuffle();
-    setTimeout(playVideo);
+    event.target.playVideo();
     iframePlayer.loadPlaylist("UU6DOFpA9UCTgNwJiVX1IOpQ", ctr);
     ctr++;
   }
