@@ -60,7 +60,7 @@ function onYouTubeIframeAPIReady() {
     } else if (event.data == YT.PlayerState.BUFFERING) {
       changeBorderColor(event.data);
       setShuffle();
-      setTimeout(playVideo);
+      event.target.playVideo();
       event.target.neztVideo();
     } else if (event.data == YT.PlayerState.VIDEO_CUED) {
       changeBorderColor(event.data);
