@@ -32,12 +32,8 @@ function onYouTubeIframeAPIReady() {
     },
   });
   function onPlayerReady(event) {
-    iframePlayer.loadPlaylist("UU6DOFpA9UCTgNwJiVX1IOpQ", ctr);
     setShuffle();
-    setTimeout(playVideo);
-    event.target.playVideo();
-    setLoop();
-    event.target.playVideo();
+    event.target.nextVideo();
   }
 
   // 5. The API calls this function when the player's state changes.
@@ -53,18 +49,17 @@ function onYouTubeIframeAPIReady() {
       event.target.playVideo();
     } else if (event.data == YT.PlayerState.ENDED) {
       changeBorderColor(event.data);
+      setShuffle();
       event.target.playVideo();
+      setShuffle();
+      event.target.nextVideo();
     } else if (event.data == YT.PlayerState.PAUSED) {
       changeBorderColor(event.data);
-      iframePlayer.loadPlaylist("UU6DOFpA9UCTgNwJiVX1IOpQ", ctr);
     } else if (event.data == YT.PlayerState.BUFFERING) {
       changeBorderColor(event.data);
       setShuffle();
-      setTimeout(nextVideo);
-      event.target.neztVideo();
     } else if (event.data == YT.PlayerState.VIDEO_CUED) {
       changeBorderColor(event.data);
-      event.target.neztVideo();
     }
     done = true;
   }
