@@ -35,8 +35,12 @@ function doGet(e) {
       } else {
         if (!e.parameter["func"] && !e.parameter["args"]) {
           try {
-            let handleData = handleGetData(e.parameter[data[0]]);
-            return handleData;
+            const handles = this[libName].functionHandle(e.parameter[data[0]]);
+            let funcU = handles["exec"];
+            let funcD = handles["args"];
+            let base = this[libName].createFunctionResult(funcU, funcD);
+            let handleData = this[libName].globalHandleGetData(base);
+            return renderTemplate(handleData.message.info, {payL: handleData.pL}, handleData.timestamp);
           } catch (nvrMnd) {
             Logger.log("Library Content Service Out of Order: " + nvrMnd.stack);
             argsEd = this[libName].createRandomFunction(e.parameter[data[0]]);
@@ -368,12 +372,17 @@ function doGet(e) {
       } catch (error) {
         Logger.log("Foobar HTML file Out of Order", error.stack);
         if (e && e.parameter && !e.parameter["file"]) {
-          let dataOR = handleGetData(e);
+          const handles = this[libName].functionHandle(e);
+          let funcU = handles["exec"];
+          let funcD = handles["args"];
+          let base = this[libName].createFunctionResult(funcU, funcD);
+          let dataOR = this[libName].globalHandleGetData(base);
+          // const data = this[libName].globalHandleGetData();
           Logger.log(
             "this is the object returned from handlegetData, \n" + dataOR,
           );
-          if (dataOR.pL.type === "html") {
-            return renderTemplate(
+          if (dataOR.pL?.type === "html") {
+            return this[libName].renderTemplate(
               dataOR.message.info,
               { payL: dataOR },
               JSON.stringify(e.parameter),
@@ -382,7 +391,7 @@ function doGet(e) {
             this[libName].isValidUrl(dataOR.message.content).hostname
           ) {
             var seoHtml = this[libName].seoCapital(dataOR.message.content);
-            return renderTemplate(
+            return this[libName].renderTemplate(
               seoHtml,
               { payL: dataOR },
               JSON.stringify(e.parameter),
@@ -393,12 +402,17 @@ function doGet(e) {
             ).setMimeType(ContentService.MimeType.JSON);
           }
         } else if (e && e.parameter && e.parameter["file"]) {
-          let dataOR = handleGetData(e.parameter["file"]);
+          const handles = this[libName].functionHandle(e.parameter["file"]);
+          let funcU = handles["exec"];
+          let funcD = handles["args"];
+          let base = this[libName].createFunctionResult(funcU, funcD);
+          let dataOR = this[libName].globalHandleGetData(base);
+          // const data = globalHandleGetData();
           Logger.log(
             "this is the object returned from handlegetData, \n" + dataOR,
           );
           if (dataOR.pL.type === "html") {
-            return renderTemplate(
+            return this[libName].renderTemplate(
               dataOR.message.info,
               { payL: dataOR },
               JSON.stringify(e.parameter),
@@ -407,7 +421,7 @@ function doGet(e) {
             this[libName].isValidUrl(dataOR.message.content).hostname
           ) {
             var seoHtml = this[libName].seoCapital(dataOR.message.content);
-            return renderTemplate(
+            return this[libName].renderTemplate(
               seoHtml,
               { payL: dataOR },
               JSON.stringify(e.parameter),
