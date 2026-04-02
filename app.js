@@ -32,10 +32,7 @@ function onYouTubeIframeAPIReady() {
     },
   });
   function onPlayerReady(event) {
-    iframePlayer.loadPlaylist("UU6DOFpA9UCTgNwJiVX1IOpQ", ctr);
     setShuffle();
-    event.target.nextVideo();
-    event.target.playVideo();
     ctr++;
   }
 
@@ -47,27 +44,18 @@ function onYouTubeIframeAPIReady() {
     if (event.data == YT.PlayerState.PLAYING) {
       changeBorderColor(event.data);
       iframePlayer.loadPlaylist("UU6DOFpA9UCTgNwJiVX1IOpQ", ctr);
-      setShuffle();
+      ctr++;
     } else if (event.data == YT.PlayerState.UNSTARTED) {
       changeBorderColor(event.data);
-      iframePlayer.loadPlaylist("UU6DOFpA9UCTgNwJiVX1IOpQ", ctr);
-      setShuffle();
     } else if (event.data == YT.PlayerState.ENDED) {
       changeBorderColor(event.data);
-      setShuffle();
       event.target.playVideo();
     } else if (event.data == YT.PlayerState.PAUSED) {
       changeBorderColor(event.data);
-      iframePlayer.loadPlaylist("UU6DOFpA9UCTgNwJiVX1IOpQ", ctr);
-      setShuffle();
     } else if (event.data == YT.PlayerState.BUFFERING) {
       changeBorderColor(event.data);
-      iframePlayer.loadPlaylist("UU6DOFpA9UCTgNwJiVX1IOpQ", ctr);
-      setShuffle();
     } else if (event.data == YT.PlayerState.VIDEO_CUED) {
       changeBorderColor(event.data);
-      iframePlayer.loadPlaylist("UU6DOFpA9UCTgNwJiVX1IOpQ", ctr);
-      setShuffle();
     }
     done = true;
   }
