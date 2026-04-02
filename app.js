@@ -43,7 +43,6 @@ function onYouTubeIframeAPIReady() {
   function onPlayerStateChange(event) {
     if (event.data == YT.PlayerState.PLAYING) {
       changeBorderColor(event.data);
-      setShuffle();
     } else if (event.data == YT.PlayerState.UNSTARTED) {
       changeBorderColor(event.data);
     } else if (event.data == YT.PlayerState.ENDED) {
@@ -54,6 +53,7 @@ function onYouTubeIframeAPIReady() {
       iframePlayer.loadPlaylist("UU6DOFpA9UCTgNwJiVX1IOpQ", ctr);
     } else if (event.data == YT.PlayerState.BUFFERING) {
       changeBorderColor(event.data);
+      setShuffle();
     } else if (event.data == YT.PlayerState.VIDEO_CUED) {
       changeBorderColor(event.data);
       event.target.neztVideo();
