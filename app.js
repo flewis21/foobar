@@ -32,8 +32,9 @@ function onYouTubeIframeAPIReady() {
     },
   });
   function onPlayerReady(event) {
-    setShuffle();
+    event.target.playVideo();
     event.target.neztVideo();
+    setShuffle();
   }
 
   // 5. The API calls this function when the player's state changes.
