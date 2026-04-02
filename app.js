@@ -32,8 +32,7 @@ function onYouTubeIframeAPIReady() {
     },
   });
   function onPlayerReady(event) {
-    event.target.playVideo();
-    event.target.neztVideo();
+    setTimeout(playVideo);
   }
 
   // 5. The API calls this function when the player's state changes.
@@ -43,8 +42,10 @@ function onYouTubeIframeAPIReady() {
   function onPlayerStateChange(event) {
     if (event.data == YT.PlayerState.PLAYING) {
       changeBorderColor(event.data);
+      setLoop();
     } else if (event.data == YT.PlayerState.UNSTARTED) {
       changeBorderColor(event.data);
+      event.target.playVideo();
     } else if (event.data == YT.PlayerState.ENDED) {
       changeBorderColor(event.data);
       event.target.playVideo();
@@ -54,6 +55,7 @@ function onYouTubeIframeAPIReady() {
     } else if (event.data == YT.PlayerState.BUFFERING) {
       changeBorderColor(event.data);
       setShuffle();
+      event.target.neztVideo();
     } else if (event.data == YT.PlayerState.VIDEO_CUED) {
       changeBorderColor(event.data);
       event.target.neztVideo();
