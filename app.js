@@ -33,6 +33,8 @@ function onYouTubeIframeAPIReady() {
   });
   function onPlayerReady(event) {
     iframePlayer.loadPlaylist("UU6DOFpA9UCTgNwJiVX1IOpQ", ctr);
+    setShuffle();
+    event.target.nextVideo();
   }
 
   // 5. The API calls this function when the player's state changes.
@@ -42,24 +44,37 @@ function onYouTubeIframeAPIReady() {
   function onPlayerStateChange(event) {
     if (event.data == YT.PlayerState.PLAYING) {
       changeBorderColor(event.data);
+      iframePlayer.loadPlaylist("UU6DOFpA9UCTgNwJiVX1IOpQ", ctr);
       setShuffle();
       event.target.nextVideo();
+      event.target.playVideo();
     } else if (event.data == YT.PlayerState.UNSTARTED) {
       changeBorderColor(event.data);
+      iframePlayer.loadPlaylist("UU6DOFpA9UCTgNwJiVX1IOpQ", ctr);
       setShuffle();
       event.target.nextVideo();
+      event.target.playVideo();
     } else if (event.data == YT.PlayerState.ENDED) {
       changeBorderColor(event.data);
+      iframePlayer.loadPlaylist("UU6DOFpA9UCTgNwJiVX1IOpQ", ctr);
       setShuffle();
       event.target.nextVideo();
+      event.target.playVideo();
     } else if (event.data == YT.PlayerState.PAUSED) {
       changeBorderColor(event.data);
+      iframePlayer.loadPlaylist("UU6DOFpA9UCTgNwJiVX1IOpQ", ctr);
       setShuffle();
       event.target.nextVideo();
+      event.target.playVideo();
     } else if (event.data == YT.PlayerState.BUFFERING) {
       changeBorderColor(event.data);
+      iframePlayer.loadPlaylist("UU6DOFpA9UCTgNwJiVX1IOpQ", ctr);
+      setShuffle();
+      event.target.nextVideo();
+      event.target.playVideo();
     } else if (event.data == YT.PlayerState.VIDEO_CUED) {
       changeBorderColor(event.data);
+      iframePlayer.loadPlaylist("UU6DOFpA9UCTgNwJiVX1IOpQ", ctr);
       setShuffle();
       event.target.nextVideo();
       event.target.playVideo();
