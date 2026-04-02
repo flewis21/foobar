@@ -33,7 +33,7 @@ function onYouTubeIframeAPIReady() {
   });
   function onPlayerReady(event) {
     setShuffle();
-    ctr++;
+    event.target.neztVideo();
   }
 
   // 5. The API calls this function when the player's state changes.
