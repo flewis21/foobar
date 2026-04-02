@@ -42,18 +42,26 @@ function onYouTubeIframeAPIReady() {
   function onPlayerStateChange(event) {
     if (event.data == YT.PlayerState.PLAYING) {
       changeBorderColor(event.data);
+      setShuffle();
+      event.target.nextVideo();
     } else if (event.data == YT.PlayerState.UNSTARTED) {
       changeBorderColor(event.data);
+      setShuffle();
+      event.target.nextVideo();
     } else if (event.data == YT.PlayerState.ENDED) {
       changeBorderColor(event.data);
       setShuffle();
       event.target.nextVideo();
     } else if (event.data == YT.PlayerState.PAUSED) {
       changeBorderColor(event.data);
+      setShuffle();
+      event.target.nextVideo();
     } else if (event.data == YT.PlayerState.BUFFERING) {
       changeBorderColor(event.data);
     } else if (event.data == YT.PlayerState.VIDEO_CUED) {
       changeBorderColor(event.data);
+      setShuffle();
+      event.target.nextVideo();
       event.target.playVideo();
     }
     done = true;
