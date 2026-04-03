@@ -35,7 +35,7 @@ function doGet(e) {
       } else {
         if (!e.parameter["func"] && !e.parameter["args"]) {
           try {
-            const handles = this[libName].functionHandle(e.parameter[data[0]]);
+            const handles = this[libName].functionHandle(e);
             let funcU = handles["exec"];
             let funcD = handles["args"];
             let base = this[libName].createFunctionResult(funcU, funcD);
@@ -402,7 +402,7 @@ function doGet(e) {
             ).setMimeType(ContentService.MimeType.JSON);
           }
         } else if (e && e.parameter && e.parameter["file"]) {
-          const handles = this[libName].functionHandle(e.parameter["file"]);
+          const handles = this[libName].functionHandle(e);
           let funcU = handles["exec"];
           let funcD = handles["args"];
           let base = this[libName].createFunctionResult(funcU, funcD);
@@ -411,16 +411,16 @@ function doGet(e) {
           Logger.log(
             "this is the object returned from handlegetData, \n" + dataOR,
           );
-          if (dataOR.pL.type === "html") {
+          if (dataOR?.pL?.type === "html") {
             return this[libName].renderTemplate(
-              dataOR.message.info,
+              dataOR?.message?.info,
               { payL: dataOR },
               JSON.stringify(e.parameter),
             );
           } else if (
-            this[libName].isValidUrl(dataOR.message.content).hostname
+            this[libName].isValidUrl(dataOR?.message?.content).hostname
           ) {
-            var seoHtml = this[libName].seoCapital(dataOR.message.content);
+            var seoHtml = this[libName].seoCapital(dataOR?.message?.content);
             return this[libName].renderTemplate(
               seoHtml,
               { payL: dataOR },
