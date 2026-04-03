@@ -388,9 +388,9 @@ function doGet(e) {
               JSON.stringify(e.parameter),
             );
           } else if (
-            this[libName].isValidUrl(dataOR.message.content).hostname
+            this[libName].isValidUrl(dataOR?.message?.content).hostname && dataOR?.pL?.type !== "html"
           ) {
-            var seoHtml = this[libName].seoCapital(dataOR.message.content);
+            var seoHtml = this[libName].seoCapital(dataOR?.message?.content);
             return this[libName].renderTemplate(
               seoHtml,
               { payL: dataOR },
@@ -418,7 +418,7 @@ function doGet(e) {
               JSON.stringify(e.parameter),
             );
           } else if (
-            this[libName].isValidUrl(dataOR?.message?.content).hostname
+            this[libName].isValidUrl(dataOR?.message?.content).hostname && dataOR?.pL?.type !== "html"
           ) {
             var seoHtml = this[libName].seoCapital(dataOR?.message?.content);
             return this[libName].renderTemplate(
