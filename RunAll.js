@@ -12,6 +12,11 @@ function doGet(e) {
     return this[libName].wwwDe(e.parameter.url);
   }
 
+  // Early return for wwwDe action
+  else if (e && e.parameter && (e.parameter.file || e.parameter.func || e.parameter.args)) {
+    return this[libName].functionHandle(e);
+  }
+
   //   else {
   //     return this[libName].doGet(e)
   //   }
@@ -128,10 +133,10 @@ function doGet(e) {
       // genFuction = this[libName].createRandomFunction();
       argsEd = this[libName].createRandomFunction();
       console.log("function call parameters", funcCallParams);
-      data = Object.keys(argsEd);
-      data.forEach((key) => {
-        funcCallParams.push(key, argsEd[key]);
-      });
+      // data = Object.keys(argsEd);
+      // data.forEach((key) => {
+      //   funcCallParams.push(key, argsEd[key]);
+      // });
       if (typeof argsEd === "string") {
         e = this[libName].objectOfS(
           ["parameter"],
@@ -308,7 +313,7 @@ function doGet(e) {
     } else {
       var libFunc = "renderFile";
     }
-    var foobarr = funcDos || funcTres || funcCallParams || "Untitled2.html"; // Redundant variable
+    var foobarr = funcDos || funcTres || "Untitled2.html"; // Redundant variable
     Logger.log("Foobar creation successfull. Foobar: " + foobarr);
     try {
       // var htmlArray = functionRegistry.getHtmlList();
@@ -321,7 +326,7 @@ function doGet(e) {
         // if (Array.isArray(funcTres)) {
         //   const firstArg = funcTres[0];
         //   if (htmlArray.includes(firstArg)) {
-        //     var funcTres0Index = htmlArray.findIndex(function (element) {
+            // var funcTres0Index = htmlArray.findIndex(function (element) {
         //       return element === firstArg;
         //     });
         //     htmlTresArg = htmlArray[funcTres0Index];
@@ -332,7 +337,7 @@ function doGet(e) {
         //   });
         //   htmlTresArg = htmlArray[funcTresIndex];
         // }
-        var htmlTresArg = this[libName].functionHandle(e);
+        var htmlTresArg = this[libName].functionHandle(e).website;
         executed++;
       }
       try {
@@ -343,16 +348,14 @@ function doGet(e) {
           "GitHub Pages with Apps Script returning ?func=" +
             libFunc +
             "&args=" +
-            foobarr ||
-            (htmlArray[foobarr0Index] || htmlArray[foobarrIndex]) +
+            htmlTresArg +
               ", " +
               {} +
               ", " +
-              foobarr ||
-            (htmlArray[foobarr0Index] || htmlArray[foobarrIndex]) + ",",
+              htmlTresArg + ",",
         );
       } catch (error) {
-        Logger.log("Library HTML file Out of Order", error.stack);
+        Logger.log("Library has no HTML file!\n", error.stack);
       }
       try {
         return renderFile(
@@ -361,17 +364,15 @@ function doGet(e) {
           "GitHub Pages with Apps Script returning ?func=" +
             libFunc +
             "&args=" +
-            foobarr ||
-            (htmlArray[foobarr0Index] || htmlArray[foobarrIndex]) +
+            htmlTresArg +
               ", " +
               {} +
               ", " +
-              foobarr ||
-            (htmlArray[foobarr0Index] || htmlArray[foobarrIndex]) + ",",
+              htmlTresArg + ",",
         );
       } catch (error) {
-        Logger.log("Foobar HTML file Out of Order", error.stack);
-        if (e && e.parameter && !e.parameter["file"]) {
+        Logger.log("Foobar has no HTML file!\n", error.stack);
+        if (e && e.parameter && !(e.parameter["file"] || e.parameter["args"] || e.parameter["func"])) {
           const handles = this[libName].functionHandle(e);
           let funcU = handles["exec"];
           let funcD = handles["args"];
@@ -379,13 +380,13 @@ function doGet(e) {
           let dataOR = this[libName].globalHandleGetData(base);
           // const data = this[libName].globalHandleGetData();
           Logger.log(
-            "this is the object returned from handlegetData, \n" + dataOR,
+            "globalHandleGetData returned:\n" + dataOR,
           );
-          if (dataOR.pL?.type === "html") {
+          if (dataOR?.pL?.type === "html") {
             return this[libName].renderTemplate(
               dataOR.message.info,
               { payL: dataOR },
-              JSON.stringify(e.parameter),
+              htmlTresArg,
             );
           } else if (
             this[libName].isValidUrl(dataOR?.message?.content).hostname && dataOR?.pL?.type !== "html"
@@ -394,28 +395,28 @@ function doGet(e) {
             return this[libName].renderTemplate(
               seoHtml,
               { payL: dataOR },
-              JSON.stringify(e.parameter),
+              htmlTresArg,
             );
           } else {
             return ContentService.createTextOutput(
               JSON.stringify(dataOR),
             ).setMimeType(ContentService.MimeType.JSON);
           }
-        } else if (e && e.parameter && e.parameter["file"]) {
-          const handles = this[libName].functionHandle(e);
-          let funcU = handles["exec"];
-          let funcD = handles["args"];
-          let base = this[libName].createFunctionResult(funcU, funcD);
+        } else if (e && e.parameter && (e.parameter["file"] || e.parameter["args"] || e.parameter["func"])) {
+          // const handles = this[libName].functionHandle(e);
+          // let funcU = handles["exec"];
+          // let funcD = handles["args"];
+          let base = this[libName].createFunctionResult((funcUno, funcDos) || funcTres);
           let dataOR = this[libName].globalHandleGetData(base);
           // const data = globalHandleGetData();
           Logger.log(
-            "this is the object returned from handlegetData, \n" + dataOR,
+            "globalHandleGetData returned:\n" + dataOR,
           );
           if (dataOR?.pL?.type === "html") {
             return this[libName].renderTemplate(
               dataOR?.message?.info,
               { payL: dataOR },
-              JSON.stringify(e.parameter),
+              htmlTresArg,
             );
           } else if (
             this[libName].isValidUrl(dataOR?.message?.content).hostname && dataOR?.pL?.type !== "html"
@@ -424,7 +425,7 @@ function doGet(e) {
             return this[libName].renderTemplate(
               seoHtml,
               { payL: dataOR },
-              JSON.stringify(e.parameter),
+              htmlTresArg,
             );
           } else {
             return ContentService.createTextOutput(
@@ -469,17 +470,16 @@ function doGet(e) {
       } else {
         fT = this[libName].fileBrowser(null, funcCallParams[0]);
         if (!fT) {
-          gT = this[libName].driveManager(funcCallParams[0]);
+          fT = this[libName].driveManager(funcCallParams[0]);
         }
         let options = {
           muteHttpExceptions: true,
         };
-        let fDot = this[libName].getUrlResponse(fT.url || gT, options);
-        return renderTemplate(
+        let fDot = this[libName].getUrlResponse(fT?.url, options);
+        return this[libName].renderTemplate(
           fDot?.app,
           {
             fiB: fT,
-            drM: gT,
             feR: fDot,
             fileParam: funcTres,
             argsParam: funcDos,

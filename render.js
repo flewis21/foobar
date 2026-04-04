@@ -1451,9 +1451,9 @@ var renderTemplate = function (blob, argsObject, title) {
   <table id="resultsTable"></table>`,
       {
         renTemp: tmp.evaluate().getContent(),
-        driveB: tmp.payL.link,
-        driveA: tmp.payL.type,
-        driveC: tmp.payL.data,
+        driveB: tmp?.payL?.link,
+        driveA: tmp?.payL?.type,
+        driveC: tmp?.payL?.data,
       },
     );
   } catch (error) {
