@@ -12,11 +12,147 @@ function doGet(e) {
     return this[libName].wwwDe(e.parameter.url);
   }
 
-  // Early return for wwwDe action
-  else if (e && e.parameter && (e.parameter.file || e.parameter.func || e.parameter.args)) {
-    return this[libName].functionHandle(e);
+  // Early return for serverside action
+  else if (e && e.parameter && (!e.parameter["file"] && !e.parameter["args"] && !e.parameter["func"])) {
+    let kOL = Object.keys(e.parameter);
+    if (kOL.length > 0) {
+      const handles = this[libName].functionHandle(e);
+      let funcU = handles["exec"];
+      let funcD = handles["args"];
+      let base = this[libName].createFunctionResult(funcU, funcD);
+      let dataOR = this[libName].globalHandleGetData(base);
+      // const data = this[libName].globalHandleGetData();
+      Logger.log(
+        "globalHandleGetData returned:\n" + JSON.stringify(dataOR),
+      );
+      let kOLObject = { payL: dataOR };
+      if (dataOR?.pL?.type === "html") {
+        return this[libName].renderTemplate(
+          dataOR.message.info,
+          kOLObject,
+          htmlTresArg,
+        );
+      }
+      else if (dataOR?.pL?.type === "unknown") {
+        return this[libName].contentCDN(dataOR.message.content, kOLObject);
+      } 
+      else if (dataOR?.pL?.type !== "html") {
+        let contentUrlVar = this[libName].isValidUrl(dataOR?.message?.content);
+        let truContentVar = isTruthy(contentUrlVar.hostname);
+        if (truContentVar) {
+          var seoHtml = this[libName].seoCapital(dataOR?.message?.content);
+          return this[libName].renderTemplate(
+            seoHtml,
+            kOLObject,
+            htmlTresArg,
+          );
+        }
+        else {
+          return this[libName].renderTemplate(
+            dataOR?.message?.info,
+            kOLObject,
+            htmlTresArg,
+          );
+        }
+      } else {
+        return ContentService.createTextOutput(
+          JSON.stringify(dataOR),
+        ).setMimeType(ContentService.MimeType.JSON);
+      }
+    }
+    else if (kOL.length === 0) {
+      const handles = this[libName].functionHandle();
+      let funcU = handles["exec"];
+      let funcD = handles["args"];
+      let base = this[libName].createFunctionResult(funcU, funcD);
+      let dataOR = this[libName].globalHandleGetData(base);
+      // const data = this[libName].globalHandleGetData();
+      Logger.log(
+        "globalHandleGetData returned:\n" + JSON.stringify(dataOR),
+      );
+      let kOLObject = { payL: dataOR };
+      if (dataOR?.pL?.type === "html") {
+        return this[libName].renderTemplate(
+          dataOR.message.info,
+          kOLObject,
+          htmlTresArg,
+        );
+      }
+      else if (dataOR?.pL?.type === "unknown") {
+        return this[libName].contentCDN(dataOR.message.content, kOLObject);
+      } 
+      else if (dataOR?.pL?.type !== "html") {
+        let contentUrlVar = this[libName].isValidUrl(dataOR?.message?.content);
+        let truContentVar = isTruthy(contentUrlVar.hostname);
+        if (truContentVar) {
+          var seoHtml = this[libName].seoCapital(dataOR?.message?.content);
+          return this[libName].renderTemplate(
+            seoHtml,
+            kOLObject,
+            htmlTresArg,
+          );
+        }
+        else {
+          return this[libName].renderTemplate(
+            dataOR?.message?.info,
+            kOLObject,
+            htmlTresArg,
+          );
+        }
+      } else {
+        return ContentService.createTextOutput(
+          JSON.stringify(dataOR),
+        ).setMimeType(ContentService.MimeType.JSON);
+      }
+    }
+  } 
+  else if (e && e.parameter && (e.parameter["file"] || e.parameter["args"] || e.parameter["func"])) {
+    if (e.parameter["file"]) {
+      return this[libName].functionHandle(e);
+    }
+    else {
+      let base = this[libName].createFunctionResult((e.parameter["func"], e.parameter["args"]));
+      let dataOR = this[libName].globalHandleGetData(base);
+      Logger.log(
+        "globalHandleGetData returned:\n" + JSON.stringify(dataOR),
+      );
+      let kOLObject = { payL: dataOR };
+      if (dataOR?.pL?.type === "html") {
+        return this[libName].renderTemplate(
+          dataOR?.message?.info,
+          kOLObject,
+          htmlTresArg,
+        );
+      }
+      else if (dataOR?.pL?.type === "unknown") {
+        return this[libName].contentCDN(dataOR.message.content, kOLObject);
+      } 
+      else if (dataOR?.pL?.type !== "html") {
+        let contentUrlVar = this[libName].isValidUrl(dataOR?.message?.content);
+        let truContentVar = isTruthy(contentUrlVar.hostname);
+        if (truContentVar) {
+          var seoHtml = this[libName].seoCapital(dataOR?.message?.content);
+          return this[libName].renderTemplate(
+            seoHtml,
+            kOLObject,
+            htmlTresArg,
+          );
+        }
+        else {
+          return this[libName].renderTemplate(
+            dataOR?.message?.info,
+            kOLObject,
+            htmlTresArg,
+          );
+        }
+      } else {
+        return ContentService.createTextOutput(
+          JSON.stringify(dataOR),
+        ).setMimeType(ContentService.MimeType.JSON);
+      }
+    }
   }
-
+        
   //   else {
   //     return this[libName].doGet(e)
   //   }
@@ -322,6 +458,12 @@ function doGet(e) {
       // ]
       //   .toString()
       //   .split(" ");
+      let objArgs = 
+          { 
+            fileParam: funcTres, 
+            argsParam: funcDos, 
+            funcParam: funcUno 
+          };
       if (funcTres) {
         // if (Array.isArray(funcTres)) {
         //   const firstArg = funcTres[0];
@@ -344,13 +486,13 @@ function doGet(e) {
         // this[libName].renderFile(funcTres)
         return this[libName].renderFile(
           funcTres,
-          { fileParam: funcTres, argsParam: funcDos, funcParam: funcUno },
+          objArgs,
           "GitHub Pages with Apps Script returning ?func=" +
             libFunc +
             "&args=" +
             htmlTresArg +
               ", " +
-              {} +
+              JSON.stringify(objArgs) +
               ", " +
               htmlTresArg + ",",
         );
@@ -360,79 +502,18 @@ function doGet(e) {
       try {
         return renderFile(
           foobarr,
-          { fileParam: funcTres, argsParam: funcDos, funcParam: funcUno },
+          objArgs,
           "GitHub Pages with Apps Script returning ?func=" +
             libFunc +
             "&args=" +
             htmlTresArg +
               ", " +
-              {} +
+              JSON.stringify(objArgs) +
               ", " +
               htmlTresArg + ",",
         );
       } catch (error) {
         Logger.log("Foobar has no HTML file!\n", error.stack);
-        if (e && e.parameter && !(e.parameter["file"] || e.parameter["args"] || e.parameter["func"])) {
-          const handles = this[libName].functionHandle(e);
-          let funcU = handles["exec"];
-          let funcD = handles["args"];
-          let base = this[libName].createFunctionResult(funcU, funcD);
-          let dataOR = this[libName].globalHandleGetData(base);
-          // const data = this[libName].globalHandleGetData();
-          Logger.log(
-            "globalHandleGetData returned:\n" + dataOR,
-          );
-          if (dataOR?.pL?.type === "html") {
-            return this[libName].renderTemplate(
-              dataOR.message.info,
-              { payL: dataOR },
-              htmlTresArg,
-            );
-          } else if (
-            this[libName].isValidUrl(dataOR?.message?.content).hostname && dataOR?.pL?.type !== "html"
-          ) {
-            var seoHtml = this[libName].seoCapital(dataOR?.message?.content);
-            return this[libName].renderTemplate(
-              seoHtml,
-              { payL: dataOR },
-              htmlTresArg,
-            );
-          } else {
-            return ContentService.createTextOutput(
-              JSON.stringify(dataOR),
-            ).setMimeType(ContentService.MimeType.JSON);
-          }
-        } else if (e && e.parameter && (e.parameter["file"] || e.parameter["args"] || e.parameter["func"])) {
-          // const handles = this[libName].functionHandle(e);
-          // let funcU = handles["exec"];
-          // let funcD = handles["args"];
-          let base = this[libName].createFunctionResult((funcUno, funcDos) || funcTres);
-          let dataOR = this[libName].globalHandleGetData(base);
-          // const data = globalHandleGetData();
-          Logger.log(
-            "globalHandleGetData returned:\n" + dataOR,
-          );
-          if (dataOR?.pL?.type === "html") {
-            return this[libName].renderTemplate(
-              dataOR?.message?.info,
-              { payL: dataOR },
-              htmlTresArg,
-            );
-          } else if (
-            this[libName].isValidUrl(dataOR?.message?.content).hostname && dataOR?.pL?.type !== "html"
-          ) {
-            var seoHtml = this[libName].seoCapital(dataOR?.message?.content);
-            return this[libName].renderTemplate(
-              seoHtml,
-              { payL: dataOR },
-              htmlTresArg,
-            );
-          } else {
-            return ContentService.createTextOutput(
-              JSON.stringify(dataOR),
-            ).setMimeType(ContentService.MimeType.JSON);
-          }
-        }
         // return renderTemplate(
         //   foobar,
         //   {
