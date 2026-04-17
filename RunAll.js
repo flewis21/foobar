@@ -33,7 +33,7 @@ function doGet(e) {
           htmlTresArg,
         );
       }
-      else if (dataOR?.pL?.type === "unknown") {
+      else if (dataOR?.pL?.type === "unknown" || !dataOR?.pL?.dataData) {
         return this[libName].contentCDN(dataOR.message.content, kOLObject);
       } 
       else if (dataOR?.pL?.type !== "html") {
@@ -78,7 +78,7 @@ function doGet(e) {
           htmlTresArg,
         );
       }
-      else if (dataOR?.pL?.type === "unknown") {
+      else if (dataOR?.pL?.type === "unknown" || !dataOR?.pL?.dataData) {
         return this[libName].contentCDN(dataOR.message.content, kOLObject);
       } 
       else if (dataOR?.pL?.type !== "html") {
@@ -124,7 +124,7 @@ function doGet(e) {
           htmlTresArg,
         );
       }
-      else if (dataOR?.pL?.type === "unknown") {
+      else if (dataOR?.pL?.type === "unknown" || !dataOR?.pL?.dataData) {
         return this[libName].contentCDN(dataOR.message.content, kOLObject);
       } 
       else if (dataOR?.pL?.type !== "html") {
