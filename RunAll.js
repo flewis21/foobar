@@ -33,10 +33,7 @@ function doGet(e) {
           htmlTresArg,
         );
       }
-      else if (dataOR?.pL?.type === "unknown" || !dataOR?.pL?.dataData) {
-        return this[libName].contentCDN(dataOR.message.content, kOLObject);
-      } 
-      else if (dataOR?.pL?.type !== "html") {
+      else if (dataOR?.pL?.type !== "html" && dataOR?.pL?.type !== "unknown" && dataOR?.pL?.dataData) {
         let contentUrlVar = this[libName].isValidUrl(dataOR?.message?.content);
         let truContentVar = isTruthy(contentUrlVar.hostname);
         if (truContentVar) {
@@ -54,7 +51,16 @@ function doGet(e) {
             htmlTresArg,
           );
         }
-      } else {
+      }
+      else if (dataOR?.pL?.type === "unknown" || !dataOR?.pL?.dataData) {
+        if (dataOR?.pL?.type === "url") {
+          return this[libName].contentCDN(dataOR?.message?.info, kOLObject);
+        }
+        else {
+          return this[libName].contentCDN(dataOR?.message?.content, kOLObject);
+        }
+      } 
+       else {
         return ContentService.createTextOutput(
           JSON.stringify(dataOR),
         ).setMimeType(ContentService.MimeType.JSON);
@@ -77,11 +83,8 @@ function doGet(e) {
           kOLObject,
           htmlTresArg,
         );
-      }
-      else if (dataOR?.pL?.type === "unknown" || !dataOR?.pL?.dataData) {
-        return this[libName].contentCDN(dataOR.message.content, kOLObject);
       } 
-      else if (dataOR?.pL?.type !== "html") {
+      else if (dataOR?.pL?.type !== "html" && (dataOR?.pL?.type !== "unknown" || dataOR?.pL?.dataData)) {
         let contentUrlVar = this[libName].isValidUrl(dataOR?.message?.content);
         let truContentVar = isTruthy(contentUrlVar.hostname);
         if (truContentVar) {
@@ -99,7 +102,16 @@ function doGet(e) {
             htmlTresArg,
           );
         }
-      } else {
+      }
+      else if (dataOR?.pL?.type === "unknown" || !dataOR?.pL?.dataData) {
+        if (dataOR?.pL?.type === "url") {
+          return this[libName].contentCDN(dataOR?.message?.info, kOLObject);
+        }
+        else {
+          return this[libName].contentCDN(dataOR?.message?.content, kOLObject);
+        }
+      }
+       else {
         return ContentService.createTextOutput(
           JSON.stringify(dataOR),
         ).setMimeType(ContentService.MimeType.JSON);
@@ -111,7 +123,10 @@ function doGet(e) {
       return this[libName].functionHandle(e);
     }
     else {
-      let base = this[libName].createFunctionResult((e.parameter["func"], e.parameter["args"]));
+      const handles = this[libName].functionHandle(e);
+      let funcU = handles["exec"];
+      let funcD = handles["args"];
+      let base = this[libName].createFunctionResult((funcU, funcD));
       let dataOR = this[libName].globalHandleGetData(base);
       Logger.log(
         "globalHandleGetData returned:\n" + JSON.stringify(dataOR),
@@ -123,11 +138,8 @@ function doGet(e) {
           kOLObject,
           htmlTresArg,
         );
-      }
-      else if (dataOR?.pL?.type === "unknown" || !dataOR?.pL?.dataData) {
-        return this[libName].contentCDN(dataOR.message.content, kOLObject);
       } 
-      else if (dataOR?.pL?.type !== "html") {
+      else if (dataOR?.pL?.type !== "html" && dataOR?.pL?.type !== "unknown" && dataOR?.pL?.dataData) {
         let contentUrlVar = this[libName].isValidUrl(dataOR?.message?.content);
         let truContentVar = isTruthy(contentUrlVar.hostname);
         if (truContentVar) {
@@ -145,7 +157,16 @@ function doGet(e) {
             htmlTresArg,
           );
         }
-      } else {
+      }
+      else if (dataOR?.pL?.type === "unknown" || !dataOR?.pL?.dataData) {
+        if (dataOR?.pL?.type === "url") {
+          return this[libName].contentCDN(dataOR?.message?.info, kOLObject);
+        }
+        else {
+          return this[libName].contentCDN(dataOR?.message?.content, kOLObject);
+        }
+      }
+       else {
         return ContentService.createTextOutput(
           JSON.stringify(dataOR),
         ).setMimeType(ContentService.MimeType.JSON);
