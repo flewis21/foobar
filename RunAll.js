@@ -1,5 +1,6 @@
 function doGet(e) {
   let executed = 0;
+  let dataOR = null;
   var libName = "foo";
 
   // Early return for getData action
@@ -15,131 +16,59 @@ function doGet(e) {
   // Early return for serverside action
   else if (e && e.parameter && (!e.parameter["file"] && !e.parameter["args"] && !e.parameter["func"])) {
     let kOL = Object.keys(e.parameter);
+    console.log("kOL\n" + e.parameter[kOL[0]], kOL);
     if (kOL.length > 0) {
-      const handles = this[libName].functionHandle(e);
+      let handles = this[libName].functionHandle(e);
       let funcU = handles["exec"];
       let funcD = handles["args"];
+      console.log("" + [funcU, funcD]);
       let base = this[libName].createFunctionResult(funcU, funcD);
-      let dataOR = this[libName].globalHandleGetData(base);
+      dataOR = this[libName].globalHandleGetData(base);
       // const data = this[libName].globalHandleGetData();
       Logger.log(
         "globalHandleGetData returned:\n" + JSON.stringify(dataOR),
       );
-      let kOLObject = { payL: dataOR };
-      if (dataOR?.pL?.type === "html") {
-        return this[libName].renderTemplate(
-          dataOR.message.info,
-          kOLObject,
-          htmlTresArg,
-        );
-      }
-      else if (dataOR?.pL?.type !== "html" && dataOR?.pL?.type !== "unknown" && dataOR?.pL?.dataData) {
-        let contentUrlVar = this[libName].isValidUrl(dataOR?.message?.content);
-        let truContentVar = isTruthy(contentUrlVar.hostname);
-        if (truContentVar) {
-          var seoHtml = this[libName].seoCapital(dataOR?.message?.content);
-          return this[libName].renderTemplate(
-            seoHtml,
-            kOLObject,
-            htmlTresArg,
-          );
-        }
-        else {
-          return this[libName].renderTemplate(
-            dataOR?.message?.info,
-            kOLObject,
-            htmlTresArg,
-          );
-        }
-      }
-      else if (dataOR?.pL?.type === "unknown" || !dataOR?.pL?.dataData) {
-        if (dataOR?.pL?.type === "url") {
-          return this[libName].contentCDN(dataOR?.message?.info, kOLObject);
-        }
-        else {
-          return this[libName].contentCDN(dataOR?.message?.content, kOLObject);
-        }
-      } 
-       else {
-        return ContentService.createTextOutput(
-          JSON.stringify(dataOR),
-        ).setMimeType(ContentService.MimeType.JSON);
-      }
     }
     else if (kOL.length === 0) {
-      const handles = this[libName].functionHandle();
+      let handles = this[libName].functionHandle();
       let funcU = handles["exec"];
       let funcD = handles["args"];
+      console.log("funcU & funcD\n" + [funcU, funcD]);
       let base = this[libName].createFunctionResult(funcU, funcD);
-      let dataOR = this[libName].globalHandleGetData(base);
+      dataOR = this[libName].globalHandleGetData(base);
       // const data = this[libName].globalHandleGetData();
       Logger.log(
         "globalHandleGetData returned:\n" + JSON.stringify(dataOR),
       );
-      let kOLObject = { payL: dataOR };
-      if (dataOR?.pL?.type === "html") {
-        return this[libName].renderTemplate(
-          dataOR.message.info,
-          kOLObject,
-          htmlTresArg,
-        );
-      } 
-      else if (dataOR?.pL?.type !== "html" && (dataOR?.pL?.type !== "unknown" || dataOR?.pL?.dataData)) {
-        let contentUrlVar = this[libName].isValidUrl(dataOR?.message?.content);
-        let truContentVar = isTruthy(contentUrlVar.hostname);
-        if (truContentVar) {
-          var seoHtml = this[libName].seoCapital(dataOR?.message?.content);
-          return this[libName].renderTemplate(
-            seoHtml,
-            kOLObject,
-            htmlTresArg,
-          );
-        }
-        else {
-          return this[libName].renderTemplate(
-            dataOR?.message?.info,
-            kOLObject,
-            htmlTresArg,
-          );
-        }
-      }
-      else if (dataOR?.pL?.type === "unknown" || !dataOR?.pL?.dataData) {
-        if (dataOR?.pL?.type === "url") {
-          return this[libName].contentCDN(dataOR?.message?.info, kOLObject);
-        }
-        else {
-          return this[libName].contentCDN(dataOR?.message?.content, kOLObject);
-        }
-      }
-       else {
-        return ContentService.createTextOutput(
-          JSON.stringify(dataOR),
-        ).setMimeType(ContentService.MimeType.JSON);
-      }
     }
   } 
   else if (e && e.parameter && (e.parameter["file"] || e.parameter["args"] || e.parameter["func"])) {
+    let kOL = Object.keys(e.parameter);
+    console.log("kOL\n" + e.parameter[kOL[0]], kOL);
     if (e.parameter["file"]) {
       return this[libName].functionHandle(e);
     }
     else {
-      const handles = this[libName].functionHandle(e);
+      let handles = this[libName].functionHandle(e);
       let funcU = handles["exec"];
       let funcD = handles["args"];
-      let base = this[libName].createFunctionResult((funcU, funcD));
-      let dataOR = this[libName].globalHandleGetData(base);
+      console.log("funcU & funcD\n" + [funcU, funcD]);
+      let base = this[libName].createFunctionResult(funcU, funcD);
+      dataOR = this[libName].globalHandleGetData(base);
       Logger.log(
         "globalHandleGetData returned:\n" + JSON.stringify(dataOR),
       );
+    }
+  }
       let kOLObject = { payL: dataOR };
       if (dataOR?.pL?.type === "html") {
         return this[libName].renderTemplate(
-          dataOR?.message?.info,
+          dataOR.message.info,
           kOLObject,
           htmlTresArg,
         );
-      } 
-      else if (dataOR?.pL?.type !== "html" && dataOR?.pL?.type !== "unknown" && dataOR?.pL?.dataData) {
+      }
+      else if (dataOR?.pL?.type !== "html" && dataOR?.pL?.type !== "unknown" && dataOR?.pL?.dataData && dataOR?.pL?.type !== "url" && dataOR?.pL?.type !== "text"  ) {
         let contentUrlVar = this[libName].isValidUrl(dataOR?.message?.content);
         let truContentVar = isTruthy(contentUrlVar.hostname);
         if (truContentVar) {
@@ -159,20 +88,101 @@ function doGet(e) {
         }
       }
       else if (dataOR?.pL?.type === "unknown" || !dataOR?.pL?.dataData) {
+        console.log("dataOR pL type\n" + dataOR?.pL?.type, dataOR?.pL);
         if (dataOR?.pL?.type === "url") {
+          console.log("dataOR message info\n" + dataOR?.message?.info, dataOR?.message);
           return this[libName].contentCDN(dataOR?.message?.info, kOLObject);
         }
         else {
+          console.log("dataOR message content\n" + dataOR?.message?.content, dataOR?.message);
           return this[libName].contentCDN(dataOR?.message?.content, kOLObject);
         }
-      }
+      } 
        else {
         return ContentService.createTextOutput(
           JSON.stringify(dataOR),
         ).setMimeType(ContentService.MimeType.JSON);
       }
-    }
-  }
+      // let kOLObject = { payL: dataOR };
+      // if (dataOR?.pL?.type === "html") {
+      //   return this[libName].renderTemplate(
+      //     dataOR.message.info,
+      //     kOLObject,
+      //     htmlTresArg,
+      //   );
+      // } 
+      // else if (dataOR?.pL?.type !== "html" && (dataOR?.pL?.type !== "unknown" || dataOR?.pL?.dataData)) {
+      //   let contentUrlVar = this[libName].isValidUrl(dataOR?.message?.content);
+      //   let truContentVar = isTruthy(contentUrlVar.hostname);
+      //   if (truContentVar) {
+      //     var seoHtml = this[libName].seoCapital(dataOR?.message?.content);
+      //     return this[libName].renderTemplate(
+      //       seoHtml,
+      //       kOLObject,
+      //       htmlTresArg,
+      //     );
+      //   }
+      //   else {
+      //     return this[libName].renderTemplate(
+      //       dataOR?.message?.info,
+      //       kOLObject,
+      //       htmlTresArg,
+      //     );
+      //   }
+      // }
+      // else if (dataOR?.pL?.type === "unknown" || !dataOR?.pL?.dataData) {
+      //   if (dataOR?.pL?.type === "url") {
+      //     return this[libName].contentCDN(dataOR?.message?.info, kOLObject);
+      //   }
+      //   else {
+      //     return this[libName].contentCDN(dataOR?.message?.content, kOLObject);
+      //   }
+      // }
+      //  else {
+      //   return ContentService.createTextOutput(
+      //     JSON.stringify(dataOR),
+      //   ).setMimeType(ContentService.MimeType.JSON);
+      // }
+      // let kOLObject = { payL: dataOR };
+      // if (dataOR?.pL?.type === "html") {
+      //   return this[libName].renderTemplate(
+      //     dataOR?.message?.info,
+      //     kOLObject,
+      //     htmlTresArg,
+      //   );
+      // } 
+      // else if (dataOR?.pL?.type !== "html" && dataOR?.pL?.type !== "unknown" && dataOR?.pL?.dataData) {
+      //   let contentUrlVar = this[libName].isValidUrl(dataOR?.message?.content);
+      //   let truContentVar = isTruthy(contentUrlVar.hostname);
+      //   if (truContentVar) {
+      //     var seoHtml = this[libName].seoCapital(dataOR?.message?.content);
+      //     return this[libName].renderTemplate(
+      //       seoHtml,
+      //       kOLObject,
+      //       htmlTresArg,
+      //     );
+      //   }
+      //   else {
+      //     return this[libName].renderTemplate(
+      //       dataOR?.message?.info,
+      //       kOLObject,
+      //       htmlTresArg,
+      //     );
+      //   }
+      // }
+      // else if (dataOR?.pL?.type === "unknown" || !dataOR?.pL?.dataData) {
+      //   if (dataOR?.pL?.type === "url") {
+      //     return this[libName].contentCDN(dataOR?.message?.info, kOLObject);
+      //   }
+      //   else {
+      //     return this[libName].contentCDN(dataOR?.message?.content, kOLObject);
+      //   }
+      // }
+      //  else {
+      //   return ContentService.createTextOutput(
+      //     JSON.stringify(dataOR),
+      //   ).setMimeType(ContentService.MimeType.JSON);
+      // }
         
   //   else {
   //     return this[libName].doGet(e)
