@@ -332,6 +332,11 @@
             document.open();
             document.write(responseData?.message?.info); // Wrap in <pre> for formatting
             document.close();
+          } else if (
+            responseData?.pL?.type === "url" ||
+            responseData?.pL?.type === "text"
+          ) {
+            document.location.href = responseData?.message?.info;
           } else if (responseData?.message?.content) {
             document.location.href = responseData?.message?.content;
           } else if (responseData?.message?.link) {
