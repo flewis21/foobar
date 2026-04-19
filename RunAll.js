@@ -68,7 +68,7 @@ function doGet(e) {
           htmlTresArg,
         );
       }
-      else if (dataOR?.pL?.type !== "html" && dataOR?.pL?.type !== "unknown" && dataOR?.pL?.dataData && dataOR?.pL?.type !== "url" && dataOR?.pL?.type !== "text"  ) {
+      else if (dataOR?.pL?.type !== "html" && dataOR?.pL?.type !== "unknown" && dataOR?.pL?.dataData && dataOR?.pL?.type !== "url" && dataOR?.pL?.type !== "text" || (dataOR?.pL?.dataData && dataOR?.pL?.type === "url") || (dataOR?.pL?.dataData && dataOR?.pL?.type === "text") ) {
         let contentUrlVar = this[libName].isValidUrl(dataOR?.message?.content);
         let truContentVar = isTruthy(contentUrlVar.hostname);
         if (truContentVar) {
@@ -89,7 +89,7 @@ function doGet(e) {
       }
       else if (dataOR?.pL?.type === "unknown" || !dataOR?.pL?.dataData) {
         console.log("dataOR pL type\n" + dataOR?.pL?.type, dataOR?.pL);
-        if (dataOR?.pL?.type === "url") {
+        if (dataOR?.pL?.type === "url" || dataOR?.pL?.type === "text") {
           console.log("dataOR message info\n" + dataOR?.message?.info, dataOR?.message);
           return this[libName].contentCDN(dataOR?.message?.info, kOLObject);
         }
