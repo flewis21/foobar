@@ -65,7 +65,7 @@ function doGet(e) {
         return this[libName].renderTemplate(
           dataOR.message.info,
           kOLObject,
-          htmlTresArg,
+          dataOR?.pL?.type,
         );
       }
       else if (dataOR?.pL?.type !== "html" && dataOR?.pL?.type !== "unknown" && dataOR?.pL?.dataData && dataOR?.pL?.type !== "url" && dataOR?.pL?.type !== "text" || (dataOR?.pL?.dataData && dataOR?.pL?.type === "url") || (dataOR?.pL?.dataData && dataOR?.pL?.type === "text") ) {
@@ -76,14 +76,14 @@ function doGet(e) {
           return this[libName].renderTemplate(
             seoHtml,
             kOLObject,
-            htmlTresArg,
+            dataOR?.pL?.type,
           );
         }
         else {
           return this[libName].renderTemplate(
             dataOR?.message?.info,
             kOLObject,
-            htmlTresArg,
+            dataOR?.pL?.type,
           );
         }
       }
