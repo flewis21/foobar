@@ -23,6 +23,7 @@ function doGet(e) {
       let funcD = handles["args"];
       console.log("" + [funcU, funcD]);
       let base = this[libName].createFunctionResult(funcU, funcD);
+      console.log("base = " + base, executed++);
       dataOR = this[libName].globalHandleGetData(base);
       // const data = this[libName].globalHandleGetData();
       Logger.log(
@@ -35,6 +36,7 @@ function doGet(e) {
       let funcD = handles["args"];
       console.log("funcU & funcD\n" + [funcU, funcD]);
       let base = this[libName].createFunctionResult(funcU, funcD);
+      console.log("base = " + base, executed++);
       dataOR = this[libName].globalHandleGetData(base);
       // const data = this[libName].globalHandleGetData();
       Logger.log(
@@ -54,6 +56,7 @@ function doGet(e) {
       let funcD = handles["args"];
       console.log("funcU & funcD\n" + [funcU, funcD]);
       let base = this[libName].createFunctionResult(funcU, funcD);
+      console.log("base = " + base, executed++);
       dataOR = this[libName].globalHandleGetData(base);
       Logger.log(
         "globalHandleGetData returned:\n" + JSON.stringify(dataOR),
@@ -62,6 +65,7 @@ function doGet(e) {
   }
       let kOLObject = { payL: dataOR };
       if (dataOR?.pL?.type === "html") {
+        console.log("dataOR?.pL?.type = " + dataOR?.pL?.type, executed++);
         return this[libName].renderTemplate(
           dataOR.message.info,
           kOLObject,
@@ -69,6 +73,7 @@ function doGet(e) {
         );
       }
       else if (dataOR?.pL?.type !== "html" && dataOR?.pL?.type !== "unknown" && dataOR?.pL?.dataData && dataOR?.pL?.type !== "url" && dataOR?.pL?.type !== "text" || (dataOR?.pL?.dataData && dataOR?.pL?.type === "url") || (dataOR?.pL?.dataData && dataOR?.pL?.type === "text") ) {
+        console.log("dataOR?.pL?.type = " + dataOR?.pL?.type, executed++);
         let contentUrlVar = this[libName].isValidUrl(dataOR?.message?.content);
         let truContentVar = isTruthy(contentUrlVar.hostname);
         if (truContentVar) {
@@ -80,6 +85,7 @@ function doGet(e) {
           );
         }
         else {
+          console.log("dataOR?.pL?.type = " + dataOR?.pL?.type, executed++);
           return this[libName].renderTemplate(
             dataOR?.message?.info,
             kOLObject,
@@ -89,16 +95,20 @@ function doGet(e) {
       }
       else if (dataOR?.pL?.type === "unknown" || !dataOR?.pL?.dataData) {
         console.log("dataOR pL type\n" + dataOR?.pL?.type, dataOR?.pL);
+        console.log(executed++);
         if (dataOR?.pL?.type === "url" || dataOR?.pL?.type === "text") {
+          console.log("dataOR?.pL?.type = " + dataOR?.pL?.type, executed++);
           console.log("dataOR message info\n" + dataOR?.message?.info, dataOR?.message);
           return this[libName].contentCDN(dataOR?.message?.info, kOLObject);
         }
         else {
+          console.log("dataOR?.pL?.type = " + dataOR?.pL?.type, executed++);
           console.log("dataOR message content\n" + dataOR?.message?.content, dataOR?.message);
           return this[libName].contentCDN(dataOR?.message?.content, kOLObject);
         }
       } 
        else {
+        console.log("dataOR?.pL?.type = " + dataOR?.pL?.type, executed++);
         return ContentService.createTextOutput(
           JSON.stringify(dataOR),
         ).setMimeType(ContentService.MimeType.JSON);
