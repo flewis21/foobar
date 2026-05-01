@@ -18,26 +18,24 @@ function doGet(e) {
     let kOL = Object.keys(e.parameter);
     console.log("kOL\n" + e.parameter[kOL[0]], kOL);
     if (kOL.length > 0) {
-      let handles = this[libName].functionHandle(e);
-      let funcU = handles["exec"];
-      let funcD = handles["args"];
-      console.log("" + [funcU, funcD]);
-      let base = this[libName].createFunctionResult(funcU, funcD);
-      console.log("base = " + base, executed++);
-      dataOR = this[libName].globalHandleGetData(base);
+      // let funcU = handles["exec"];
+      // let funcD = handles["args"];
+      // console.log("" + [funcU, funcD]);
+      // let base = this[libName].createFunctionResult(funcU, funcD);
+      // console.log("base = " + base, executed++);
+      dataOR = this[libName].geneicType(e);
       // const data = this[libName].globalHandleGetData();
       Logger.log(
         "globalHandleGetData returned:\n" + JSON.stringify(dataOR),
       );
     }
     else if (kOL.length === 0) {
-      let handles = this[libName].functionHandle();
-      let funcU = handles["exec"];
-      let funcD = handles["args"];
-      console.log("funcU & funcD\n" + [funcU, funcD]);
-      let base = this[libName].createFunctionResult(funcU, funcD);
-      console.log("base = " + base, executed++);
-      dataOR = this[libName].globalHandleGetData(base);
+      // let funcU = handles["exec"];
+      // let funcD = handles["args"];
+      // console.log("funcU & funcD\n" + [funcU, funcD]);
+      // let base = this[libName].createFunctionResult(funcU, funcD);
+      // console.log("base = " + base, executed++);
+      dataOR = this[libName].geneicType();
       // const data = this[libName].globalHandleGetData();
       Logger.log(
         "globalHandleGetData returned:\n" + JSON.stringify(dataOR),
@@ -51,13 +49,12 @@ function doGet(e) {
       return this[libName].functionHandle(e);
     }
     else {
-      let handles = this[libName].functionHandle(e);
-      let funcU = handles["exec"];
-      let funcD = handles["args"];
-      console.log("funcU & funcD\n" + [funcU, funcD]);
-      let base = this[libName].createFunctionResult(funcU, funcD);
-      console.log("base = " + base, executed++);
-      dataOR = this[libName].globalHandleGetData(base);
+      // let funcU = handles["exec"];
+      // let funcD = handles["args"];
+      // console.log("funcU & funcD\n" + [funcU, funcD]);
+      // let base = this[libName].createFunctionResult(funcU, funcD);
+      // console.log("base = " + base, executed++);
+      dataOR = this[libName].geneicType(e);
       Logger.log(
         "globalHandleGetData returned:\n" + JSON.stringify(dataOR),
       );
