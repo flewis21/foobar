@@ -151,10 +151,10 @@ async function fetchData() {
       try {
         const errorTextDiv = document.getElementById("artiicleIndexError");
         errorTextDiv.innerHTML = "";
-        const btn = document.createElement("button");
-        btn.textContent = suggestion;
-        btn.classList.add("card-panel", "receipt", "btn-large");
-        btn.addEventListener("click", () => {
+        const div = document.createElement("div");
+        div.textContent = suggestion;
+        div.classList.add("card-panel", "receipt", "btn-large");
+        div.addEventListener("click", () => {
           response = fetch(scriptURL + "?action=getData");
           errorTextDiv.innerHTML = "";
         });
