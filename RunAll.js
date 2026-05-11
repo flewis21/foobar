@@ -70,7 +70,7 @@ function doGet(e) {
   if (dataOR?.pL?.type === "html") {
     console.log("dataOR?.pL?.type = " + dataOR?.pL?.type, executed++);
     console.log("dataOR message info\n" + dataOR?.message?.info, dataOR?.message);
-    return this[libName].doGet(
+    return this[libName].rendTemplate(
       dataOR.message.info,
       kOLObject,
       dataOR?.pL?.type,
@@ -84,7 +84,7 @@ function doGet(e) {
       let truContentVar = isTruthy(contentUrlVar.hostname);
       if (truContentVar) {
         var seoHtml = this[libName].seoCapital(dataOR?.message?.content);
-        return this[libName].doGet(
+        return this[libName].rendTemplate(
           seoHtml,
           kOLObject,
           dataOR?.pL?.type,
@@ -93,7 +93,7 @@ function doGet(e) {
       else {
         console.log("dataOR?.pL?.type = " + dataOR?.pL?.type, executed++);
         console.log("dataOR message info\n" + dataOR?.message?.info, dataOR?.message);
-        return this[libName].doGet(
+        return this[libName].rendTemplate(
           dataOR?.message?.info,
           kOLObject,
           dataOR?.pL?.type,
@@ -107,12 +107,12 @@ function doGet(e) {
         if (dataOR?.pL?.type === "url" || dataOR?.pL?.type === "text") {
           console.log("dataOR?.pL?.type = " + dataOR?.pL?.type, executed++);
           console.log("dataOR message info\n" + dataOR?.message?.info, dataOR?.message);
-          return this[libName].doGet(dataOR?.message?.info, kOLObject);
+          return this[libName].contCDN(dataOR?.message?.info, kOLObject);
         }
         else {
           console.log("dataOR?.pL?.type = " + dataOR?.pL?.type, executed++);
           console.log("dataOR message content\n" + dataOR?.message?.content, dataOR?.message);
-          return this[libName].doGet(dataOR?.message?.content, kOLObject);
+          return this[libName].contCDN(dataOR?.message?.content, kOLObject);
         }
       } 
         else {
