@@ -149,7 +149,16 @@ async function fetchData() {
     if (!response.ok) {
       const errorText = await response.text();
       try {
-        fetchSuggestion(errorText);
+        const errorTextDiv = document.getElementById("artiicleIndexError");
+        errorTextDiv.innerHTML = "";
+        const btn = document.createElement("button");
+        btn.textContent = suggestion;
+        btn.classList.add("card-panel", "receipt", "btn-large");
+        btn.addEventListener("click", () => {
+          response = fetch(scriptURL + "?action=getData");
+          errorTextDiv.innerHTML = "";
+        });
+        errorTextDiv.appendChild(btn);
       } catch {
         throw new Error(`HTTP error! status: ${response.status}, ${errorText}`);
       }
@@ -231,26 +240,6 @@ async function submitForm() {
     console.error("Error submitting form:", error);
     document.getElementById("form-message").textContent =
       `Error: ${error.message}`;
-  }
-}
-
-async function fetchSuggestion(errorText) {
-  const errorTextDiv = document.getElementById("artiicleIndexError");
-  errorTextDiv.innerHTML = "";
-  if (errorText && errorText.length > 0) {
-    [errorText].forEach((suggestion) => {
-      // console.log(suggestion)
-      const btn = document.createElement("button");
-      btn.textContent = suggestion;
-      btn.classList.add("card-panel", "receipt", "btn-large");
-      btn.addEventListener("click", () => {
-        fetchData();
-        errorTextDiv.innerHTML = "";
-      });
-      errorTextDiv.appendChild(btn);
-    });
-  } else {
-    return;
   }
 }
 
