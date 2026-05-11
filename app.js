@@ -148,8 +148,11 @@ async function fetchData() {
     // }
     if (!response.ok) {
       const errorText = await response.text();
-      fetchSuggestion(errorText);
-      throw new Error(`HTTP error! status: ${response.status}, ${errorText}`);
+      try {
+        fetchSuggestion(errorText);
+      } catch {
+        throw new Error(`HTTP error! status: ${response.status}, ${errorText}`);
+      }
     }
 
     let responseData;
@@ -231,7 +234,7 @@ async function submitForm() {
   }
 }
 
-function fetchSuggestion(errorText) {
+async function fetchSuggestion(errorText) {
   const errorTextDiv = document.getElementById("artiicleIndexError");
   errorTextDiv.innerHTML = "";
   if (errorText && errorText.length > 0) {
