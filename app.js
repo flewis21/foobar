@@ -148,23 +148,7 @@ async function fetchData() {
     // }
     if (!response.ok) {
       const errorText = await response.text();
-
-      errorTextDiv.innerHTML = "";
-      if (errorText && errorText.length > 0) {
-        [errorText].forEach((suggestion) => {
-          // console.log(suggestion)
-          const btn = document.createElement("button");
-          btn.textContent = suggestion;
-          btn.classList.add("card-panel", "receipt", "btn-large");
-          btn.addEventListener("click", () => {
-            fetchData();
-            suggestionsDiv.innerHTML = "";
-          });
-          errorTextDiv.appendChild(btn);
-        });
-      } else {
-        return;
-      }
+      fetchSuggestion(errorText);
       throw new Error(`HTTP error! status: ${response.status}, ${errorText}`);
     }
 
@@ -244,6 +228,26 @@ async function submitForm() {
     console.error("Error submitting form:", error);
     document.getElementById("form-message").textContent =
       `Error: ${error.message}`;
+  }
+}
+
+function fetchSuggestion(errorText) {
+  const errorTextDiv = document.getElementById("artiicleIndexError");
+  errorTextDiv.innerHTML = "";
+  if (errorText && errorText.length > 0) {
+    [errorText].forEach((suggestion) => {
+      // console.log(suggestion)
+      const btn = document.createElement("button");
+      btn.textContent = suggestion;
+      btn.classList.add("card-panel", "receipt", "btn-large");
+      btn.addEventListener("click", () => {
+        fetchData();
+        errorTextDiv.innerHTML = "";
+      });
+      errorTextDiv.appendChild(btn);
+    });
+  } else {
+    return;
   }
 }
 
