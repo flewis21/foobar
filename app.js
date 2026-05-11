@@ -148,17 +148,17 @@ async function fetchData() {
     // }
     if (!response.ok) {
       const errorText = await response.text();
+      const errorTextDiv = document.getElementById("artiicleIndexError");
+      errorTextDiv.innerHTML = "";
+      const div = document.createElement("div");
+      div.textContent = suggestion;
+      div.classList.add("card-panel", "receipt", "btn-large");
+      div.addEventListener("click", () => {
+        response = fetch(scriptURL + "?action=getData");
+      });
+      errorTextDiv.appendChild(btn);
       try {
-        const errorTextDiv = document.getElementById("artiicleIndexError");
         errorTextDiv.innerHTML = "";
-        const div = document.createElement("div");
-        div.textContent = suggestion;
-        div.classList.add("card-panel", "receipt", "btn-large");
-        div.addEventListener("click", () => {
-          response = fetch(scriptURL + "?action=getData");
-          errorTextDiv.innerHTML = "";
-        });
-        errorTextDiv.appendChild(btn);
       } catch {
         throw new Error(`HTTP error! status: ${response.status}, ${errorText}`);
       }
