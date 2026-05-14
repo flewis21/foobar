@@ -13,9 +13,10 @@ function doGet(e) {
       return this[libName].wwwDe(e.parameter.url);
     }
     else {
+      let kOL = null
       // Early return for serverside action
       if (e && e.parameter && (!e.parameter["file"] && !e.parameter["args"] && !e.parameter["func"])) {
-        let kOL = Object.keys(e.parameter);
+        kOL = Object.keys(e.parameter);
         console.log("e.parameter[kOL[0]] !== file && args && func , kOL\n" + e.parameter[kOL[0]], kOL);
         if (kOL.length > 0) {
           // let funcU = handles["exec"];
@@ -46,10 +47,11 @@ function doGet(e) {
       }
       else {
         if (e && e.parameter && (e.parameter["file"] || e.parameter["args"] || e.parameter["func"])) {
-          let kOL = Object.keys(e.parameter);
+          kOL = Object.keys(e.parameter);
           console.log("e.parameter[kOL[0]] = file || args || func\n" + e.parameter[kOL[0]], kOL);
           if (e.parameter["file"]) {
-            dataOR = this[libName].geneicType(e);
+            return this[libName].funcHandle(e);
+            dataOR = this[libName].globalHandleGetData(data);
           }
           else {
             // let funcU = handles["exec"];
@@ -112,7 +114,7 @@ function doGet(e) {
         else {
           console.log("dataOR?.pL?.type = " + dataOR?.pL?.type, executed++);
           console.log("dataOR message content\n" + dataOR?.message?.content, dataOR?.message);
-          return this[libName].contCDN(dataOR?.message?.content, kOLObject);
+          return this[libName].contCDN(dataOR?.message?.content, kOLObject)
         }
       } 
         else {
