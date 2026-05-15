@@ -75,7 +75,7 @@ function doGet(e) {
     return this[libName].rendTemplate(
       dataOR.message.info,
       kOLObject,
-      dataOR?.pL?.type,
+      dataOR?.title,
     );
   }
   else {
@@ -89,7 +89,7 @@ function doGet(e) {
         return this[libName].rendTemplate(
           seoHtml,
           kOLObject,
-          dataOR?.pL?.type,
+          dataOR?.title,
         );
       }
       else {
@@ -98,7 +98,7 @@ function doGet(e) {
         return this[libName].rendTemplate(
           dataOR?.message?.info,
           kOLObject,
-          dataOR?.pL?.type,
+          dataOR?.title,
         );
       }
     }
