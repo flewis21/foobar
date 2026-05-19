@@ -169,10 +169,13 @@ async function fetchData() {
 
     if (contentType && contentType.includes("application/json")) {
       responseData = await response.json();
+      console.log(responseData);
     } else if (contentType && contentType.includes("text/plain")) {
       responseData = await response.text();
+      console.log(responseData);
     } else {
       responseData = await response.text();
+      console.log(responseData);
     }
     if (responseData?.pL?.type === "html") {
       document.open();
