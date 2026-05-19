@@ -185,11 +185,11 @@ async function fetchData() {
       responseData?.pL?.type === "url" ||
       responseData?.pL?.type === "text"
     ) {
-      document.location.href = responseData?.message?.info;
+      document.location.href = scriptURL; // responseData?.message?.info;
     } else if (responseData?.message?.content) {
-      document.location.href = responseData?.message?.content;
+      document.location.href = scriptURL; // responseData?.message?.content;
     } else if (responseData?.message?.link) {
-      document.location.href = responseData?.message?.link;
+      document.location.href = scriptURL; // responseData?.message?.link;
     } else {
       document.getElementById("data-display").textContent = JSON.stringify(
         responseData,
