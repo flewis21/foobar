@@ -5,12 +5,12 @@ function doGet(e) {
 
   // Early return for getData action
   if (e && e.parameter && e.parameter.action === "getData") {
-    return this[libName].handleRequest(e);
+    return this[libName].geneicType(e);
   }
   else {
     // Early return for wwwDe action
     if (e && e.parameter && e.parameter.action === "getDe") {
-      return this[libName].wwwDe(e.parameter.url);
+      return this[libName].geneicType(e.parameter.url);
     }
     else {
       let kOL = null
