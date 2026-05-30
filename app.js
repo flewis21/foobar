@@ -247,7 +247,10 @@ async function submitForm() {
 }
 
 fetchData(); // Call on page load
-document.getElementById("data-display").addEventListener("click", fetchData);
+document.getElementById("data-display").addEventListener("click", function () {
+  fetchData();
+  move();
+});
 
 var i = 0;
 function move() {
