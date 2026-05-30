@@ -247,11 +247,14 @@ async function submitForm() {
 }
 
 fetchData(); // Call on page load
-document.getElementById("data-display").addEventListener("click", function () {
-  fetchData();
-  this.textContent = "Loading...";
-  move();
-});
+document
+  .getElementById("data-display")
+  .addEventListener("change", function (event) {
+    console.log(event);
+    fetchData();
+    this.textContent = "Loading...";
+    move();
+  });
 
 var i = 0;
 function move() {
