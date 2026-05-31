@@ -249,7 +249,7 @@ async function submitForm() {
 fetchData(); // Call on page load
 document
   .getElementById("data-display")
-  .addEventListener("change", function (event) {
+  .addEventListener("mouseover", function (event) {
     console.log(event);
     fetchData();
     this.textContent = "Loading...";
