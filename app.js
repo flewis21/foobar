@@ -131,6 +131,10 @@ let hError = document.getElementById("data-display");
 let elem = document.getElementById("myBar");
 let i = 0;
 
+function cancelRequest(event) {
+  hError.textContent = "Error fetching data:";
+}
+
 async function fetchData() {
   hError.addEventListener("mouseover", function (event) {
     cancelRequest(event);
@@ -275,10 +279,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
     //   }
     // }
     // console.log(event);
-  }
-
-  function cancelRequest(event) {
-    hError.textContent = "Error fetching data:";
   }
 });
 
