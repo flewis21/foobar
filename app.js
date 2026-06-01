@@ -138,11 +138,10 @@ async function fetchData() {
     cancelRequest = true;
   });
 
-  hError.addEventListener("click", function () {
-    reFetch();
-  });
-
   if (cancelRequest) {
+    hError.addEventListener("click", function () {
+      reFetch();
+    });
     return;
   } else {
     try {
