@@ -252,23 +252,26 @@ let elem = document.getElementById("myBar");
 let i = 0;
 document.addEventListener("DOMContentLoaded", function (event) {
   if (hError.textContent === "Error fetching data:") {
-    fetchData();
-    this.textContent = "Loading...";
-    if (i == 0) {
-      i = 1;
-      let width = 1;
-      let id = setInterval(frame, 10);
-      function frame() {
-        if (width >= 100) {
-          clearInterval(id);
-          i = 0;
-        } else {
-          width++;
-          elem.style.width = width + "%";
-        }
-      }
-    }
-    console.log(event);
+    hError.addEventListener("click", function (event) {
+      this.textContent = "Loading...";
+      fetchData();
+      move();
+      // if (i == 0) {
+      //   i = 1;
+      //   let width = 1;
+      //   let id = setInterval(frame, 10);
+      //   function frame() {
+      //     if (width >= 100) {
+      //       clearInterval(id);
+      //       i = 0;
+      //     } else {
+      //       width++;
+      //       elem.style.width = width + "%";
+      //     }
+      //   }
+      // }
+      console.log(event);
+    });
   }
 });
 
