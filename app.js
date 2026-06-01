@@ -279,13 +279,13 @@ fetchData(); // Call on page load
 // }
 // });
 
-// hError.addEventListener("click", function () {
-//   reFetch();
-//   function reFetch() {
-//     hError.textContent = "Loading...";
-//     fetchData();
-//   }
-// });
+hError.addEventListener("click", function () {
+  reFetch();
+  function reFetch() {
+    hError.textContent = "Loading...";
+    fetchData();
+  }
+});
 // let cancelFetch = null;
 // hError.addEventListener("mouseover", function () {
 //   // cancelRequest();
@@ -293,9 +293,9 @@ fetchData(); // Call on page load
 //   cancelFetch = true;
 // });
 
-function cancelRequest() {
-  hError.textContent = "Error fetching data:";
-}
+// function cancelRequest() {
+//   hError.textContent = "Error fetching data:";
+// }
 
 function move() {
   if (i == 0) {
