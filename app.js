@@ -247,14 +247,15 @@ async function submitForm() {
 }
 
 fetchData(); // Call on page load
-document
-  .getElementById("data-display")
-  .addEventListener("mouseover", function (event) {
-    console.log(event);
+let hError = document.getElementById("data-display");
+hError.addEventListener("mouseover", function (event) {
+  console.log(event);
+  if ((hError.innerHTML = "Error fetching data:")) {
     fetchData();
     this.textContent = "Loading...";
     move();
-  });
+  }
+});
 
 var i = 0;
 function move() {
