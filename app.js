@@ -276,14 +276,14 @@ document.addEventListener("DOMContentLoaded", function (event) {
     // }
     // console.log(event);
   }
+
+  function cancelRequest(event) {
+    hError.textContent = "Error fetching data:";
+  }
 });
 
 function reFetch(event) {
   hError.textContent = "Loading...";
-}
-
-function cancelRequest(event) {
-  hError.textContent = "Error fetching data:";
 }
 
 function move() {
