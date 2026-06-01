@@ -273,20 +273,21 @@ document.addEventListener("DOMContentLoaded", function (event) {
       console.log(event);
     });
   } else {
-    hError.addEventListener("click", async function (event) {
+    hError.addEventListener("click", cancelData);
+    async function cancelData(event) {
       try {
         const response = await fetch(scriptURL + "?action=getData");
         if (!response.ok) {
-          const errorText = await response?.text();
+          const errorText = await response.text();
         }
 
         let responseData;
-        const contentType = response?.headers?.get("content-type");
+        const contentType = response.headers.get("content-type");
       } catch (error) {
         console.error("Error fetching data:", error);
         this.textContent = "Error fetching data:" + error.message;
       }
-    });
+    }
   }
 });
 
