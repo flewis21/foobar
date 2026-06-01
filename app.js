@@ -259,33 +259,33 @@ async function submitForm() {
 }
 
 fetchData(); // Call on page load
-// document.addEventListener("DOMContentLoaded", function () {
-// if (hError.textContent === "Error fetching data:") {
-// if (i == 0) {
-//   i = 1;
-//   let width = 1;
-//   let id = setInterval(frame, 10);
-//   function frame() {
-//     if (width >= 100) {
-//       clearInterval(id);
-//       i = 0;
-//     } else {
-//       width++;
-//       elem.style.width = width + "%";
-//     }
-//   }
-// }
-// console.log(event);
-// }
-// });
-
-hError.addEventListener("click", function () {
-  reFetch();
-  function reFetch() {
-    hError.textContent = "Loading...";
-    fetchData();
+document.addEventListener("DOMContentLoaded", function () {
+  if (hError.textContent === "No data! Click here to load:") {
+    hError.addEventListener("click", function () {
+      reFetch();
+      function reFetch() {
+        hError.textContent = "Loading...";
+        fetchData();
+      }
+    });
+    // if (i == 0) {
+    //   i = 1;
+    //   let width = 1;
+    //   let id = setInterval(frame, 10);
+    //   function frame() {
+    //     if (width >= 100) {
+    //       clearInterval(id);
+    //       i = 0;
+    //     } else {
+    //       width++;
+    //       elem.style.width = width + "%";
+    //     }
+    //   }
+    // }
+    // console.log(event);
   }
 });
+
 // let cancelFetch = null;
 // hError.addEventListener("mouseover", function () {
 //   // cancelRequest();
