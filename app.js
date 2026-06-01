@@ -248,14 +248,14 @@ async function submitForm() {
 
 fetchData(); // Call on page load
 let hError = document.getElementById("data-display");
+let elem = document.getElementById("myBar");
 hError.addEventListener("mouseover", function (event) {
   console.log(event);
-  if (hError.innerHTML === "Error fetching data:") {
+  if (hError.textContent === "Error fetching data:") {
     fetchData();
     this.textContent = "Loading...";
     if (i == 0) {
       i = 1;
-      let elem = document.getElementById("myBar");
       let width = 1;
       let id = setInterval(frame, 10);
       function frame() {
@@ -275,7 +275,7 @@ let i = 0;
 function move() {
   if (i == 0) {
     i = 1;
-    var elem = document.getElementById("myBar");
+    // elem = document.getElementById("myBar");
     var width = 1;
     var id = setInterval(frame, 10);
     function frame() {
