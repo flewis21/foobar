@@ -255,28 +255,28 @@ async function submitForm() {
 
 fetchData(); // Call on page load
 document.addEventListener("DOMContentLoaded", function (event) {
-  if (hError.textContent === "Error fetching data:") {
-    hError.addEventListener("click", function (event) {
-      this.textContent = "Loading...";
-      fetchData();
-      move();
-      // if (i == 0) {
-      //   i = 1;
-      //   let width = 1;
-      //   let id = setInterval(frame, 10);
-      //   function frame() {
-      //     if (width >= 100) {
-      //       clearInterval(id);
-      //       i = 0;
-      //     } else {
-      //       width++;
-      //       elem.style.width = width + "%";
-      //     }
-      //   }
-      // }
-      console.log(event);
-    });
-  }
+  // if (hError.textContent === "Error fetching data:") {
+  hError.addEventListener("click", function (event) {
+    this.textContent = "Loading...";
+    fetchData();
+    move();
+    // if (i == 0) {
+    //   i = 1;
+    //   let width = 1;
+    //   let id = setInterval(frame, 10);
+    //   function frame() {
+    //     if (width >= 100) {
+    //       clearInterval(id);
+    //       i = 0;
+    //     } else {
+    //       width++;
+    //       elem.style.width = width + "%";
+    //     }
+    //   }
+    // }
+    console.log(event);
+  });
+  // }
   function cancelRequest(event) {
     hError.textContent = "Error fetching data:";
   }
