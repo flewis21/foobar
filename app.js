@@ -262,37 +262,37 @@ async function submitForm() {
 }
 
 fetchData(); // Call on page load
-document.addEventListener("DOMContentLoaded", function () {
-  hError.addEventListener("click", function () {
-    reFetch();
-  });
-  // if (hError.textContent === "Error fetching data:") {
-  // if (i == 0) {
-  //   i = 1;
-  //   let width = 1;
-  //   let id = setInterval(frame, 10);
-  //   function frame() {
-  //     if (width >= 100) {
-  //       clearInterval(id);
-  //       i = 0;
-  //     } else {
-  //       width++;
-  //       elem.style.width = width + "%";
-  //     }
-  //   }
-  // }
-  // console.log(event);
-  // }
-});
+// document.addEventListener("DOMContentLoaded", function () {
+// if (hError.textContent === "Error fetching data:") {
+// if (i == 0) {
+//   i = 1;
+//   let width = 1;
+//   let id = setInterval(frame, 10);
+//   function frame() {
+//     if (width >= 100) {
+//       clearInterval(id);
+//       i = 0;
+//     } else {
+//       width++;
+//       elem.style.width = width + "%";
+//     }
+//   }
+// }
+// console.log(event);
+// }
+// });
 
 function cancelRequest() {
   hError.textContent = "Error fetching data:";
 }
 
-function reFetch() {
-  hError.textContent = "Loading...";
-  fetchData();
-}
+hError.addEventListener("click", function () {
+  reFetch();
+  function reFetch() {
+    hError.textContent = "Loading...";
+    fetchData();
+  }
+});
 
 function move() {
   if (i == 0) {
