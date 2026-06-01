@@ -211,7 +211,7 @@ async function fetchData() {
         "Error fetching data: " + error.message;
     }
   } else {
-    hError.textContent = "No data:!";
+    hError.textContent = "No data! Click here to load:";
     return;
   }
 }
