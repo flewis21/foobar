@@ -131,6 +131,11 @@ let hError = document.getElementById("data-display");
 let elem = document.getElementById("myBar");
 let i = 0;
 
+hError.addEventListener("click", function (event) {
+  cancelRequest(event);
+  fetchData();
+});
+
 async function fetchData() {
   hError.addEventListener("mouseover", function (event) {
     reFetch(event);
@@ -256,10 +261,6 @@ async function submitForm() {
 fetchData(); // Call on page load
 document.addEventListener("DOMContentLoaded", function (event) {
   // if (hError.textContent === "Error fetching data:") {
-  hError.addEventListener("click", function (event) {
-    cancelRequest(event);
-    fetchData();
-  });
   // if (i == 0) {
   //   i = 1;
   //   let width = 1;
