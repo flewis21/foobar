@@ -249,6 +249,7 @@ async function submitForm() {
 fetchData(); // Call on page load
 let hError = document.getElementById("data-display");
 let elem = document.getElementById("myBar");
+let i = 0;
 hError.addEventListener("mouseover", function (event) {
   if (hError.textContent === "Error fetching data:") {
     fetchData();
@@ -271,7 +272,6 @@ hError.addEventListener("mouseover", function (event) {
   }
 });
 
-let i = 0;
 function move() {
   if (i == 0) {
     i = 1;
