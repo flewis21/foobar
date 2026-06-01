@@ -250,7 +250,7 @@ fetchData(); // Call on page load
 let hError = document.getElementById("data-display");
 hError.addEventListener("mouseover", function (event) {
   console.log(event);
-  if ((hError.innerHTML = "Error fetching data:")) {
+  if (hError.innerHTML === "Error fetching data:") {
     fetchData();
     this.textContent = "Loading...";
     if (i == 0) {
