@@ -278,6 +278,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
       try {
         hError.textContent = "Re-fetching data...";
         const response = await fetch(scriptURL + "?action=getData");
+        move();
         if (!response.ok) {
           const errorText = await response.text();
         }
@@ -289,7 +290,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
         hError.textContent = "Error fetching data:" + error.message;
       }
     }
-    move();
   }
 });
 
