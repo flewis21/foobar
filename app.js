@@ -131,16 +131,16 @@ let hError = document.getElementById("data-display");
 let elem = document.getElementById("myBar");
 let i = 0;
 
-hError.addEventListener("click", function (event) {
-  cancelRequest(event);
-  fetchData();
-});
-
 async function fetchData() {
   hError.addEventListener("mouseover", function (event) {
-    reFetch(event);
+    cancelRequest(event);
     return null;
   });
+
+  hError.addEventListener("click", function (event) {
+    reFetch(event);
+  });
+
   try {
     const response = await fetch(scriptURL + "?action=getData");
     // if (i == 0) {
@@ -285,6 +285,7 @@ function cancelRequest(event) {
 
 function reFetch(event) {
   hError.textContent = "Loading...";
+  fetchData();
 }
 
 function move() {
