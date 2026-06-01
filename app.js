@@ -276,7 +276,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     hError.addEventListener("click", cancelData);
     async function cancelData(event) {
       try {
-        this.textContent = "Re-fetching data...";
+        hError.textContent = "Re-fetching data...";
         const response = await fetch(scriptURL + "?action=getData");
         if (!response.ok) {
           const errorText = await response.text();
@@ -286,7 +286,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
         const contentType = response.headers.get("content-type");
       } catch (error) {
         console.error("Error fetching data:", error);
-        this.textContent = "Error fetching data:" + error.message;
+        hError.textContent = "Error fetching data:" + error.message;
       }
     }
   }
