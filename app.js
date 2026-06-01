@@ -132,16 +132,9 @@ let elem = document.getElementById("myBar");
 let i = 0;
 
 async function fetchData() {
-  let cancelFetch = null;
-  hError.addEventListener("mouseover", function () {
-    // cancelRequest();
-    this.textContent = "Error fetching data:";
-    cancelFetch = true;
-  });
+  let confirmation = window.confirm("Request data?");
 
-  if (cancelFetch) {
-    return;
-  } else {
+  if (confirmation) {
     try {
       const response = await fetch(scriptURL + "?action=getData");
       // if (i == 0) {
@@ -217,6 +210,9 @@ async function fetchData() {
       document.getElementById("data-display").textContent =
         "Error fetching data: " + error.message;
     }
+  } else {
+    hError.textContent = "No data:!";
+    return;
   }
 }
 
@@ -289,6 +285,12 @@ fetchData(); // Call on page load
 //     hError.textContent = "Loading...";
 //     fetchData();
 //   }
+// });
+// let cancelFetch = null;
+// hError.addEventListener("mouseover", function () {
+//   // cancelRequest();
+//   this.textContent = "Error fetching data:";
+//   cancelFetch = true;
 // });
 
 function cancelRequest() {
