@@ -139,9 +139,6 @@ async function fetchData() {
   });
 
   if (cancelRequest) {
-    hError.addEventListener("click", function () {
-      reFetch();
-    });
     return;
   } else {
     try {
@@ -265,7 +262,10 @@ async function submitForm() {
 }
 
 fetchData(); // Call on page load
-document.addEventListener("DOMContentLoaded", function (event) {
+document.addEventListener("DOMContentLoaded", function () {
+  hError.addEventListener("click", function () {
+    reFetch();
+  });
   // if (hError.textContent === "Error fetching data:") {
   // if (i == 0) {
   //   i = 1;
