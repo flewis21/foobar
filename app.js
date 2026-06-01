@@ -276,6 +276,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     hError.addEventListener("click", cancelData);
     async function cancelData(event) {
       try {
+        this.textContent = "Re-fetching data...";
         const response = await fetch(scriptURL + "?action=getData");
         if (!response.ok) {
           const errorText = await response.text();
