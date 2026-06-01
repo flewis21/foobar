@@ -260,7 +260,7 @@ async function submitForm() {
 
 fetchData(); // Call on page load
 document.addEventListener("DOMContentLoaded", function () {
-  if (hError.textContent === "No data! Click here to load:") {
+  if (hError.textContent === String("No data! Click here to load:")) {
     hError.addEventListener("click", function () {
       reFetch();
       function reFetch() {
