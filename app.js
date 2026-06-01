@@ -274,7 +274,18 @@ document.addEventListener("DOMContentLoaded", function (event) {
     });
   } else {
     hError.addEventListener("click", function (event) {
-      fetch();
+      try {
+        const response = fetch(scriptURL + "?action=getData");
+        if (!response.ok) {
+          const errorText = response.text();
+        }
+
+        let responseData;
+        const contentType = response.headers.get("content-type");
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        this.textContent = "Error fetching data:" + error.message;
+      }
     });
   }
 });
