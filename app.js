@@ -127,8 +127,15 @@ const scriptURL =
   "https://script.google.com/macros/s/AKfycbzhrxdXzM08AAwA5ualRXdnDtV6C_xQ7bcq4v6H0HNdBqPr2C8A1URyWN0FLLccQuoA/exec";
 
 // var i = 0;
+let hError = document.getElementById("data-display");
+let elem = document.getElementById("myBar");
+let i = 0;
 
 async function fetchData() {
+  hError.addEventListener("click", function (event) {
+    hError.textContent = "Error fetching data:";
+    return null;
+  });
   try {
     const response = await fetch(scriptURL + "?action=getData");
     // if (i == 0) {
@@ -247,9 +254,6 @@ async function submitForm() {
 }
 
 fetchData(); // Call on page load
-let hError = document.getElementById("data-display");
-let elem = document.getElementById("myBar");
-let i = 0;
 document.addEventListener("DOMContentLoaded", function (event) {
   if (hError.textContent === "Error fetching data:") {
     hError.addEventListener("click", function (event) {
@@ -272,24 +276,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
       // }
       console.log(event);
     });
-  } else {
-    hError.addEventListener("click", cancelData);
-    async function cancelData(event) {
-      try {
-        hError.textContent = "Re-fetching data...";
-        const reFetch = await fetch(scriptURL + "?action=getData");
-        move();
-        if (!reFetch.ok) {
-          const errorText = await reFetch.text();
-        }
-
-        let reFetchData;
-        const contentType = reFetch.headers.get("content-type");
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        hError.textContent = "Error fetching data:" + error.message;
-      }
-    }
   }
 });
 
