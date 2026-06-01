@@ -132,13 +132,13 @@ let elem = document.getElementById("myBar");
 let i = 0;
 
 async function fetchData() {
-  let cancelRequest = null;
+  let cancelFetch = null;
   hError.addEventListener("mouseover", function () {
     cancelRequest();
-    cancelRequest = true;
+    cancelFetch = true;
   });
 
-  if (cancelRequest) {
+  if (cancelFetch) {
     return;
   } else {
     try {
