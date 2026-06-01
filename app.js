@@ -286,14 +286,6 @@ function cancelRequest() {
   hError.textContent = "Error fetching data:";
 }
 
-hError.addEventListener("click", function () {
-  reFetch();
-  function reFetch() {
-    hError.textContent = "Loading...";
-    fetchData();
-  }
-});
-
 function move() {
   if (i == 0) {
     i = 1;
