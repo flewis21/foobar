@@ -132,87 +132,94 @@ let elem = document.getElementById("myBar");
 let i = 0;
 
 async function fetchData() {
+  let cancelRequest = null;
   hError.addEventListener("mouseover", function () {
     cancelRequest();
-    return null;
+    cancelRequest = true;
   });
 
   hError.addEventListener("click", function () {
     reFetch();
   });
 
-  try {
-    const response = await fetch(scriptURL + "?action=getData");
-    // if (i == 0) {
-    //   i = 1;
-    //   var elem = document.getElementById("myBar");
-    //   var width = 1;
-    //   var id = setInterval(frame, 10);
-    //   function frame() {
-    //     if (width >= 100) {
-    //       clearInterval(id);
-    //       i = 0;
-    //     } else {
-    //       width++;
-    //       elem.style.width = width + "%";
-    //     }
-    //   }
-    // }
-    if (!response.ok) {
-      const errorText = await response.text();
-      const errorTextDiv = document.getElementById("artiicleIndexError");
-      errorTextDiv.innerHTML = "";
-      const div = document.createElement("div");
-      div.textContent = suggestion;
-      div.classList.add("card-panel", "receipt", "btn-large");
-      div.addEventListener("click", () => {
-        response = fetch(scriptURL + "?action=getData");
-      });
-      errorTextDiv.appendChild(btn);
-      try {
+  if (cancelRequest) {
+    return;
+  } else {
+    try {
+      const response = await fetch(scriptURL + "?action=getData");
+      // if (i == 0) {
+      //   i = 1;
+      //   var elem = document.getElementById("myBar");
+      //   var width = 1;
+      //   var id = setInterval(frame, 10);
+      //   function frame() {
+      //     if (width >= 100) {
+      //       clearInterval(id);
+      //       i = 0;
+      //     } else {
+      //       width++;
+      //       elem.style.width = width + "%";
+      //     }
+      //   }
+      // }
+      if (!response.ok) {
+        const errorText = await response.text();
+        const errorTextDiv = document.getElementById("artiicleIndexError");
         errorTextDiv.innerHTML = "";
-      } catch {
-        throw new Error(`HTTP error! status: ${response.status}, ${errorText}`);
+        const div = document.createElement("div");
+        div.textContent = suggestion;
+        div.classList.add("card-panel", "receipt", "btn-large");
+        div.addEventListener("click", () => {
+          response = fetch(scriptURL + "?action=getData");
+        });
+        errorTextDiv.appendChild(btn);
+        try {
+          errorTextDiv.innerHTML = "";
+        } catch {
+          throw new Error(
+            `HTTP error! status: ${response.status}, ${errorText}`,
+          );
+        }
       }
-    }
 
-    let responseData;
-    const contentType = response.headers.get("content-type");
+      let responseData;
+      const contentType = response.headers.get("content-type");
 
-    if (contentType && contentType.includes("application/json")) {
-      responseData = await response.json();
-      console.log(responseData);
-    } else if (contentType && contentType.includes("text/plain")) {
-      responseData = await response.text();
-      console.log(responseData);
-    } else {
-      responseData = await response.text();
-      console.log(responseData);
+      if (contentType && contentType.includes("application/json")) {
+        responseData = await response.json();
+        console.log(responseData);
+      } else if (contentType && contentType.includes("text/plain")) {
+        responseData = await response.text();
+        console.log(responseData);
+      } else {
+        responseData = await response.text();
+        console.log(responseData);
+      }
+      if (responseData?.pL?.type === "html") {
+        document.open();
+        document.write(responseData?.message?.info); // Wrap in <pre> for formatting
+        document.close();
+      } else if (
+        responseData?.pL?.type === "url" ||
+        responseData?.pL?.type === "text"
+      ) {
+        document.location.href = scriptURL;
+      } else if (responseData?.message?.content) {
+        document.location.href = scriptURL;
+      } else if (responseData?.message?.link) {
+        document.location.href = scriptURL;
+      } else {
+        document.getElementById("data-display").textContent = JSON.stringify(
+          responseData,
+          null,
+          2,
+        );
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      document.getElementById("data-display").textContent =
+        "Error fetching data: " + error.message;
     }
-    if (responseData?.pL?.type === "html") {
-      document.open();
-      document.write(responseData?.message?.info); // Wrap in <pre> for formatting
-      document.close();
-    } else if (
-      responseData?.pL?.type === "url" ||
-      responseData?.pL?.type === "text"
-    ) {
-      document.location.href = scriptURL;
-    } else if (responseData?.message?.content) {
-      document.location.href = scriptURL;
-    } else if (responseData?.message?.link) {
-      document.location.href = scriptURL;
-    } else {
-      document.getElementById("data-display").textContent = JSON.stringify(
-        responseData,
-        null,
-        2,
-      );
-    }
-  } catch (error) {
-    console.error("Error fetching data:", error);
-    document.getElementById("data-display").textContent =
-      "Error fetching data: " + error.message;
   }
 }
 
