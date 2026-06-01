@@ -137,7 +137,7 @@ function cancelRequest(event) {
 
 async function fetchData() {
   hError.addEventListener("mouseover", function (event) {
-    cancelRequest(event);
+    reFetch(event);
     return null;
   });
   try {
@@ -261,7 +261,7 @@ fetchData(); // Call on page load
 document.addEventListener("DOMContentLoaded", function (event) {
   if (hError.textContent === "Error fetching data:") {
     hError.addEventListener("click", function (event) {
-      reFetch(event);
+      cancelRequest(event);
       fetchData();
     });
     // if (i == 0) {
