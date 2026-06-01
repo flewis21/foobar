@@ -134,7 +134,8 @@ let i = 0;
 async function fetchData() {
   let cancelFetch = null;
   hError.addEventListener("mouseover", function () {
-    cancelRequest();
+    // cancelRequest();
+    this.textContent = "Error fetching data:";
     cancelFetch = true;
   });
 
@@ -280,6 +281,14 @@ fetchData(); // Call on page load
 // }
 // console.log(event);
 // }
+// });
+
+// hError.addEventListener("click", function () {
+//   reFetch();
+//   function reFetch() {
+//     hError.textContent = "Loading...";
+//     fetchData();
+//   }
 // });
 
 function cancelRequest() {
