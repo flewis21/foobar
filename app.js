@@ -250,7 +250,6 @@ fetchData(); // Call on page load
 let hError = document.getElementById("data-display");
 let elem = document.getElementById("myBar");
 hError.addEventListener("mouseover", function (event) {
-  console.log(event);
   if (hError.textContent === "Error fetching data:") {
     fetchData();
     this.textContent = "Loading...";
@@ -268,6 +267,7 @@ hError.addEventListener("mouseover", function (event) {
         }
       }
     }
+    console.log(event);
   }
 });
 
