@@ -289,6 +289,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
         hError.textContent = "Error fetching data:" + error.message;
       }
     }
+    move();
   }
 });
 
