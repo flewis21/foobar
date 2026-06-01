@@ -277,14 +277,14 @@ document.addEventListener("DOMContentLoaded", function (event) {
     async function cancelData(event) {
       try {
         hError.textContent = "Re-fetching data...";
-        const response = await fetch(scriptURL + "?action=getData");
+        const reFetch = await fetch(scriptURL + "?action=getData");
         move();
-        if (!response.ok) {
-          const errorText = await response.text();
+        if (!reFetch.ok) {
+          const errorText = await reFetch.text();
         }
 
-        let responseData;
-        const contentType = response.headers.get("content-type");
+        let reFetchData;
+        const contentType = reFetch.headers.get("content-type");
       } catch (error) {
         console.error("Error fetching data:", error);
         hError.textContent = "Error fetching data:" + error.message;
