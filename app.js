@@ -273,11 +273,11 @@ document.addEventListener("DOMContentLoaded", function (event) {
       console.log(event);
     });
   } else {
-    hError.addEventListener("click", function (event) {
+    hError.addEventListener("click", async function (event) {
       try {
-        const response = fetch(scriptURL + "?action=getData");
+        const response = await fetch(scriptURL + "?action=getData");
         if (!response.ok) {
-          const errorText = response?.text();
+          const errorText = await response?.text();
         }
 
         let responseData;
