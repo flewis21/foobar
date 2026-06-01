@@ -272,6 +272,10 @@ document.addEventListener("DOMContentLoaded", function (event) {
       // }
       console.log(event);
     });
+  } else {
+    hError.addEventListener("click", function (event) {
+      fetch();
+    });
   }
 });
 
