@@ -132,13 +132,13 @@ let elem = document.getElementById("myBar");
 let i = 0;
 
 async function fetchData() {
-  hError.addEventListener("mouseover", function (event) {
-    cancelRequest(event);
+  hError.addEventListener("mouseover", function () {
+    cancelRequest();
     return null;
   });
 
-  hError.addEventListener("click", function (event) {
-    reFetch(event);
+  hError.addEventListener("click", function () {
+    reFetch();
   });
 
   try {
@@ -279,11 +279,11 @@ document.addEventListener("DOMContentLoaded", function (event) {
   // }
 });
 
-function cancelRequest(event) {
+function cancelRequest() {
   hError.textContent = "Error fetching data:";
 }
 
-function reFetch(event) {
+function reFetch() {
   hError.textContent = "Loading...";
   fetchData();
 }
