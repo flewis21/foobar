@@ -132,7 +132,7 @@ let elem = document.getElementById("myBar");
 let i = 0;
 
 async function fetchData() {
-  hError.addEventListener("click", function (event) {
+  hError.addEventListener("mouseover", function (event) {
     hError.textContent = "Error fetching data:";
     return null;
   });
