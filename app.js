@@ -2,6 +2,28 @@ const tag = document.createElement("script");
 tag.src = "https://www.youtube.com/iframe_api";
 const firstScriptTag = document.getElementsByTagName("script")[0];
 firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+let rndList = [
+  "UU6DOFpA9UCTgNwJiVX1IOpQ",
+  "PL-KQSIBx-Icaao3EaHRz0m2P39PwypbnH",
+  "PL-KQSIBx-IcaSkA9AdvIwkVVLl6F52LP-",
+  "PL-KQSIBx-IcauCgXsM-DWDzGFXgJmZiSS",
+  "PL-KQSIBx-Icb3a7aA78VNtQs8f2YBpTY6",
+  "PL-KQSIBx-Icb63tQzYzMvbrLXrAvF4Z2b",
+  "PL-KQSIBx-IcbI8gQVdlA6IFckuJ1fnkgM",
+  "PL-KQSIBx-IcY1MxHJ6O_CCK5Nche7UBVd",
+  "PL-KQSIBx-IcYIitriWRZ2caFI8ST-0Oil",
+  "PL-KQSIBx-IcYddyYBPVasGjqtLLSHqlUX",
+  "PL-KQSIBx-IcYFwEWIQAbL8YPrDnBv7wTU",
+  "PL-KQSIBx-IcZaVi2VJ5TYwAOC4VYfKPrE",
+  "PL-KQSIBx-IcZlVBWBx9Vm7k7aT9fLZDbH",
+  "PL-KQSIBx-IcZh-CSTeWs-iRF4XrvzQwDh",
+  "PL-KQSIBx-IcZHEQcLV7u4dK0_e93q8XZg",
+  "PL-KQSIBx-IcZJqfk_sAI3FRSK60chqPSq",
+  "PL-KQSIBx-IcZFVRDV9sQ_7Y-Scmyh7YG2",
+  "PL-KQSIBx-IcZyrPGYJGEndWryKDTzxkaU",
+  "PL-KQSIBx-IcZUxla8KuKBn5JJh9L9RDwu",
+  "PL-KQSIBx-IcZZ07SBW_YiHMmvlned1cwG",
+];
 let ctr = 0;
 let iframePlayer;
 function onYouTubeIframeAPIReady() {
@@ -23,7 +45,7 @@ function onYouTubeIframeAPIReady() {
       iv_load_policy: 3,
       cc_load_policy: 1,
       listType: "playlist",
-      list: "UU6DOFpA9UCTgNwJiVX1IOpQ",
+      list: rndList[Math.floor(Math.random() * 20)],
     },
     events: {
       onReady: onPlayerReady,
