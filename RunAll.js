@@ -3147,7 +3147,7 @@ function runBoilerplate(func, args) {
     }
   } catch (error) {
     Logger.log("Error in " + func + ": " + error.message);
-    throw new Error(`Server error in ${func}: ${error.message}`);
+    // throw new Error(`Server error in ${func}: ${error.message}`);
   }
 }
 
