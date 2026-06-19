@@ -104,27 +104,27 @@ function onYouTubeIframeAPIReady() {
   function onPlayerReady(event) {
     playVideo();
   }
-  $(".user-icon").click(function (event) {
-    let confirmation = window.confirm(
-      "Opening a NEW youtube playList. Click OK to continue. Or Click CANCEL",
-    );
-    let ifPlayerDisplay = document.getElementById("iframePlayer");
-    if (confirmation) {
-      if (ifPlayerDisplay.style.display === "none") {
-        ifPlayerDisplay.style.display = "block";
-        playVideo();
-      } else {
-        loadPlaylist();
-        setShuffle();
-        nextVideo();
-        playVideo();
-      }
-    } else {
-      // stopVideo();
-      console.log(ifPlayerDisplay);
-      ifPlayerDisplay.style.display = "none";
-    }
-  });
+  // $(".user-icon").click(function (event) {
+  //   let confirmation = window.confirm(
+  //     "Opening a NEW youtube playList. Click OK to continue. Or Click CANCEL",
+  //   );
+  //   let ifPlayerDisplay = document.getElementById("iframePlayer");
+  //   if (confirmation) {
+  //     if (ifPlayerDisplay.style.display === "none") {
+  //       ifPlayerDisplay.style.display = "block";
+  //       playVideo();
+  //     } else {
+  //       loadPlaylist();
+  //       setShuffle();
+  //       nextVideo();
+  //       playVideo();
+  //     }
+  //   } else {
+  //     // stopVideo();
+  //     console.log(ifPlayerDisplay);
+  //     ifPlayerDisplay.style.display = "none";
+  //   }
+  // });
 
   // 5. The API calls this function when the player's state changes.
   //    The function indicates that when playing a video (state=1),
