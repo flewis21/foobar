@@ -1,3 +1,6 @@
+let againCap = null;
+let allMatchesAvailable = [];
+const localSuggestionsCache = {};
 const tag = document.createElement("script");
 tag.src = "https://www.youtube.com/iframe_api";
 const firstScriptTag = document.getElementsByTagName("script")[0];
@@ -24,6 +27,51 @@ let rndList = [
   "PL-KQSIBx-IcZUxla8KuKBn5JJh9L9RDwu",
   "PL-KQSIBx-IcZZ07SBW_YiHMmvlned1cwG",
 ];
+localSuggestionsCache["allMatches"] = rndList;
+console.log("all matches length greater than intents: ");
+console.log(
+  allMatchesAvailable.length < localSuggestionsCache["allMatches"].length,
+);
+while (
+  allMatchesAvailable.length !== localSuggestionsCache["allMatches"].length
+) {
+  allMatchesAvailable = localSuggestionsCache["allMatches"].sort((a, b) => {
+    let i = Math.random();
+    let tSorted = a;
+    // console.log(againCap + ": tSorted = " + tSorted);
+    let zSorted = b;
+    // console.log(againCap + ": zSorted = " + zSorted);
+    if (i < 0.3) {
+      let matchA = zSorted.toLowerCase().localeCompare(tSorted.toLowerCase());
+      if (matchA > -1) {
+        // console.log(againCap + ": matchA = " + matchA);
+        return zSorted;
+      }
+    } else {
+      if (i > 0.3 && i < 0.5) {
+        let matchB = tSorted.toLowerCase().localeCompare(zSorted.toLowerCase());
+        if (matchB === -1) {
+          // console.log(againCap + ": matchB = " + matchB);
+          return tSorted;
+        }
+      } else {
+        if (i > 0.5 && i < 0.8) {
+          // console.log(againCap + ": matchC = " + zSorted);
+          return zSorted;
+        } else {
+          if (i > 0.8) {
+            // console.log(againCap + ": matchD = " + tSorted);
+            return tSorted;
+          }
+        }
+      }
+    }
+  });
+}
+if (!againCap) {
+  localStorage.setItem("ytSearch", myPlay());
+  againCap = localStorage.getItem("ytSearch");
+}
 let ctr = 0;
 let iframePlayer;
 function onYouTubeIframeAPIReady() {
@@ -54,9 +102,29 @@ function onYouTubeIframeAPIReady() {
     },
   });
   function onPlayerReady(event) {
-    setShuffle();
-    event.target.nextVideo();
+    playVideo();
   }
+  $(".user-icon").click(function (event) {
+    let confirmation = window.confirm(
+      "Opening a NEW youtube playList. Click OK to continue. Or Click CANCEL",
+    );
+    let ifPlayerDisplay = document.getElementById("iframePlayer");
+    if (confirmation) {
+      if (ifPlayerDisplay.style.display === "none") {
+        ifPlayerDisplay.style.display = "block";
+        playVideo();
+      } else {
+        loadPlaylist();
+        setShuffle();
+        nextVideo();
+        playVideo();
+      }
+    } else {
+      // stopVideo();
+      console.log(ifPlayerDisplay);
+      ifPlayerDisplay.style.display = "none";
+    }
+  });
 
   // 5. The API calls this function when the player's state changes.
   //    The function indicates that when playing a video (state=1),
@@ -142,6 +210,18 @@ function onYouTubeIframeAPIReady() {
 
   function pauseVideo() {
     iframePlayer.pauseVideo();
+  }
+  function loadPlaylist() {
+    if (iframePlayer && iframePlayer.loadPlaylist) {
+      iframePlayer.loadPlaylist({
+        listType: "playlist",
+        list: allMatchesAvailable[
+          Math.floor(Math.random() * Math.floor(allMatchesAvailable.length))
+        ],
+        index: 0,
+        startSeconds: 0,
+      });
+    }
   }
 }
 
