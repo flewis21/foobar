@@ -338,3 +338,129 @@ function move() {
 }
 
 move(); // Call on page load
+
+function serverSide(func, args) {
+  return new Promise((resolve, reject) => {
+    google.script.run
+      .withSuccessHandler((result) => {
+        resolve(result);
+      })
+      .withFailureHandler((error) => {
+        console.log(document.getElementById("test").innerHTML);
+        reject(error);
+      })
+      .runBoilerplate(func, args);
+  });
+}
+/**
+ * VideoStreamer class
+ * Streams video from a given source URL using MediaSource API
+ */
+
+class VideoStreamer {
+  constructor(videoElementId, startShareId, stopShareId) {
+    this.videoElement = document.getElementById(videoElementId);
+    this.startShare = document.getElementById(startShareId);
+    this.stopShare = document.getElementById(stopShareId);
+    try {
+      if (!(this.videoElement instanceof HTMLVideoElement)) {
+        throw new Error("Invalid video element ID");
+      }
+      this.mediaSource = new MediaSource();
+      this.reader - null;
+      this.recorder = null;
+      this.sourceBuffer = null;
+      this.blob = null;
+      this.chunks = [];
+    } catch (noVideo) {
+      console.error("Error processing request:", noVideo);
+    }
+  }
+
+  async startStream(
+    sourceUrl,
+    mimeType = 'video/mp4; codecs="avc1.42E01E, mp4a.40.2"',
+  ) {
+    if (!("MediaSource" in window)) {
+      console.error("MediaSource API not supported in this browser.");
+      return;
+    }
+
+    this.videoElement.src = URL.createObjectURL(this.mediaSource);
+    this.videoElement.srcObject = this.mediaSource.addEventListener(
+      "sourceopen",
+      async () => {
+        try {
+          this.sourceBuffer = this.mediaSource.addSourceBuffer(mimeType);
+          const options = { muteHttpExceptions: true };
+          const response = await fetch(sourceUrl, options);
+
+          if (!response.ok)
+            throw new Error("HTTP error! Status: " + response.status);
+          const videoData = await response.arrayBuffer();
+
+          this.sourceBuffer.addEventListener("updated", () => {
+            this.mediaSource.endOfStream();
+            this.videoElement
+              .play()
+              .catch((err) => console.error("Playback error:", err));
+          });
+
+          this.sourceBuffer.appendBuffer(videoData);
+        } catch (err) {
+          console.error("Streaming error:", err);
+        }
+      },
+    );
+    this.startShare.addEventListener("click", async () => {
+      try {
+        /** Request permission to capture the screen */
+        const stream = await navigator.mediaDevices.getDisplayMedia({
+          video: { cursor: "always" },
+          audio: true, // Optional: capture system audio
+        });
+
+        /** Display the captured screen in the video element */
+        this.videoElement.srcObject = stream;
+
+        // Start recording
+        this.recorder = new MediaRecorder(stream);
+        this.recorder.ondataavailable = (e) => this.chunks.push(e.data);
+        this.recorder.onstop = saveRecording;
+        this.recorder.start();
+
+        this.startSHare.disabled = true;
+        this.stopShare.disabled = false;
+
+        /** Handle when user stops sharing */
+        this.stopShare.addEventListener("click", () => {
+          this.recorder.stop();
+          stream.getTracks().forEach((track) => track.stop());
+          stream.getVideoTracks()[0].addEventListener("ended", () => {
+            alert("Screen sharing stopped.");
+            this.videoElement.srcObject = null;
+          });
+          this.startShare.disabled = false;
+          this.stopShare.disabled = true;
+        });
+
+        function saveRecording() {
+          this.blob = new Blob(this.chunks, { type: "video/webm" });
+          this.chunks = [];
+
+          this.reader = new FileReader();
+          this.reader.onloadend = () => {
+            const base64Data = this.reader.result.split(",")[1];
+            serverSide("postToDrive", ["screen_share.webm", base64Data]).data;
+          };
+          this.reader.readAsDataURL(blob);
+        }
+      } catch (err) {
+        console.error("Error starting screen share:", err);
+        alert("Screen share failed: " + err.message);
+      }
+    });
+  }
+}
+const streamer = new VideoStreamer("videoPlayer", "startShare", "stopShare");
+streamer.startStream();
