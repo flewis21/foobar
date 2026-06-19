@@ -76,7 +76,7 @@ section {
 }
 
 body {
-  background-image: url("https://gofund.me/537e4fe5f"); /* url(./images/tech.jpg); url("https://styles.redditmedia.com/t5_fbc5d/styles/profileBanner_287kbmnfstk01.JPG?width=1280&height=384&frame=1&auto=webp&crop=1280:384,smart&s=8c7108cee59946ef6626e228d4be3ad539e207f0"); */
+  background-image: url(./images/tech.jpg); /* url("https://gofund.me/537e4fe5f"); url("https://styles.redditmedia.com/t5_fbc5d/styles/profileBanner_287kbmnfstk01.JPG?width=1280&height=384&frame=1&auto=webp&crop=1280:384,smart&s=8c7108cee59946ef6626e228d4be3ad539e207f0"); */
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: cover;
