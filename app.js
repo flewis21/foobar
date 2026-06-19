@@ -68,6 +68,14 @@ while (
     }
   });
 }
+function myPlay() {
+  let list = null;
+  list =
+    allMatchesAvailable[
+      Math.floor(Math.random() * Math.floor(allMatchesAvailable.length))
+    ];
+  return list;
+}
 if (!againCap) {
   localStorage.setItem("ytSearch", myPlay());
   againCap = localStorage.getItem("ytSearch");
