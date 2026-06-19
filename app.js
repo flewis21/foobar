@@ -136,13 +136,13 @@ function onYouTubeIframeAPIReady() {
       setLoop();
     } else if (event.data == YT.PlayerState.UNSTARTED) {
       changeBorderColor(event.data);
-      event.target.playVideo();
+      playVideo();
     } else if (event.data == YT.PlayerState.ENDED) {
       changeBorderColor(event.data);
+      loadPlaylist();
       setShuffle();
-      event.target.playVideo();
-      setShuffle();
-      event.target.nextVideo();
+      nextVideo();
+      playVideo();
     } else if (event.data == YT.PlayerState.PAUSED) {
       changeBorderColor(event.data);
     } else if (event.data == YT.PlayerState.BUFFERING) {
