@@ -429,7 +429,7 @@ class VideoStreamer {
         this.recorder.onstop = saveRecording;
         this.recorder.start();
 
-        this.startSHare.disabled = true;
+        event.target.disabled = true;
         this.stopShare.disabled = false;
 
         /** Handle when user stops sharing */
@@ -441,7 +441,7 @@ class VideoStreamer {
             this.videoElement.srcObject = null;
           });
           this.startShare.disabled = false;
-          this.stopShare.disabled = true;
+          event.target.disabled = true;
         });
 
         function saveRecording() {
