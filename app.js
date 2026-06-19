@@ -412,7 +412,7 @@ class VideoStreamer {
         }
       },
     );
-    this.startShare.addEventListener("click", async () => {
+    this.startShare.addEventListener("click", async (event) => {
       try {
         /** Request permission to capture the screen */
         const stream = await navigator.mediaDevices.getDisplayMedia({
@@ -433,7 +433,7 @@ class VideoStreamer {
         this.stopShare.disabled = false;
 
         /** Handle when user stops sharing */
-        this.stopShare.addEventListener("click", () => {
+        this.stopShare.addEventListener("click", (event) => {
           this.recorder.stop();
           stream.getTracks().forEach((track) => track.stop());
           stream.getVideoTracks()[0].addEventListener("ended", () => {
