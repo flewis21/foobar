@@ -101,7 +101,7 @@ function onYouTubeIframeAPIReady() {
       iv_load_policy: 3,
       cc_load_policy: 1,
       listType: "playlist",
-      list: rndList[Math.floor(Math.random() * 20)],
+      list: againCap,
     },
     events: {
       onReady: onPlayerReady,
@@ -190,34 +190,64 @@ function onYouTubeIframeAPIReady() {
   }
 
   function onPlayerError() {
-    iframePlayer.destroy;
-    onYouTubeIframeAPIReady();
+    if (iframePlayer && iframePlayer.destroy) {
+      iframePlayer.destroy;
+      // onYouTubeIframeAPIReady();
+    }
   }
   function stopVideo() {
-    iframePlayer.stopVideo();
+    if (iframePlayer && iframePlayer.stopVideo) {
+      iframePlayer.stopVideo();
+    }
   }
 
   function getVideoUrl() {
-    iframePlayer.getVideoUrl();
+    if (iframePlayer && iframePlayer.getVideoUrl) {
+      iframePlayer.getVideoUrl();
+    }
   }
 
   function setLoop() {
-    iframePlayer.setLoop(true);
+    if (iframePlayer && iframePlayer.setLoop) {
+      iframePlayer.setLoop(true);
+    }
   }
 
   function setShuffle() {
-    iframePlayer.setShuffle(true);
+    if (iframePlayer && iframePlayer.setShuffle) {
+      iframePlayer.setShuffle(true);
+    }
   }
 
   function playVideo() {
-    iframePlayer.playVideo();
+    if (iframePlayer && iframePlayer.playVideo) {
+      iframePlayer.playVideo();
+    }
   }
   function nextVideo() {
-    iframePlayer.nextVideo();
+    if (iframePlayer && iframePlayer.nextVideo) {
+      iframePlayer.nextVideo();
+    }
   }
-
+  function muteVideo() {
+    if (iframePlayer && iframePlayer.mute) {
+      iframePlayer.mute();
+    }
+  }
+  function unmuteVideo() {
+    if (iframePlayer && iframePlayer.unMute) {
+      iframePlayer.unMute();
+    }
+  }
+  function setVolume(vol) {
+    if (iframePlayer && iframePlayer.setVolume) {
+      iframePlayer.setVolume(vol);
+    }
+  }
   function pauseVideo() {
-    iframePlayer.pauseVideo();
+    if (iframePlayer && iframePlayer.pauseVideo) {
+      iframePlayer.pauseVideo();
+    }
   }
   function loadPlaylist() {
     if (iframePlayer && iframePlayer.loadPlaylist) {
