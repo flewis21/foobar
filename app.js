@@ -460,7 +460,7 @@ move(); // Call on page load
 function serverSide(func, args) {
   return new Promise((resolve, reject) => {
     try {
-      resolve(fetch(scriptURL + "?func=runBoilerplate&args=" + [func, args]));
+      resolve(fetch(scriptURL + "?func=" + func + "&args=" + args));
     } catch (error) {
       reject(error);
     }
