@@ -26,9 +26,9 @@ function doGet(e) {
           // console.log("base = " + base, executed++);
           dataOR = this[libName].geneicType(e);
           // const data = this[libName].globalHandleGetData();
-          Logger.log(
-            "globalHandleGetData returned:\n" + JSON.stringify(dataOR),
-          );
+          // Logger.log(
+          //   "globalHandleGetData returned:\n" + JSON.stringify(dataOR),
+          // );
         }
         else {
           if (kOL.length === 0) {
@@ -39,9 +39,9 @@ function doGet(e) {
             // console.log("base = " + base, executed++);
             dataOR = this[libName].geneicType();
             // const data = this[libName].globalHandleGetData();
-            Logger.log(
-              "globalHandleGetData returned:\n" + JSON.stringify(dataOR),
-            );
+            // Logger.log(
+            //   "globalHandleGetData returned:\n" + JSON.stringify(dataOR),
+            // );
           }
         }
       }
@@ -60,9 +60,9 @@ function doGet(e) {
             // let base = this[libName].createFunctionResult(funcU, funcD);
             // console.log("base = " + base, executed++);
             dataOR = this[libName].geneicType(e);
-            Logger.log(
-              "globalHandleGetData returned:\n" + JSON.stringify(dataOR),
-            );
+            // Logger.log(
+            //   "globalHandleGetData returned:\n" + JSON.stringify(dataOR),
+            // );
           }
         }
       }
@@ -72,11 +72,17 @@ function doGet(e) {
   if (dataOR?.pL?.type === "html") {
     console.log("dataOR?.pL?.type = " + dataOR?.pL?.type, executed++);
     console.log("dataOR message info\n" + dataOR?.message?.info, dataOR?.message);
-    return this[libName].rendTemplate(
+    let organizeIt = this[libName].startRenderer(
       dataOR.message.info,
       kOLObject,
       dataOR?.title,
     );
+    console.log("returning this from Renderer:html\n", JSON.stringify(organizeIt));
+    // return this[libName].startRenderer(
+    //   dataOR.message.info,
+    //   kOLObject,
+    //   dataOR?.title,
+    // );
   }
   else {
     if (dataOR?.pL?.type !== "html" && dataOR?.pL?.type !== "unknown" && dataOR?.pL?.dataData && dataOR?.pL?.type !== "url" && dataOR?.pL?.type !== "text" || (dataOR?.pL?.dataData && dataOR?.pL?.type === "url") || (dataOR?.pL?.dataData && dataOR?.pL?.type === "text") ) {
@@ -86,20 +92,32 @@ function doGet(e) {
       let truContentVar = isTruthy(contentUrlVar.hostname);
       if (truContentVar) {
         var seoHtml = this[libName].seoCapital(dataOR?.message?.content);
-        return this[libName].rendTemplate(
+        let organizeIt = this[libName].startRenderer(
           seoHtml,
           kOLObject,
           dataOR?.title,
         );
+        console.log("returning this from Renderer: url or text", JSON.stringify(organizeIt));
+        // return this[libName].startRenderer(
+        //   seoHtml,
+        //   kOLObject,
+        //   dataOR?.title,
+        // );
       }
       else {
         console.log("dataOR?.pL?.type = " + dataOR?.pL?.type, executed++);
         console.log("dataOR message info\n" + dataOR?.message?.info, dataOR?.message);
-        return this[libName].rendTemplate(
+        let organizeIt = this[libName].startRenderer(
           dataOR?.message?.info,
           kOLObject,
           dataOR?.title,
         );
+        console.log("returning this from Renderer:", JSON.stringify(organizeIt));
+        // return this[libName].startRenderer(
+        //   dataOR?.message?.info,
+        //   kOLObject,
+        //   dataOR?.title,
+        // );
       }
     }
     else {
@@ -109,12 +127,19 @@ function doGet(e) {
         if (dataOR?.pL?.type === "url" || dataOR?.pL?.type === "text") {
           console.log("dataOR?.pL?.type = " + dataOR?.pL?.type, executed++);
           console.log("dataOR message info\n" + dataOR?.message?.info, dataOR?.message);
-          return this[libName].contCDN(dataOR?.message?.info, kOLObject);
+          let organizeIt = this[libName].startRenderer(dataOR?.message?.info, kOLObject);
+          console.log("returning this from Renderer:unknown and (url or text)", JSON.stringify(organizeIt));
+          // return this[libName].startRenderer(dataOR?.message?.info, kOLObject);
         }
         else {
           console.log("dataOR?.pL?.type = " + dataOR?.pL?.type, executed++);
           console.log("dataOR message content\n" + dataOR?.message?.content, dataOR?.message);
-          return this[libName].contCDN(dataOR?.message?.content, kOLObject)
+          let organizeIt = this[libName].startRenderer(dataOR?.message?.content, kOLObject);
+          console.log("returning this from Renderer:", JSON.stringify(organizeIt));
+          return this[libName].rendTemplate(organizeIt?.html?.blob, kOLObject,dataOR.title);
+          // let strRes = dataHtml.blob;
+          // let objRes = dataHtml.argsObject;
+          // let appTitle = dataHtml.title; HtmlService.createHtmlOutput(strRes).getContent()
         }
       } 
         else {
