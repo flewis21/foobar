@@ -69,6 +69,7 @@ function doGet(e) {
     }
   }
   let kOLObject = { payL: dataOR };
+  let organizeIt = this[libName].startRenderer(dataOR?.message?.content, kOLObject);
   if (dataOR?.pL?.type === "html") {
     console.log("dataOR?.pL?.type = " + dataOR?.pL?.type, executed++);
     console.log("dataOR message info\n" + dataOR?.message?.info, dataOR?.message);
@@ -107,7 +108,7 @@ function doGet(e) {
       else {
         console.log("dataOR?.pL?.type = " + dataOR?.pL?.type, executed++);
         console.log("dataOR message info\n" + dataOR?.message?.info, dataOR?.message);
-        let organizeIt = this[libName].startRenderer(
+        organizeIt = this[libName].startRenderer(
           dataOR?.message?.info,
           kOLObject,
           dataOR?.title,
@@ -127,16 +128,27 @@ function doGet(e) {
         if (dataOR?.pL?.type === "url" || dataOR?.pL?.type === "text") {
           console.log("dataOR?.pL?.type = " + dataOR?.pL?.type, executed++);
           console.log("dataOR message info\n" + dataOR?.message?.info, dataOR?.message);
-          let organizeIt = this[libName].startRenderer(dataOR?.message?.info, kOLObject);
-          console.log("returning this from Renderer:unknown and (url or text)", JSON.stringify(organizeIt));
+          let orgUrlTxt = organizeIt?.blob?.argsObject?.payL?.message?.info;
+          console.log("returning this from Renderer:unknown and (url or text)", JSON.stringify(orgUrlTxt));
           // return this[libName].startRenderer(dataOR?.message?.info, kOLObject);
+          if (typeof orgUrlTxt === "string") {
+            return this[libName].contCDN(orgUrlTxt, kOLObject,dataOR.title);
+          }
+          else {
+            return this[libName].rendFile(dataOR?.message?.content?.blob?.file, kOLObject,dataOR.title);
+          }
         }
         else {
           console.log("dataOR?.pL?.type = " + dataOR?.pL?.type, executed++);
           console.log("dataOR message content\n" + dataOR?.message?.content, dataOR?.message);
-          let organizeIt = this[libName].startRenderer(dataOR?.message?.content, kOLObject);
+          organizeIt = this[libName].startRenderer(dataOR?.message?.content, kOLObject);
           console.log("returning this from Renderer:", JSON.stringify(organizeIt));
-          return this[libName].rendTemplate(organizeIt?.html?.blob, kOLObject,dataOR.title);
+          if (typeof organizeIt?.blob?.argsObject?.payL?.message?.info === "string") {
+            return this[libName].rendTemplate(organizeIt?.blob?.argsObject?.payL?.message?.info, kOLObject,dataOR.title);
+          }
+          else {
+            return this[libName].rendFile(organizeIt?.blob?.file, kOLObject,dataOR.title);
+          }
           // let strRes = dataHtml.blob;
           // let objRes = dataHtml.argsObject;
           // let appTitle = dataHtml.title; HtmlService.createHtmlOutput(strRes).getContent()
@@ -3150,22 +3162,22 @@ function runBoilerplate(func, args) {
           return { type: "text", data: rawResult };
         }
       }
-    } else if (typeof rawResult === "object" && rawResult !== null) {
+    } else if (typeof rawResult === "object" && rawResult != null) {
       if (rawResult.html) {
         return { type: "html", data: rawResult.html };
       }
-      if (rawResult.url && Object.keys(rawResult).length === 1) {
-        if (rawResult.name) {
-          return {
-            type: "url",
-            data: rawResult.url,
-            name: rawResult.name,
-            url: rawResult.url,
-          };
-        } else {
-          return { type: "url", data: rawResult.url };
+        if (rawResult.url && Object.keys(rawResult).length === 1) {
+          if (rawResult.name) {
+            return {
+              type: "url",
+              data: rawResult.url,
+              name: rawResult.name,
+              url: rawResult.url,
+            };
+          } else {
+            return { type: "url", data: rawResult.url };
+          }
         }
-      }
       return { type: "object", data: rawResult };
     } else {
       return { type: "unknown", data: rawResult };
