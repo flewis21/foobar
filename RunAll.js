@@ -84,7 +84,7 @@ function doGet(e) {
   // if (typeof bHtml.getContent === "function" || typeof bhtmlPayL.getContent === "function" || typeof bHtmlPL.getContent === "function") {
   //   // console.log("dataOR?.pL?.type = " + Object.keys(bHtml).length || String(bhtmlPayL).length || String(bHtmlPL).length, executed++);
   //   // console.log("dataOR message info\n" + payInfo, dataOR?.message);
-  //   // let organizeIt = this[libName].rendTemplate(
+  //   // let organizeIt = this[libName].renderTemplate(
   //   //   payInfo,
   //   //   kOLObject,
   //   //   payTitle,
@@ -92,7 +92,7 @@ function doGet(e) {
   //   if (typeof bHtml.getContent === "function") {
   //     console.log("event; html " + bHtml?.getContent(), Object.keys(bHtml).length);
   //     console.log("returning this from Renderer:html\n", JSON.stringify(organizeIt));
-  //     return this[libName].rendTemplate(
+  //     return this[libName].renderTemplate(
   //       bHtml?.getContent(),
   //       kOLObject,
   //       payTitle,
@@ -102,7 +102,7 @@ function doGet(e) {
   //     if (typeof bhtmlPayL.getContent === "function") {
   //       console.log("event; htmlPayL " + bhtmlPayL?.getContent(), String(bhtmlPayL).length);
   //       console.log("returning this from Renderer:html\n", JSON.stringify(organizeIt));
-  //       return this[libName].rendTemplate(
+  //       return this[libName].renderTemplate(
   //         bhtmlPayL?.getContent(),
   //         kOLObject,
   //         payTitle,
@@ -112,7 +112,7 @@ function doGet(e) {
   //       if (typeof bHtmlPL.getContent === "function") {
   //         console.log("event; htmlPL " + bHtmlPL?.getContent(), String(bHtmlPL).length);
   //         console.log("returning this from Renderer:html\n", JSON.stringify(organizeIt));
-  //         return this[libName].rendTemplate(
+  //         return this[libName].renderTemplate(
   //           bHtmlPL?.getContent(),
   //           kOLObject,
   //           payTitle,
@@ -150,7 +150,7 @@ function doGet(e) {
         //   payTitle,
         // );
     //     console.log("returning this from Renderer:", JSON.stringify(organizeIt));
-    //     return this[libName].rendTemplate(
+    //     return this[libName].renderTemplate(
     //       payInfo,
     //       kOLObject,
     //       payTitle,
@@ -178,7 +178,7 @@ function doGet(e) {
           if (typeof bHtml.getContent === "function" || typeof bhtmlPayL.getContent === "function" || typeof bHtmlPL.getContent === "function") {
             // console.log("dataOR?.pL?.type = " + Object.keys(bHtml).length || String(bhtmlPayL).length || String(bHtmlPL).length, executed++);
             // console.log("dataOR message info\n" + payInfo, dataOR?.message);
-            // let organizeIt = this[libName].rendTemplate(
+            // let organizeIt = this[libName].renderTemplate(
             //   payInfo,
             //   kOLObject,
             //   payTitle,
@@ -186,7 +186,7 @@ function doGet(e) {
             if (typeof bHtml.getContent === "function") {
               console.log("event; html " + bHtml?.getContent(), Object.keys(bHtml).length);
               console.log("returning this from Renderer:html\n", JSON.stringify(organizeIt));
-              return this[libName].rendTemplate(
+              return this[libName].renderTemplate(
                 bHtml?.getContent(),
                 kOLObject,
                 payTitle,
@@ -196,7 +196,7 @@ function doGet(e) {
               if (typeof bhtmlPayL.getContent === "function") {
                 console.log("event; htmlPayL " + bhtmlPayL?.getContent(), String(bhtmlPayL).length);
                 console.log("returning this from Renderer:html\n", JSON.stringify(organizeIt));
-                return this[libName].rendTemplate(
+                return this[libName].renderTemplate(
                   bhtmlPayL?.getContent(),
                   kOLObject,
                   payTitle,
@@ -206,7 +206,7 @@ function doGet(e) {
                 if (typeof bHtmlPL.getContent === "function") {
                   console.log("event; htmlPL " + bHtmlPL?.getContent(), String(bHtmlPL).length);
                   console.log("returning this from Renderer:html\n", JSON.stringify(organizeIt));
-                  return this[libName].rendTemplate(
+                  return this[libName].renderTemplate(
                     bHtmlPL?.getContent(),
                     kOLObject,
                     payTitle,
@@ -221,7 +221,7 @@ function doGet(e) {
             // organizeIt = this[libName].startRenderer(payContent, kOLObject);
             console.log("returning this from Renderer:", JSON.stringify(organizeIt));
             // if (typeof mInfo === "string") {
-            //   return this[libName].rendTemplate(mInfo, kOLObject,dataOR.title);
+            //   return this[libName].renderTemplate(mInfo, kOLObject,dataOR.title);
             // }
             // else {
               return this[libName].rendFile(mIndex, kOLObject,dataOR.title);
