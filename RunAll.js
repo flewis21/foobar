@@ -188,7 +188,7 @@ function doGet(e) {
           // console.log("returning this from Renderer:unknown and (url or text)", JSON.stringify(mInfo));
           // return this[libName].startRenderer(payInfo, kOLObject);
           if (String(mInfo.searchString)) {
-            return this[libName].contCDN(mCDN.url, mCDN.tmp) // mCDN?.cdnOutput //this[libName].contCDN(mInfo, kOLObject, payTitle);
+            return this[libName].renderTemplate(mCDN, dataOR, payTitle) // mCDN?.cdnOutput //this[libName].contCDN(mInfo, kOLObject, payTitle);
           }
           // else {
           //   return bHtml //this[libName].rendFile(mIndex, kOLObject, payTitle);
