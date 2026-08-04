@@ -99,7 +99,11 @@ function doGet(e) {
   let bHtml = dataOR?.html;
   let bhtmlPayL = dataOR?.htmlPayL;
   let bHtmlPL = dataOR?.htmlPL;
-  let bpayType = dataOR?.dataOR?.pL?.type
+  let bpayType = dataOR?.dataOR?.pL?.type;
+  let inHtml = mIndex?.html || dataOR?.pLData;
+  let inTitle = mIndex?.argsObject?.title || dataOR?.dataOR?.title;
+  let inObject = mIndex?.argsObject || dataOR?.dataOR;
+  let inFile = mIndex?.file || dataOR?.file;
   // if (typeof bHtml.getContent === "function" || typeof bhtmlPayL.getContent === "function" || typeof bHtmlPL.getContent === "function") {
   //   // console.log("dataOR?.pL?.type = " + Object.keys(bHtml).length || String(bhtmlPayL).length || String(bHtmlPL).length, executed++);
   //   // console.log("dataOR message info\n" + payInfo, dataOR?.message);
@@ -188,14 +192,14 @@ function doGet(e) {
           // console.log("returning this from Renderer:unknown and (url or text)", JSON.stringify(mInfo));
           // return this[libName].startRenderer(payInfo, kOLObject);
           if (String(mInfo.searchString)) {
-            return this[libName].renderTemplate(mCDN, dataOR, payTitle) // mCDN?.cdnOutput //this[libName].contCDN(mInfo, kOLObject, payTitle);
+            return this[libName].contentCDN(mCDN, dataOR, payTitle) // mCDN?.cdnOutput //this[libName].contCDN(mInfo, kOLObject, payTitle);
           }
           // else {
           //   return bHtml //this[libName].rendFile(mIndex, kOLObject, payTitle);
           // }
         }
         else {
-          if (typeof bHtml?.getContent === "function" || typeof bhtmlPayL?.getContent === "function" || typeof bHtmlPL?.getContent === "function") {
+          if (typeof bHtml?.getContent === "function" || typeof bhtmlPayL?.getContent === "function" || typeof bHtmlPL?.getContent === "function" || typeof inHtml?.getContent() === "function") {
             // console.log("dataOR?.pL?.type = " + Object.keys(bHtml).length || String(bhtmlPayL).length || String(bHtmlPL).length, executed++);
             // console.log("dataOR message info\n" + payInfo, dataOR?.message);
             // let organizeIt = this[libName].renderTemplate(
@@ -235,6 +239,13 @@ function doGet(e) {
                   //   payTitle,
                   // );
                 }
+                else {
+                  if (typeof inHtml?.getContent() === "function") {
+                    console.log("event; inHtml " + inHtml?.getContent(), String(inHtml).length);
+                    console.log("returning this from Renderer:html\n", JSON.stringify(dataOR));
+                    return inHtml.evaluate()
+                  }
+                }
               }
             }
           }
@@ -242,12 +253,13 @@ function doGet(e) {
             // console.log("dataOR?.pL?.type = " + parType, executed++);
             // console.log("dataOR message content\n" + payContent, dataOR?.message);
             // dataOR = this[libName].startRenderer(payContent, kOLObject);
-            console.log("returning this from Renderer:", JSON.stringify(dataOR?.dataOR?.message?.info));
+            console.log("returning this from Renderer:", JSON.stringify(dataOR));
             // if (typeof mInfo === "string") {
             //   return this[libName].renderTemplate(mInfo, kOLObject,dataOR.title);
             // }
             // else {
-              return //this[libName].rendFile(mIndex, kOLObject,dataOR.title);
+              // return HtmlService.createTemplate(mIndex?.html?.renTemp).evaluate().getContent();
+              return this[libName].renderFile(inFile, inObject, inTitle);
             // }
             // let strRes = dataHtml.blob;
             // let objRes = dataHtml.argsObject;
