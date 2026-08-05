@@ -24,6 +24,7 @@ function doGet(e) {
           // let base = this[libName].createFunctionResult(funcU, funcD);
           // console.log("base = " + base, executed++);
           dataOR = this[libName].startRenderer(e);
+          console.log("returning this from Renderer e " + typeof e + "\n", JSON.stringify(dataOR));
           // const data = this[libName].globalHandleGetData();
           // Logger.log(
           //   "globalHandleGetData returned:\n" + JSON.stringify(dataOR),
@@ -37,6 +38,7 @@ function doGet(e) {
             // let base = this[libName].createFunctionResult(funcU, funcD);
             // console.log("base = " + base, executed++);
             dataOR = this[libName].startRenderer();
+            console.log("returning this from Renderer " + typeof e + "\n", JSON.stringify(dataOR));
             // const data = this[libName].globalHandleGetData();
             // Logger.log(
             //   "globalHandleGetData returned:\n" + JSON.stringify(dataOR),
@@ -59,6 +61,7 @@ function doGet(e) {
             // let base = this[libName].createFunctionResult(funcU, funcD);
             // console.log("base = " + base, executed++);
             dataOR = this[libName].startRenderer(e);
+            console.log("returning this from Renderer " + typeof e + "\n", JSON.stringify(dataOR));
             // Logger.log(
             //   "globalHandleGetData returned:\n" + JSON.stringify(dataOR),
             // );
@@ -72,6 +75,7 @@ function doGet(e) {
             // let base = this[libName].createFunctionResult(funcU, funcD);
             // console.log("base = " + base, executed++);
             dataOR = this[libName].startRenderer();
+            console.log("returning this from Renderer " + typeof e + "\n", JSON.stringify(dataOR));
             // const data = this[libName].globalHandleGetData();
             // Logger.log(
             //   "globalHandleGetData returned:\n" + JSON.stringify(dataOR),
@@ -100,7 +104,29 @@ function doGet(e) {
   let bhtmlPayL = dataOR?.htmlPayL;
   let bHtmlPL = dataOR?.htmlPL;
   let bpayType = dataOR?.dataOR?.pL?.type;
-  let inHtml = mIndex?.html || dataOR?.pLData;
+  let inHtml = mIndex?.html;
+  if (!inHtml) {
+    if (mIndex?.html?.renTemp) {
+      inHtml = mIndex?.html?.renTemp;
+    }
+    else {
+      if (mCDN?.html?.blob) {
+        inHtml = mCDN?.html?.blob;
+      }
+      else {
+        if (dataOR?.pLData) {
+          if (!Array.isArray(dataOR?.pLData) && typeof dataOR?.pLData !== "object") {
+            inHtml = dataOR?.pLData;
+          }
+          else {
+            if (!Array.isArray(dataOR?.pLData) && typeof dataOR?.pLData === "object") {
+              inHtml = dataOR?.pLData?.pL?.data;
+            }
+          }
+        }
+      }
+    }
+  }
   let inTitle = mIndex?.argsObject?.title || dataOR?.dataOR?.title;
   let inObject = mIndex?.argsObject || dataOR?.dataOR;
   let inFile = mIndex?.file || dataOR?.file;
@@ -192,14 +218,14 @@ function doGet(e) {
           // console.log("returning this from Renderer:unknown and (url or text)", JSON.stringify(mInfo));
           // return this[libName].startRenderer(payInfo, kOLObject);
           if (String(mInfo.searchString)) {
-            return this[libName].contentCDN(mCDN, dataOR, payTitle) // mCDN?.cdnOutput //this[libName].contCDN(mInfo, kOLObject, payTitle);
+            return this[libName].contentCDN(mInfo.searchString, dataOR?.dataOR, dataOR?.dataOR?.title) // mCDN?.cdnOutput //this[libName].contCDN(mInfo, kOLObject, payTitle);
           }
           // else {
           //   return bHtml //this[libName].rendFile(mIndex, kOLObject, payTitle);
           // }
         }
         else {
-          if (typeof bHtml?.getContent === "function" || typeof bhtmlPayL?.getContent === "function" || typeof bHtmlPL?.getContent === "function" || typeof inHtml?.getContent() === "function") {
+          if ((bHtml && typeof bHtml?.getContent === "function") || (bhtmlPayL && typeof bhtmlPayL?.getContent === "function") || (bHtmlPL && typeof bHtmlPL?.getContent === "function") || (inHtml && typeof inHtml?.getContent() === "function")) {
             // console.log("dataOR?.pL?.type = " + Object.keys(bHtml).length || String(bhtmlPayL).length || String(bHtmlPL).length, executed++);
             // console.log("dataOR message info\n" + payInfo, dataOR?.message);
             // let organizeIt = this[libName].renderTemplate(
@@ -259,7 +285,21 @@ function doGet(e) {
             // }
             // else {
               // return HtmlService.createTemplate(mIndex?.html?.renTemp).evaluate().getContent();
-              return this[libName].renderFile(inFile, inObject, inTitle);
+              if (inFile) {
+                return this[libName].renderFile(inFile, inObject, inTitle);
+              }
+              else {
+                if (!inFile) {
+                  if (String(dataOR?.dataSearch) && payContent) {
+                    return this[libName].contentCDN(String(dataOR?.dataSearch), dataOR?.dataOR, dataOR?.dataOR?.title) // mCDN?.cdnOutput //this[libName].contCDN(mInfo, kOLObject, payTitle);
+                  }
+                  else {
+                    if (!(String(dataOR?.dataSearch) && payContent)) {
+                      return this[libName].renderTemplate(String(dataOR?.dataSearch), dataOR?.dataOR, dataOR?.dataOR?.title) // mCDN?.cdnOutput //this[libName].contCDN(mInfo, kOLObject, payTitle);
+                    }
+                  }
+                }
+              }
             // }
             // let strRes = dataHtml.blob;
             // let objRes = dataHtml.argsObject;
