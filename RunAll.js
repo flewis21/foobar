@@ -104,29 +104,61 @@ function doGet(e) {
   let bhtmlPayL = dataOR?.htmlPayL;
   let bHtmlPL = dataOR?.htmlPL;
   let bpayType = dataOR?.dataOR?.pL?.type;
-  let inHtml = mIndex?.html;
-  if (!inHtml) {
-    if (mIndex?.html?.renTemp) {
-      inHtml = mIndex?.html?.renTemp;
-    }
-    else {
-      if (mCDN?.html?.blob) {
-        inHtml = mCDN?.html?.blob;
+  let inHtml;
+  if (!Array.isArray(mIndex?.html) && typeof mIndex?.html !== "object") {
+    inHtml = mIndex?.html;
+  }
+  else {
+    if (!Array.isArray(mIndex?.html) && typeof mIndex?.html === "object") {
+      if (mIndex?.html?.renTemp) {
+        if (!Array.isArray(mIndex?.html?.renTemp) && typeof mIndex?.html?.renTemp !== "object") {
+          inHtml = mIndex?.html?.renTemp;
+        }
       }
       else {
-        if (dataOR?.pLData) {
-          if (!Array.isArray(dataOR?.pLData) && typeof dataOR?.pLData !== "object") {
-            inHtml = dataOR?.pLData;
-          }
-          else {
-            if (!Array.isArray(dataOR?.pLData) && typeof dataOR?.pLData === "object") {
-              inHtml = dataOR?.pLData?.pL?.data;
+        if (mCDN?.html?.blob) {
+            if (!Array.isArray(mCDN?.html?.blob) && typeof mCDN?.html?.blob !== "object") {
+              inHtml = mCDN?.html?.blob;
+            }
+            else {
+              if (!Array.isArray(mCDN?.html?.blob) && typeof mCDN?.html?.blob === "object") {
+                if (dataOR?.pLData) {
+                  if (dataOR?.pLData?.pL) {
+                    if (dataOR?.pLData?.pL?.data) {
+                      if (!Array.isArray(dataOR?.pLData?.pL?.data) && typeof dataOR?.pLData?.pL?.data !== "object") {
+                        inHtml = dataOR?.pLData?.pL?.data;
+                      }
+                      // else {
+                      //   if (!Array.isArray(dataOR?.pLData?.pL?.data) && typeof dataOR?.pLData?.pL?.data === "object") {
+                      //     inHtml = mCDN?.html?.blob;
+                      //   }
+                      // }
+                    }
+                  }
+                }
+              }
+            }
+        }
+        else {
+          if (dataOR?.pLData) {
+            if (!Array.isArray(dataOR?.pLData) && typeof dataOR?.pLData !== "object") {
+              inHtml = dataOR?.pLData;
+            }
+            else {
+              if (dataOR?.pLData?.pL) {
+                if (dataOR?.pLData?.pL?.data) {
+                  if (!Array.isArray(dataOR?.pLData) && typeof dataOR?.pLData === "object") {
+                    inHtml = dataOR?.pLData?.pL?.data;
+                  }
+                }
+              }
             }
           }
         }
       }
     }
   }
+  console.log("event; inHtml value: ", JSON.stringify(inHtml))
   let inTitle = mIndex?.argsObject?.title || dataOR?.dataOR?.title;
   let inObject = mIndex?.argsObject || dataOR?.dataOR;
   let inFile = mIndex?.file || dataOR?.file;
