@@ -111,15 +111,27 @@ function doGet(e) {
   else {
     if (!Array.isArray(mIndex?.html) && typeof mIndex?.html === "object") {
       if (mIndex?.html?.renTemp) {
-        if (!Array.isArray(mIndex?.html?.renTemp) && typeof mIndex?.html?.renTemp !== "object") {
-          inHtml = mIndex?.html?.renTemp;
-        }
+        // if (typeof mIndex?.html?.renTemp?.getContent() === "function") {
+        //   console.log("event; inHtml " + mIndex?.html?.renTemp?.getContent(), String(mIndex?.html?.renTemp).length);
+        //   console.log("returning this from Renderer:html\n", JSON.stringify(dataOR));
+        //   return mIndex?.html?.renTemp.evaluate()
+          if (!Array.isArray(mIndex?.html?.renTemp) && typeof mIndex?.html?.renTemp !== "object") {
+            return this[libName].contentApp(mIndex?.html?.renTemp, dataOR);
+            // inHtml = mIndex?.html?.renTemp;
+          }
+        // }
       }
       else {
         if (mCDN?.html?.blob) {
-            if (!Array.isArray(mCDN?.html?.blob) && typeof mCDN?.html?.blob !== "object") {
-              inHtml = mCDN?.html?.blob;
-            }
+          // if (typeof mIndex?.html?.blob?.getContent() === "function") {
+          //   console.log("event; inHtml " + mIndex?.html?.blob?.getContent(), String(mIndex?.html?.blob).length);
+          //   console.log("returning this from Renderer:html\n", JSON.stringify(dataOR));
+          //   return mIndex?.html?.blob.evaluate()
+              if (!Array.isArray(mCDN?.html?.blob) && typeof mCDN?.html?.blob !== "object") {
+                return this[libName].contentApp(mIndex?.html?.blob, dataOR);
+              //   inHtml = mCDN?.html?.blob;
+              }
+            // }
             else {
               if (!Array.isArray(mCDN?.html?.blob) && typeof mCDN?.html?.blob === "object") {
                 if (dataOR?.pLData) {
