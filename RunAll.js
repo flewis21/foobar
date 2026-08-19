@@ -105,7 +105,7 @@ function doGet(e) {
   let bHtmlPL = dataOR?.htmlPL;
   let bpayType = dataOR?.dataOR?.pL?.type;
   let inHtml;
-  if (!Array.isArray(mIndex?.html) && typeof mIndex?.html !== "object") {
+  if (!Array.isArray(mIndex?.html) && typeof mIndex?.html !== "object" && typeof mIndex?.html.getContent() == "function") {
     inHtml = mIndex?.html;
   }
   else {
@@ -137,7 +137,7 @@ function doGet(e) {
                 if (dataOR?.pLData) {
                   if (dataOR?.pLData?.pL) {
                     if (dataOR?.pLData?.pL?.data) {
-                      if (!Array.isArray(dataOR?.pLData?.pL?.data) && typeof dataOR?.pLData?.pL?.data !== "object") {
+                      if (!Array.isArray(dataOR?.pLData?.pL?.data) && typeof dataOR?.pLData?.pL?.data !== "object" && typeof dataOR?.pLData?.pL?.data.getContent() !== "function") {
                         inHtml = dataOR?.pLData?.pL?.data;
                       }
                       // else {
@@ -153,13 +153,13 @@ function doGet(e) {
         }
         else {
           if (dataOR?.pLData) {
-            if (!Array.isArray(dataOR?.pLData) && typeof dataOR?.pLData !== "object") {
+            if (!Array.isArray(dataOR?.pLData) && typeof dataOR?.pLData !== "object" && typeof dataOR?.pLData.getContent() !== "function") {
               inHtml = dataOR?.pLData;
             }
             else {
               if (dataOR?.pLData?.pL) {
                 if (dataOR?.pLData?.pL?.data) {
-                  if (!Array.isArray(dataOR?.pLData) && typeof dataOR?.pLData === "object") {
+                  if (!Array.isArray(dataOR?.pLData) && typeof dataOR?.pLData === "object" && typeof dataOR?.pLData.getContent() === "function") {
                     inHtml = dataOR?.pLData?.pL?.data;
                   }
                 }
