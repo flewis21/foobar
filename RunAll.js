@@ -105,8 +105,8 @@ function doGet(e) {
   let bHtmlPL = dataOR?.htmlPL;
   let bpayType = dataOR?.dataOR?.pL?.type;
   let inHtml;
-  if (!Array.isArray(mIndex?.html) && typeof mIndex?.html !== "object" && typeof mIndex?.html.getContent() == "function") {
-    inHtml = mIndex?.html;
+  if (!Array.isArray(mIndex?.html) && typeof mIndex?.html !== "object") {
+    return this[libName].renderTemplate(inHtml = mIndex?.html, dataOR, (mIndex?.argsObject?.title || dataOR?.dataOR?.title));
   }
   else {
     if (!Array.isArray(mIndex?.html) && typeof mIndex?.html === "object") {
@@ -116,7 +116,7 @@ function doGet(e) {
         //   console.log("returning this from Renderer:html\n", JSON.stringify(dataOR));
         //   return mIndex?.html?.renTemp.evaluate()
           if (!Array.isArray(mIndex?.html?.renTemp) && typeof mIndex?.html?.renTemp !== "object") {
-            return this[libName].contentApp(mIndex?.html?.renTemp, dataOR);
+            return this[libName].renderTemplate(mIndex?.html?.renTemp, dataOR, (mIndex?.argsObject?.title || dataOR?.dataOR?.title));
             // inHtml = mIndex?.html?.renTemp;
           }
         // }
@@ -128,7 +128,7 @@ function doGet(e) {
           //   console.log("returning this from Renderer:html\n", JSON.stringify(dataOR));
           //   return mIndex?.html?.blob.evaluate()
               if (!Array.isArray(mCDN?.html?.blob) && typeof mCDN?.html?.blob !== "object") {
-                return this[libName].contentApp(mIndex?.html?.blob, dataOR);
+                return this[libName].renderTemplate(mIndex?.html?.blob, dataOR, (mIndex?.argsObject?.title || dataOR?.dataOR?.title));
               //   inHtml = mCDN?.html?.blob;
               }
             // }
@@ -174,6 +174,7 @@ function doGet(e) {
   let inTitle = mIndex?.argsObject?.title || dataOR?.dataOR?.title;
   let inObject = mIndex?.argsObject || dataOR?.dataOR;
   let inFile = mIndex?.file || dataOR?.file;
+  let inDataSearch = dataOR?.dataSearch
   // if (typeof bHtml.getContent === "function" || typeof bhtmlPayL.getContent === "function" || typeof bHtmlPL.getContent === "function") {
   //   // console.log("dataOR?.pL?.type = " + Object.keys(bHtml).length || String(bhtmlPayL).length || String(bHtmlPL).length, executed++);
   //   // console.log("dataOR message info\n" + payInfo, dataOR?.message);
@@ -334,12 +335,12 @@ function doGet(e) {
               }
               else {
                 if (!inFile) {
-                  if (String(dataOR?.dataSearch) && payContent) {
-                    return this[libName].contentCDN(String(dataOR?.dataSearch), dataOR?.dataOR, dataOR?.dataOR?.title) // mCDN?.cdnOutput //this[libName].contCDN(mInfo, kOLObject, payTitle);
+                  if (String(inDataSearch) && payContent) {
+                    return this[libName].contentCDN(String(inDataSearch), dataOR?.dataOR, dataOR?.dataOR?.title) // mCDN?.cdnOutput //this[libName].contCDN(mInfo, kOLObject, payTitle);
                   }
                   else {
-                    if (!(String(dataOR?.dataSearch) && payContent)) {
-                      return this[libName].renderTemplate(String(dataOR?.dataSearch), dataOR?.dataOR, dataOR?.dataOR?.title) // mCDN?.cdnOutput //this[libName].contCDN(mInfo, kOLObject, payTitle);
+                    if (!(String(inDataSearch) && payContent)) {
+                      return this[libName].contentCDN(false, dataOR?.dataOR, dataOR?.dataOR?.title) // mCDN?.cdnOutput //this[libName].contCDN(mInfo, kOLObject, payTitle);
                     }
                   }
                 }
