@@ -51,7 +51,7 @@ function doGet(e) {
           kOL = Object.keys(e.parameter);
           console.log("e.parameter[kOL[0]] = file || args || func\n" + e.parameter[kOL[0]], kOL);
           if (e.parameter["file"]) {
-            return this[libName].startRenderer(e);
+            dataOR = this[libName].startRenderer(e);
             // dataOR = this[libName].globalHandleGetData(data);
           }
           else {
