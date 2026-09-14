@@ -164,6 +164,13 @@ function doGet(e) {
                   }
                 }
               }
+              else {
+                if (payInfo) {
+                  if ((payInfo.trim().startsWith("<") && payInfo.trim().endsWith(">"))) {
+                    inHtml = payInfo;
+                  }
+                }
+              }
             }
           }
         }
